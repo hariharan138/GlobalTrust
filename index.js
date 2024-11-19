@@ -1,6 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 let app = express()
+require('dotenv').config()
+const cookieParser = require('cookie-parser')
+
+app.use(cookieParser())
 const trustRoutes = require('./Routes/TrustRoutes');
 
 app.use(express.json())

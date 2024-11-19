@@ -15,8 +15,8 @@ let Trustschema= new mongoose.Schema({
     phone:{
         required:true,
         type: String,
-        // minlength:  [10, "should be atleast 10 digits long"],
-        // maxLength: [10, "maximum only 10 digits should be entered"],
+        minlength:  [10, "should be atleast 10 digits long"],
+        maxLength: [10, "maximum only 10 digits should be entered"],
         unique: true
     },
     password:{

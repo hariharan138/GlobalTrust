@@ -1,8 +1,6 @@
 let Trust=require('../models/Trust.model')
-// console.log(Trusts)
-// Trust.syncIndexes()
-//   .then(() => console.log("Indexes synced successfully"))
-//   .catch(err => console.error("Error syncing indexes:", err));
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 let addTrusts=async(req,res)=>{
     try{
@@ -19,12 +17,56 @@ let addTrusts=async(req,res)=>{
             throw new Error("user is already exists")
         }
 
-        let trustCredentials=await Trust.create({firstName,lastName,email,phone, password, confirmPassword,trustName, trustId, address, trustEmail,trustPhoneNumber }) 
+        if(password!==confirmPassword){
+            throw new Error("Password does not match with ConfirmPassword")
+        }
+
+        let currentPassword = await bcrypt.hash(password,10)
+        console.log(currentPassword)
+
+        let trustCredentials=await Trust.create({firstName,lastName,email,phone, password: currentPassword, confirmPassword: currentPassword,trustName, trustId, address, trustEmail,trustPhoneNumber }) 
+
         res.status(201).json({error:false,message:"Trust Added Successfully",data:trustCredentials})
     }
     catch(err){
         res.status(500).json({error:true,message:err.message})
     }
+}
+
+let loginTrusts = async (req, res)=>{
+    try{
+            let {email, password} = req.body
+            const {authToken} = req.cookies
+            if(authToken){
+                const decodedData = jwt.verify(authToken, process.env.JWT_SECREAT_KEY)
+                if(decodedData){
+                    throw new Error("user is already logged in")
+                }
+            }
+            let isExist = await Trust.findOne({email: email})
+            
+            if(!isExist){
+                throw new Error("user is not registered")
+            }
+
+            let isMatching = await bcrypt.compare(password, isExist.password)
+            if(!isMatching){
+                throw new Error("incorrect password")
+            }
+
+            let token = await jwt.sign({_id: isExist._id}, process.env.JWT_SECREAT_KEY ,{expiresIn: process.env.JWT_TOKEN_EXPIRY})
+        
+            res.cookie("authToken", token, {expires: new Date(Date.now() + 8 * 300000)}) //in 40min cookie will expire
+            res.status(200).json({msg: isExist.firstName + " login Successfull"})
+    }
+    catch(err){
+        res.status(500).json({error:true,message:err.message})
+    }
+}
+
+let logoutTrusts = async (req, res)=>{
+         res.cookie("authToken", null, {expires: new Date(Date.now())})
+         res.status(200).json({msg: "user logged out successfully"})       
 }
 
 let getTrusts=async(req,res,next)=>{
@@ -39,5 +81,7 @@ let getTrusts=async(req,res,next)=>{
 }
 module.exports={
     addTrusts,
-    getTrusts
+    getTrusts,
+    loginTrusts,
+    logoutTrusts
 }
