@@ -12,7 +12,7 @@ try{
        let decodedData = jwt.verify(authToken, process.env.JWT_SECREAT_KEY)
         
         if(decodedData){
-            console.log(decodedData)
+            // console.log(decodedData)
            let user = await TrustModel.findOne({_id: decodedData._id})
 
             if(!user){

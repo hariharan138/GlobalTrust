@@ -123,10 +123,36 @@ let getRegisteredFoods = async (req, res)=>{
     }
 }
 
+let acceptFoodOrder = async (req, res)=>{
+    try{
+        let user = req.user
+        let {orderId} = req.params
+
+        let isAvailable = await FoodModel.findById(orderId)
+            // console.log(isAvailable)
+        if(!isAvailable){
+            throw new Error("order not found")
+        }
+
+        if(isAvailable?.acceptedBy){
+            throw new Error("already accepted")
+        }
+
+        isAvailable.acceptedBy = user._id
+        await isAvailable.save()
+        res.status(200).json({msg: user.firstName + " accepted the order", data: isAvailable})
+
+    }
+    catch(err){
+        res.status(500).json({error:true,message:err.message})
+    }
+}
+
 module.exports={
     addTrusts,
     loginTrusts,
     logoutTrusts,
     getUsers,
-    getRegisteredFoods
+    getRegisteredFoods,
+    acceptFoodOrder
 }

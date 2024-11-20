@@ -95,7 +95,7 @@ let getTrusts=async(req,res,next)=>{
 let foodRegister = async (req, res)=>{
     try{
         let user = req.user
-        let {fromUserId, noOfPeople, veg, preferred} = req.body
+        let {fromUserId, noOfPeople, veg, preferred, acceptedBy} = req.body
             console.log(user)
         if(!noOfPeople){
             throw new Error("Atleast it should be afford to one person")
@@ -105,7 +105,7 @@ let foodRegister = async (req, res)=>{
             throw new Error("select four or under 4 trusts")
         }
         
-        let data = await FoodModel.create({fromUserId, noOfPeople, veg, preferred, address: user.address})
+        let data = await FoodModel.create({fromUserId, noOfPeople, veg, preferred, address: user.address, acceptedBy})
 
         res.status(201).json({msg: "food created", data})
     }

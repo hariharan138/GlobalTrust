@@ -29,6 +29,11 @@ let FoodSchema = new mongoose.Schema({
             message: "select four or under 4 trusts"
         }
     },
+    acceptedBy:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Trust",
+        default: null
+    },
 },
 {
     timestamps: true
