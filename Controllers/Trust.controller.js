@@ -1,33 +1,39 @@
 let Trust=require('../models/Trust.model')
+const {validate} = require('../Validation/ValidationUser')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const UserModel = require('../models/User.model')
+const TrustModel = require('../models/Trust.model')
 
 let addTrusts=async(req,res)=>{
     try{
+        await validate(req)
         let {firstName,email, lastName, phone, password, confirmPassword,trustName,
              trustId, address, trustEmail,trustPhoneNumber }=req.body
              
-        if(phone.length!==10 && trustPhoneNumber.length!==10){
-            throw new Error("Mobile Number should be 10 digits long")
-        }
+        // if(phone.length!==10 && trustPhoneNumber.length!==10){
+        //     throw new Error("Mobile Number should be 10 digits long")
+        // }
 
-        let isExists = await Trust.findOne({$or: [{email: email}, {phone: phone}, {trustId: trustId}, {trustEmail: trustEmail}, {trustPhoneNumber: trustPhoneNumber}]})
+        // let isExists = await Trust.findOne({$or: [{email: email}, {phone: phone}, {trustId: trustId}, {trustEmail: trustEmail}, {trustPhoneNumber: trustPhoneNumber}]})
         
-        if(isExists){
-            throw new Error("user is already exists")
-        }
+        // if(isExists){
+        //     throw new Error("user is already exists")
+        // }
 
-        if(password!==confirmPassword){
-            throw new Error("Password does not match with ConfirmPassword")
-        }
+        // if(password!==confirmPassword){
+        //     throw new Error("Password does not match with ConfirmPassword")
+        // }
 
         let currentPassword = await bcrypt.hash(password,10)
-        console.log(currentPassword)
+
+        // console.log(currentPassword)
 
         let trustCredentials=await Trust.create({firstName,lastName,email,phone, password: currentPassword, confirmPassword: currentPassword,trustName, trustId, address, trustEmail,trustPhoneNumber }) 
 
-        res.status(201).json({error:false,message:"Trust Added Successfully",data:trustCredentials})
+        // let newTrust = new TrustModel({firstName,lastName,email,phone, password: currentPassword, confirmPassword: currentPassword,trustName, trustId, address, trustEmail,trustPhoneNumber })
+        // await newTrust.save()
+        res.status(201).json({error:false,message:"Trust Added Successfully",data:newTrust})
     }
     catch(err){
         res.status(500).json({error:true,message:err.message})
