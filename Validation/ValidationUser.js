@@ -1,4 +1,5 @@
 const Trust = require("../models/Trust.model")
+const UserModel = require('../models/User.model')
 
 const validateTrust = async (req)=>{
     let {firstName,email, lastName, phone, password, confirmPassword,trustName,
@@ -29,7 +30,7 @@ let validateUser = async (req, res)=>{
   if(!email){
     throw new Error("Enter the Email")
   }
- let isExists = await Trust.findOne({$or: [{email: email}, {phone: phone}]})
+ let isExists = await UserModel.findOne({$or: [{email: email}, {phone: phone}]})
 
   if(isExists){
     console.log("user is already there")
