@@ -3,6 +3,7 @@ const UserModel = require('../models/User.model')
 const bcrypt = require('bcrypt')
 const { validateUser } = require('../Validation/ValidationUser')
 const jwt = require('jsonwebtoken')
+const Trust = require("../models/Trust.model")
 
 let userRegistration = async(req, res)=>{
 
@@ -76,8 +77,19 @@ let userLogout = async (req, res)=>{
     res.status(200).json({msg: "user has logged out"})
 }
 
+let getTrusts=async(req,res,next)=>{
+    try{
+        let trusts =await Trust.find({})
+        res.status(201).json({error:false,message:"Trust Fetch succesfully",data:trusts})
+    }
+    catch(err){
+        res.status(500).json({error:true,message:err.message})
+    }
+}
+
 module.exports= {
     userRegistration,
     userLogin,
-    userLogout
+    userLogout,
+    getTrusts
 }

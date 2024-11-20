@@ -76,15 +76,7 @@ let logoutTrusts = async (req, res)=>{
          res.status(200).json({msg: "user logged out successfully"})       
 }
 
-let getTrusts=async(req,res,next)=>{
-    try{
-        let trusts =await Trust.find({})
-        res.status(201).json({error:false,message:"Trust Fetch succesfully",data:trusts})
-    }
-    catch(err){
-        res.status(500).json({error:true,message:err.message})
-    }
-}
+
 
 let getUsers = async (req,res)=>{
         try{
@@ -104,7 +96,6 @@ let getUsers = async (req,res)=>{
 }
 module.exports={
     addTrusts,
-    getTrusts,
     loginTrusts,
     logoutTrusts,
     getUsers
