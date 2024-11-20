@@ -51,7 +51,20 @@ let validateUser = async (req, res)=>{
   console.log("no problem")
 }
 
+let validateAdmin = async (req)=>{
+  let {email, password} = req.body
+
+  if(!email){
+    throw new Error("Enter the Email")
+  }
+
+  if(password.length<8){
+    throw new Error("Password should be atleast 8 characters long")
+  }
+}
+
 module.exports= {
     validateTrust,
-    validateUser
+    validateUser,
+    validateAdmin
 }
