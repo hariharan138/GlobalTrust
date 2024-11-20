@@ -11,9 +11,9 @@ let adminRoute = express.Router()
 
 adminRoute.post('/adminlogin', adminLogin)
 adminRoute.post('/adminlogout', adminLogout)
-adminRoute.get('/getusers', adminAuth ,getUsersAdmin)
-adminRoute.get('/gettrust', getTrustsAdmin)
-adminRoute.get('/transactions', getTransactions)
-adminRoute.delete('/delete/:role/:id', deleteUsersAndTrusts)
+adminRoute.get('/getusers/:page/:limit', adminAuth ,getUsersAdmin)
+adminRoute.get('/gettrusts/:page/:limit', adminAuth , getTrustsAdmin)
+adminRoute.get('/transactions', adminAuth ,getTransactions)
+adminRoute.delete('/delete/:role/:id', adminAuth ,deleteUsersAndTrusts)
 
 module.exports = adminRoute

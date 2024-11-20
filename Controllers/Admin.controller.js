@@ -2,6 +2,11 @@ const { validateAdmin } = require("../Validation/ValidationUser")
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const AdminModel = require("../models/Admin.modle")
+const UserModel = require("../models/User.model")
+const TrustModel = require("../models/Trust.model")
+
+
+let allowedFields = ["Name", "phone", "password"]
 
 let adminLogin = async (req, res)=>{
     try{
@@ -50,19 +55,34 @@ let adminLogout = async (req, res)=>{
 
 let getUsersAdmin = async (req, res)=>{
     try{
+            // let user = req.user
+            
+            // console.log(req.params)
+            let limit = (req.params.limit > 20 ? 10 : req.params.limit) || 10
+            let page = req.params.page || 1
+            let skip = (page-1) * limit
+
+            let data = await UserModel.find({}).skip(skip).limit(limit).select(allowedFields)
+            res.status(200).json({msg: "Users data fetched", page, limit, data})
+            // res.status(200).json({msg: "Users data fetched"})
         
     }
     catch(err){
-        res.status(500).json({error:true,message:err.message})
+        res.status(500).json({error:true, message:err.message})
     }
 }
 
 let getTrustsAdmin = async (req, res)=>{
+    let allowedFields = ["trustName", "trustEmail", "trustPhoneNumber", "address"]
     try{
-
+        let limit = (req.params.limit > 20 ? 10 : req.params.limit) || 10
+        let page = req.params.page || 1
+        let skip = (page-1) * limit
+        let trusts =await TrustModel.find({}).skip(skip).limit(limit).select(allowedFields)
+        res.status(201).json({error:false,message:"Trust Fetch succesfully",data:trusts})
     }
     catch(err){
-        res.status(500).json({error:true,message:err.message})
+        res.status(500).json({error:true, message:err.message})
     }
 }
 

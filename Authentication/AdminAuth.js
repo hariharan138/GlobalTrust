@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken')
 let AdminModel = require( '../models/Admin.modle');
 
-let adminAuth = async (req)=>{
+let adminAuth = async (req, res, next)=>{
     try{
-        let {admintoken} = res.cookies
+        let {admintoken} = req.cookies
         if(!admintoken){
            throw new Error("admin is not loggedIn")
         }
