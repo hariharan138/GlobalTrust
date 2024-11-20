@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const UserModel = require('../models/User.model')
 const TrustModel = require('../models/Trust.model')
+const FoodModel = require('../models/Food.model')
 
 let allowedFields = ["Name", "phone", "password"]
 
@@ -96,10 +97,36 @@ let getUsers = async (req,res)=>{
         }
 }
 
+let getRegisteredFoods = async (req, res)=>{
+    try{
+        let user = req.user
+
+        let page = req.params.page || 1
+        let limit = (req.params.limit > 20 ? 10 : req.params.limit) || 10
+        let skip = (page-1) * limit
+        
+        let preferredOrders = await FoodModel.find({preferred: {$in: [user._id]}}).skip(skip).limit(limit).select("fromUserId noOfPeople address veg createdAt")
+        
+        let preferedOrdersSenderId = preferredOrders?.map(order=>{
+        return order.fromUserId.toString()
+        })
+        
+        console.log(preferedOrdersSenderId)
+        
+          let normalOrders = await FoodModel.find({fromUserId: {$nin : preferedOrdersSenderId}}).skip(skip).limit(limit)
+
+         let data = preferredOrders.concat(normalOrders)
+        res.status(200).json({msg: "data fetched correctly", data}) 
+    }
+    catch(err){
+        res.status(500).json({error:true,message:err.message})
+    }
+}
 
 module.exports={
     addTrusts,
     loginTrusts,
     logoutTrusts,
-    getUsers
+    getUsers,
+    getRegisteredFoods
 }
