@@ -1,0 +1,37 @@
+const mongoose = require('mongoose')
+
+let FoodSchema = new mongoose.Schema({
+    fromUserId:{
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "UserModel"
+    },
+    noOfPeople:{
+        type: Number,
+        required: true,
+        min: [1, "atleast it should be afford to one person"]
+    },
+    address:{
+        type: String,
+    },
+    veg: {
+        required: true,
+        type: Boolean
+    },
+    preferred:{
+        
+            type: [mongoose.Schema.Types.ObjectId],
+            ref: "Trust",
+            validate: {
+                validator: function(val){
+                    return val.length<=4
+                }, 
+            message: "select four or under 4 trusts"
+        }
+    },
+},
+{
+    timestamps: true
+})
+
+module.exports = mongoose.model("FoodModel", FoodSchema)
