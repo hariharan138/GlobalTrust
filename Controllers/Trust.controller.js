@@ -36,7 +36,7 @@ let addTrusts=async(req,res)=>{
         res.status(201).json({error:false,message:"Trust Added Successfully",data:newTrust})
     }
     catch(err){
-        res.status(500).json({error:true,message:err.message})
+        res.status(500).json({error:true,message: err.message})
     }
 }
 
@@ -78,7 +78,6 @@ let logoutTrusts = async (req, res)=>{
 
 let getTrusts=async(req,res,next)=>{
     try{
-
         let trusts =await Trust.find({})
         res.status(201).json({error:false,message:"Trust Fetch succesfully",data:trusts})
     }
