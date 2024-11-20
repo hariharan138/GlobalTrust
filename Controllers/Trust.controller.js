@@ -1,5 +1,5 @@
 let Trust=require('../models/Trust.model')
-const {validate} = require('../Validation/ValidationUser')
+const {validateTrust} = require('../Validation/ValidationUser')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const UserModel = require('../models/User.model')
@@ -7,7 +7,7 @@ const TrustModel = require('../models/Trust.model')
 
 let addTrusts=async(req,res)=>{
     try{
-        await validate(req)
+        await validateTrust(req)
         let {firstName,email, lastName, phone, password, confirmPassword,trustName,
              trustId, address, trustEmail,trustPhoneNumber }=req.body
              

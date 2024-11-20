@@ -1,11 +1,18 @@
 const express = require("express")
 const UserModel = require('../models/User.model')
 const bcrypt = require('bcrypt')
+const { validateUser } = require('../Validation/ValidationUser')
+
+
 let userRegistration = async(req, res)=>{
 
     try{
-            let hashedPassword = await bcrypt.hash(password, 10)
 
+            await validateUser(req)
+            let {Name,email, phone, password, confirmPassword} = req.body
+
+            let hashedPassword = await bcrypt.hash(password,10)
+            
             let newUser = new UserModel({
                 Name, 
                 email,
@@ -15,8 +22,16 @@ let userRegistration = async(req, res)=>{
             })
 
             await newUser.save()
+            res.status(200).json({msg: "User Registered SuccessFully", data: newUser})
+    }
+    catch(err){
+        res.status(500).json({error:true,message:err.message})
+    }
+}
 
-            res.status(200).json({msg: "User Added SuccessFully", data: newUser})
+let userLogin = async (req, res)=>{
+    try{
+
     }
     catch(err){
         res.status(500).json({error:true,message:err.message})
@@ -24,5 +39,6 @@ let userRegistration = async(req, res)=>{
 }
 
 module.exports= {
-    userRegistration
+    userRegistration,
+    userLogin
 }
