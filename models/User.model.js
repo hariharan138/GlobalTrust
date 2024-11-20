@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
         minlength:  [10, "should be atleast 10 digits long"],
         maxLength: [10, "maximum only 10 digits should be entered"],
         unique: true
+    },
+    address:{
+        type: String,
+        required: true
     }
 })
 

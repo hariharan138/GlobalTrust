@@ -4,13 +4,14 @@ const bcrypt = require('bcrypt')
 const { validateUser } = require('../Validation/ValidationUser')
 const jwt = require('jsonwebtoken')
 const Trust = require("../models/Trust.model")
+const FoodModel = require("../models/Food.model")
 
 let userRegistration = async(req, res)=>{
 
     try{
 
             await validateUser(req)
-            let {Name,email, phone, password, confirmPassword} = req.body
+            let {Name,email, phone, password, confirmPassword, address} = req.body
 
             let hashedPassword = await bcrypt.hash(password,10)
             
@@ -18,6 +19,7 @@ let userRegistration = async(req, res)=>{
                 Name, 
                 email,
                 phone, 
+                address,
                 password: hashedPassword, 
                 confirmPassword: hashedPassword
             })
@@ -85,13 +87,39 @@ let getTrusts=async(req,res,next)=>{
         res.status(201).json({error:false,message:"Trust Fetch succesfully",data:trusts})
     }
     catch(err){
-        res.status(500).json({error:true,message:err.message})
+        res.status(500).json({error:true, message:err.message})
     }
 }
+
+
+let foodRegister = async (req, res)=>{
+    try{
+        let user = req.user
+        let {fromUserId, noOfPeople, veg, preferred} = req.body
+            console.log(user)
+        if(!noOfPeople){
+            throw new Error("Atleast it should be afford to one person")
+        }
+
+        if(preferred.length>4){
+            throw new Error("select four or under 4 trusts")
+        }
+        
+        let data = await FoodModel.create({fromUserId, noOfPeople, veg, preferred, address: user.address})
+
+        res.status(201).json({msg: "food created", data})
+    }
+    catch(err){
+        res.status(500).json({error:true, message:err.message})
+    }
+}
+
+
 
 module.exports= {
     userRegistration,
     userLogin,
     userLogout,
-    getTrusts
+    getTrusts,
+    foodRegister
 }

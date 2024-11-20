@@ -26,7 +26,7 @@ const validateTrust = async (req)=>{
 }
 
 let validateUser = async (req, res)=>{
-  let {Name,email, phone, password, confirmPassword } = req.body
+  let {Name,email, phone, password, confirmPassword, address } = req.body
   if(!email){
     throw new Error("Enter the Email")
   }
@@ -39,6 +39,10 @@ let validateUser = async (req, res)=>{
 
   if( phone.length!==10){
         throw new Error("Mobile Number should be 10 digits long")
+    }
+
+    if(!address){
+      throw new Error("please enter you address")
     }
 
   if(password!==confirmPassword){

@@ -7,18 +7,18 @@ const userAuth = async (req, res, next)=>{
     if(!userlogintoken){
         throw new Error("user is not loggedin")
     }
-    // let decodedData = await jwt.verify(userlogintoken, process.env.JWT_USER_SECREAT_KEY)
+    let decodedData = await jwt.verify(userlogintoken, process.env.JWT_USER_SECREAT_KEY)
     
-    // if(decodedData){
-    //     let user = await UserModel.findOne({_id: decodedData._id})
+    if(decodedData){
+        let user = await UserModel.findOne({_id: decodedData._id})
 
-    //     if(!user){
-    //         throw new Error("User not found")
-    //     }
-    //     req.user = user
+        if(!user){
+            throw new Error("User not found")
+        }
+        req.user = user
         console.log("auth working properly in user")
         next()
-    // }
+    }
     }
     catch(err){
         res.status(500).json({msg: err.message})
