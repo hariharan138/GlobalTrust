@@ -16,10 +16,10 @@ try{
            let user = await TrustModel.findOne({_id: decodedData._id})
 
             if(!user){
-                throw new Error("User not found")
+                throw new Error("Trust not found")
             }
 
-           req.user = user
+           req.user  = user
             next()
         }
         

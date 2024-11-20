@@ -65,7 +65,7 @@ let userLogin = async (req, res)=>{
 
          let token = await jwt.sign({_id: isExists._id}, process.env.JWT_USER_SECREAT_KEY, {expiresIn: process.env.JWT_USER_TOKEN_EXPIRY})
          res.cookie("userlogintoken", token, {expires: new Date(Date.now() + 8 * 300000)})
-          res.status(200).json({msg: isExists.Name + " has loggedin"})
+         res.status(200).json({msg: isExists.Name + " has loggedin"})
     }
     catch(err){
         res.status(500).json({error:true,message:err.message})
@@ -78,8 +78,10 @@ let userLogout = async (req, res)=>{
 }
 
 let getTrusts=async(req,res,next)=>{
+    console.log("working")
+    let allowedFields = ["trustName", "trustEmail", "trustPhoneNumber", "address"]
     try{
-        let trusts =await Trust.find({})
+        let trusts =await Trust.find({}).select(allowedFields)
         res.status(201).json({error:false,message:"Trust Fetch succesfully",data:trusts})
     }
     catch(err){
