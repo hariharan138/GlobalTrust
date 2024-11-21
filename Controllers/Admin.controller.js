@@ -120,42 +120,38 @@ let getTransactions = async (req, res)=>{
 
 let deleteUsersAndTrusts = async (req, res)=>{
     try{
-    //    let {id, role} = req.params
-    //    let isExists = ""
-    //    console.log(role)
-    //    if(!role){
-    //     throw new Error("select the role")
-    //    }
+       let {id, role} = req.params
+       let isExists = ""
+       console.log(role)
+       if(!role){
+        throw new Error("select the role")
+       }
 
-    //    if(!id){
-    //     throw new Error("Enter the proper Id")
-    //    }
+        if(!id){
+         throw new Error("Enter the proper Id")
+        }
 
-    //    if(role != "trust" && role !== "user"){
-    //     console.log(typeof role)
-    //     throw new Error("role can be either trust or user")
-    //    }
+        if(role != "trust" && role !== "user"){
+         console.log(typeof role)
+         throw new Error("role can be either trust or user")
+        }
 
-    //     if(role ==="user"){
-    //         // let roleid =  mongoose.Types.ObjectId(id)
-    //         // console.log(typeof roleid)
-    //         // mongoose.Types.ObjectId()
+        if(role ==="user"){
+             isExists = await UserModel.findById(id)
+             console.log(isExists)
+        }
 
-    //         // console.log(roleid)
-    //          isExists = await UserModel.findByIdAndDelete(id)
-    //          console.log(isExists)
-    //     }
+        if(role === "trust"){
+             isExists = await TrustModel.findById(id)
+        }
        
+       if(!isExists){
+            throw new Error("User is not registered")
+       }
 
-    //     if(role === "trust"){
-    //          isExists = await TrustModel.findById(_id)
-    //     }
+       res.status(200).json({data: isExists})
        
-    //    if(!isExists){
-    //         throw new Error("User is not registered")
-    //    }
-
-    //    let deletedUser = await UserModel.findByIdAndDelete(isExists.id, {returnDocument: "after"})
+       let deletedUser = await UserModel.findByIdAndDelete(isExists.id, {returnDocument: "after"})
 
     //    res.status(200).json({msg: "deleted successfully", data:deletedUser})
 
