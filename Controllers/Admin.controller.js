@@ -6,6 +6,7 @@ const UserModel = require("../models/User.model")
 const TrustModel = require("../models/Trust.model")
 const FoodModel = require("../models/Food.model")
 const mongoose = require("mongoose")
+const DeletedsModel = require("../models/Deleteds.model")
 
 
 
@@ -122,7 +123,6 @@ let deleteUsersAndTrusts = async (req, res)=>{
     try{
        let {id, role} = req.params
        let isExists = ""
-       console.log(role)
        if(!role){
         throw new Error("select the role")
        }
@@ -132,32 +132,40 @@ let deleteUsersAndTrusts = async (req, res)=>{
         }
 
         if(role != "trust" && role !== "user"){
-         console.log(typeof role)
          throw new Error("role can be either trust or user")
         }
 
         if(role ==="user"){
              isExists = await UserModel.findById(id)
-             console.log(isExists)
+             if(!isExists){
+                throw new Error("User is not registered")
+             }
+            
+            await DeletedsModel.create({email: isExists.email, role: isExists.role})
+            
+            let deletedUser = await UserModel.findByIdAndDelete(isExists.id, {returnDocument: "after"})
+            res.status(200).json({msg: "deleted succesffuly", data : deletedUser})
+        
         }
 
         if(role === "trust"){
              isExists = await TrustModel.findById(id)
+            
+             if(!isExists){
+                throw new Error("User is not registered")
+            }
+
+            await DeletedsModel.create({email: isExists.email, role: isExists.role})
+
+            let deletedUser = await TrustModel.findByIdAndDelete(isExists.id, {returnDocument: "after"})
+            res.status(200).json({msg: "deleted succesffuly", data : deletedUser})
         }
        
-       if(!isExists){
-            throw new Error("User is not registered")
-       }
-
-       res.status(200).json({data: isExists})
+   
        
-       let deletedUser = await UserModel.findByIdAndDelete(isExists.id, {returnDocument: "after"})
-
-    //    res.status(200).json({msg: "deleted successfully", data:deletedUser})
-
-    }
+      }
     catch(err){
-        // res.status(500).json({error:true,message:err.message})
+        res.status(500).json({error:true,message:err.message})
     }
 }
 
