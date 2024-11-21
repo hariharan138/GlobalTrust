@@ -6,7 +6,6 @@ const UserModel = require("../models/User.model")
 const TrustModel = require("../models/Trust.model")
 
 
-let allowedFields = ["Name", "phone", "password"]
 
 let adminLogin = async (req, res)=>{
     try{
@@ -55,6 +54,7 @@ let adminLogout = async (req, res)=>{
 
 let getUsersAdmin = async (req, res)=>{
     try{
+let allowedFields = ["Name", "phone", "password"]
             // let user = req.user
             
             // console.log(req.params)
