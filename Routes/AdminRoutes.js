@@ -13,7 +13,7 @@ adminRoute.post('/adminlogin', adminLogin)
 adminRoute.post('/adminlogout', adminLogout)
 adminRoute.get('/getusers/:page/:limit', adminAuth ,getUsersAdmin)
 adminRoute.get('/gettrusts/:page/:limit', adminAuth , getTrustsAdmin)
-adminRoute.get('/transactions', adminAuth ,getTransactions)
+adminRoute.get('/transactions/:page/:limit', adminAuth ,getTransactions)
 adminRoute.delete('/delete/:role/:id', adminAuth ,deleteUsersAndTrusts)
 
 module.exports = adminRoute

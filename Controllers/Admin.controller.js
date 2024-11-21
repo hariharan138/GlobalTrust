@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken')
 const AdminModel = require("../models/Admin.modle")
 const UserModel = require("../models/User.model")
 const TrustModel = require("../models/Trust.model")
+const FoodModel = require("../models/Food.model")
+const mongoose = require("mongoose")
 
 
 
@@ -12,7 +14,7 @@ let adminLogin = async (req, res)=>{
             validateAdmin(req)
             let {email, password} = req.body
             let {admintoken} = req.cookies
-            console.log(admintoken)
+            // console.log(admintoken)
             if(admintoken){
                 let {_id} =  jwt.verify(admintoken, process.env.JWT_ADMIN_SECREAT_KEY)
                 // console.log(decodedData)
@@ -79,7 +81,7 @@ let getTrustsAdmin = async (req, res)=>{
         let page = req.params.page || 1
         let skip = (page-1) * limit
         let trusts =await TrustModel.find({}).skip(skip).limit(limit).select(allowedFields)
-        res.status(201).json({error:false,message:"Trust Fetch succesfully",data:trusts})
+        res.status(201).json({error:false,message:"Trust Fetched succesfully",data:trusts})
     }
     catch(err){
         res.status(500).json({error:true, message:err.message})
@@ -88,7 +90,28 @@ let getTrustsAdmin = async (req, res)=>{
 
 let getTransactions = async (req, res)=>{
     try{
+        let page = Number(req.params.page)
+        let limit = parseInt(req.params.limit)
+        console.log(typeof limit)
+        
+        if(typeof limit !== "number"){
+            throw new Error("limit should be a number")
+        }
 
+        if(typeof page !== "number"){
+            throw new Error("page should be a number")
+        }
+
+         limit = req.params.limit > 20 ? 10 : req.params.limit || 10
+         page = req.params.page || 1
+        let skip = (page - 1) * limit
+
+        let data = await FoodModel.find({acceptedBy : {$ne: null}}).skip(skip).limit(limit)
+
+        if(data.length==0){
+            return res.status(200).json({error:false, message:"No Successfull Transaction"})  
+        }
+        res.status(200).json({error:false, message:"Transactions Fetched succesfully",data})
     }
     catch(err){
         res.status(500).json({error:true,message:err.message})
@@ -97,10 +120,48 @@ let getTransactions = async (req, res)=>{
 
 let deleteUsersAndTrusts = async (req, res)=>{
     try{
+    //    let {id, role} = req.params
+    //    let isExists = ""
+    //    console.log(role)
+    //    if(!role){
+    //     throw new Error("select the role")
+    //    }
+
+    //    if(!id){
+    //     throw new Error("Enter the proper Id")
+    //    }
+
+    //    if(role != "trust" && role !== "user"){
+    //     console.log(typeof role)
+    //     throw new Error("role can be either trust or user")
+    //    }
+
+    //     if(role ==="user"){
+    //         // let roleid =  mongoose.Types.ObjectId(id)
+    //         // console.log(typeof roleid)
+    //         // mongoose.Types.ObjectId()
+
+    //         // console.log(roleid)
+    //          isExists = await UserModel.findByIdAndDelete(id)
+    //          console.log(isExists)
+    //     }
+       
+
+    //     if(role === "trust"){
+    //          isExists = await TrustModel.findById(_id)
+    //     }
+       
+    //    if(!isExists){
+    //         throw new Error("User is not registered")
+    //    }
+
+    //    let deletedUser = await UserModel.findByIdAndDelete(isExists.id, {returnDocument: "after"})
+
+    //    res.status(200).json({msg: "deleted successfully", data:deletedUser})
 
     }
     catch(err){
-        res.status(500).json({error:true,message:err.message})
+        // res.status(500).json({error:true,message:err.message})
     }
 }
 

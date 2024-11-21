@@ -51,6 +51,10 @@ let Trustschema= new mongoose.Schema({
         unique:true,
         required: true,
         type: String
+    },
+    role: {
+        type: String,
+        default: "trust"       
     }
 },{
     timestamps: true
