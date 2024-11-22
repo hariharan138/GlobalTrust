@@ -16,7 +16,7 @@ let adminAuth = async (req, res, next)=>{
            if(!isAdminExists){
             throw new Error("admin not found")
            }     
-            req.admin = isAdminExistsa
+            req.admin = isAdminExists
             next()         
         }
     }
