@@ -25,7 +25,8 @@ let addTrusts=async(req,res)=>{
         // in the place of image it should get the image's path , if the client is passing 
         // the image and not path, then here instead of image put image.path
         // if we are not using clusters we shoudl use upload or if we use cluster then we should upload_stream 
-       let result = await cloudinary.uploader.upload(req.file.path, {
+       
+        let result = await cloudinary.uploader.upload(req.file.path, {
             folder: "TrustProfile",
             // resource_type: "image",
             // size: 300,
@@ -40,6 +41,32 @@ let addTrusts=async(req,res)=>{
 
         let currentPassword = await bcrypt.hash(password,10)
 
+    // for cluster based
+    //     let imageData = {}; // Default image data if no profile image is uploaded
+
+    // // Check if the profile image is uploaded
+    // if (req.file && req.file.buffer) {
+    //   // Upload image to Cloudinary if it's uploaded
+    //   const result = await cloudinary.uploader.upload_stream(
+    //     { folder: 'TrustProfile' }, // Upload to Cloudinary's TrustProfile folder
+    //     (error, result) => {
+    //       if (error) {
+    //         console.log(error);
+    //         return res.status(500).json({ error: true, message: error.message });
+    //       } else {
+    //         imageData = {
+    //           public_id: result.public_id,
+    //           url: result.secure_url,
+    //         };
+    //       }
+    //     }
+    //   );
+
+    //   // Pipe the file buffer to Cloudinary
+    //   const stream = cloudinary.uploader.upload_stream({ folder: 'TrustProfile' });
+    //   stream.end(req.file.buffer); // Pass the file buffer to Cloudinary
+    // }
+
         // console.log(currentPassword)
 
         let newTrust = await Trust.create({
@@ -51,7 +78,8 @@ let addTrusts=async(req,res)=>{
                 public_id:  result.public_id,
                 url: result.secure_url
             },
-            // image: result,
+            // for cluster based
+            // image: imageData,
              password: currentPassword,
              confirmPassword: currentPassword,
             trustName,

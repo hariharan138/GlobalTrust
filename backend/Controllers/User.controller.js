@@ -6,6 +6,9 @@ const jwt = require('jsonwebtoken')
 const Trust = require("../models/Trust.model")
 const FoodModel = require("../models/Food.model")
 
+const cloudinary = require("../CloudinaryConfig.js/cluoudinaryconfig")
+const fs = require('fs')
+
 let userRegistration = async(req, res)=>{
 
     try{
@@ -13,15 +16,58 @@ let userRegistration = async(req, res)=>{
             await validateUser(req)
             let {Name,email, phone, password, confirmPassword, address} = req.body
 
+        //    if(req.file){
+            const result = await cloudinary.uploader.upload(req.file.path, {
+                folder: "UserProfile", // Subfolder for user profile images
+              });
+
+            fs.unlink(req.file.path, (err) => {
+                if (err) {
+                    console.error("Error deleting file:", err);
+                }
+            });
+        //    }
             let hashedPassword = await bcrypt.hash(password,10)
-            
+
+            // for cluster if youre using cluster
+            // let imageData = {};
+            // if (req.file && req.file.buffer) {
+            //   // Upload image using Cloudinary's upload_stream
+            //   const uploadPromise = new Promise((resolve, reject) => {
+            //     const stream = cloudinary.uploader.upload_stream(
+            //       {
+            //         folder: 'UserProfile', // Folder in Cloudinary
+            //       },
+            //       (error, result) => {
+            //         if (error) reject(error);
+            //         else resolve(result);
+            //       }
+            //     );
+        
+            //     // Pipe the file buffer to Cloudinary's stream
+            //     stream.end(req.file.buffer);
+            //   });
+        
+            //   const result = await uploadPromise;
+            //   imageData = {
+            //     public_id: result.public_id,
+            //     url: result.secure_url,
+            //   };
+            // }
+
             let newUser = new UserModel({
                 Name, 
                 email,
                 phone, 
                 address,
                 password: hashedPassword, 
-                confirmPassword: hashedPassword
+                confirmPassword: hashedPassword,
+                image:{
+                    public_id: result.public_id,
+                    url: result.secure_url
+                },
+                // for cluster usage
+                // image: ImageData
             })
 
             await newUser.save()

@@ -59,11 +59,11 @@ let Trustschema= new mongoose.Schema({
     image:{
         public_id: {
                 type: String,
-                // required: true,
+                default: null
         },
         url: {
             type: String,
-            // required: true,
+            default: "N/A"
         }
     }
 },{

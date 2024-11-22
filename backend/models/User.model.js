@@ -34,6 +34,16 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         default: "user"       
+    },
+    image:{
+        public_id: {
+                type: String,
+                default: null
+        },
+        url: {
+            type: String,
+            default: "N/A"
+        }
     }
 })
 
