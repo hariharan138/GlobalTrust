@@ -126,12 +126,20 @@ let searchUser = async (req, res)=>{
         // let sort = req.query.sort
 
         let totalDocuments = await UserModel.countDocuments()
-
+console.log(totalDocuments)
         let limit = req.query.limit > 20 ? 20 : req.query.limit || 10
         // let restrictPage = totalDocuments / limit ? limit : 10
         let page = req.query.page || 1
+        
+        let totalDocumentsPerRequest = limit * page
+
+        if(totalDocumentsPerRequest > totalDocuments ){
+            if(totalDocumentsPerRequest % limit !== 0)
+            throw new Error("Not Enough data's are there...")
+        }
+
         let skip = (page -1)* limit
-        console.log(search)
+        // console.log(search)
        let data =  await UserModel.find({Name: {$regex: search, $options: "i"}}).skip(skip).limit(limit)
         
        if(!data.length>0){
@@ -145,6 +153,7 @@ let searchUser = async (req, res)=>{
 }
 
 let searchTrust = async (req, res)=>{
+   try{
     let search = req.query.search
     let page = req.query.page || 1
     let limit = req.query.limit || 10
@@ -156,6 +165,10 @@ let searchTrust = async (req, res)=>{
         throw new Error("No Trusts Available")
        }
    res.status(200).json({msg: "Trust fetched successfully", data})
+   }
+   catch(err){
+    res.status(500).json({error:true,message:err.message})
+   }
     
 }
 

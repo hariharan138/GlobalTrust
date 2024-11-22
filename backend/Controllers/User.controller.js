@@ -8,6 +8,7 @@ const FoodModel = require("../models/Food.model")
 
 const cloudinary = require("../CloudinaryConfig.js/cluoudinaryconfig")
 const fs = require('fs')
+const TrustModel = require("../models/Trust.model")
 
 let userRegistration = async(req, res)=>{
 
@@ -163,6 +164,42 @@ let foodRegister = async (req, res)=>{
     }
 }
 
+let searchTrust = async (req, res)=>{
+    try{
+        let search = req.query.search
+        let page = req.query.page || 1
+        let limit = req.query.limit || 10
+        let skip = (page-1) * limit
+    
+        let data = await TrustModel.find({trustName: {$regex: search, $options: "i"}}).skip(skip).limit(limit)
+    
+        if(!data.length>0){
+            throw new Error("No Trusts Available")
+        }
+
+       res.status(200).json({msg: "Trust fetched successfully", data})
+       }
+       catch(err){
+        res.status(500).json({error:true,message:err.message})
+       }
+}
+
+let getUserProfile = async (req, res)=>{
+    try{
+        let user = req.user
+        let encodedUser = {}
+        let allowedField = ["_id", "Name", "email", "phone", "image", "address","createdAt", "updatedAt"]
+
+        for(let keys of allowedField){
+            encodedUser[keys] = user[keys]
+        }
+
+        res.status(200).json({msg: "Data has Fetched", data: encodedUser})
+    }
+    catch(err){
+        res.status(500).json({error:true, message:err.message})
+    }
+}
 
 
 module.exports= {
@@ -170,5 +207,7 @@ module.exports= {
     userLogin,
     userLogout,
     getTrusts,
-    foodRegister
+    foodRegister,
+    searchTrust,
+    getUserProfile
 }

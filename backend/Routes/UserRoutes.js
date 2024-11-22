@@ -1,5 +1,5 @@
 const express = require('express')
-const { userRegistration,userLogin, userLogout, getTrusts,foodRegister } = require('../Controllers/User.controller')
+const { userRegistration,userLogin, userLogout, getTrusts,foodRegister, searchTrust ,getUserProfile} = require('../Controllers/User.controller')
 const { userAuth } = require('../Authentication/UserAuth')
 const upload = require('../utils/multer')
 
@@ -11,4 +11,6 @@ userRoute.post('/loginuser', userLogin)
 userRoute.post('/logoutuser', userLogout)
 userRoute.get("/gettrust",userAuth, getTrusts);
 userRoute.post('/foodRegister', userAuth, foodRegister)
+userRoute.post('/searchtrust', userAuth, searchTrust)
+userRoute.get('/getuserprofile', userAuth, getUserProfile)
 module.exports = userRoute
