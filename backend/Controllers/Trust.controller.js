@@ -8,6 +8,7 @@ const FoodModel = require('../models/Food.model')
 const cloudinary = require('../CloudinaryConfig.js/cluoudinaryconfig')
 
 const fs = require('fs')
+const { log } = require('console')
 
 let allowedFields = ["Name", "phone", "password"]
 
@@ -17,43 +18,44 @@ let addTrusts=async(req,res)=>{
         let {firstName,email, lastName, phone, password, confirmPassword,trustName,
              trustId, address, trustEmail,trustPhoneNumber}=req.body
              
-            if (!req.file || !req.file.path) {
-                return res.status(400).json({ error: true, message: "Image upload failed. Please try again." });
-            }
-            console.log(req.file.path)
-            //  console.log(req.files)  //09845723765-uploads/scrrenshot(10).png
-        // in the place of image it should get the image's path , if the client is passing 
-        // the image and not path, then here instead of image put image.path
-        // if we are not using clusters we shoudl use upload or if we use cluster then we should upload_stream 
+        //     if (!req.file || !req.file.path) {
+        //         return res.status(400).json({ error: true, message: "Image upload failed. Please try again." });
+        //     }
+        //     console.log(req.file.path)
+        //     //  console.log(req.files)  //09845723765-uploads/scrrenshot(10).png
+        // // in the place of image it should get the image's path , if the client is passing 
+        // // the image and not path, then here instead of image put image.path
+        // // if we are not using clusters we shoudl use upload or if we use cluster then we should upload_stream 
        
-        let result = await cloudinary.uploader.upload(req.file.path, {
-            folder: "TrustProfile",
-            // resource_type: "image",
-            // size: 300,
-            // crop: "scale"
-        })
+        // let result = await cloudinary.uploader.upload(req.file.path, {
+        //     folder: "TrustProfile",
+        //     // resource_type: "image",
+        //     // size: 300,
+        //     // crop: "scale"
+        // })
 
-        fs.unlink(req.file.path, (err) => {
-            if (err) {
-                console.error("Error deleting file:", err);
-            }
-        });
+        // fs.unlink(req.file.path, (err) => {
+        //     if (err) {
+        //         console.error("Error deleting file:", err);
+        //     }
+        // });
 
         let currentPassword = await bcrypt.hash(password,10)
 
     // for cluster based
-    //     let imageData = {}; // Default image data if no profile image is uploaded
-
-    // // Check if the profile image is uploaded
-    // if (req.file && req.file.buffer) {
-    //   // Upload image to Cloudinary if it's uploaded
+        let imageData = {}; 
+    
+    if (req.file && req.file.buffer) {
+      // Upload image to Cloudinary if it's uploaded
     //   const result = await cloudinary.uploader.upload_stream(
     //     { folder: 'TrustProfile' }, // Upload to Cloudinary's TrustProfile folder
     //     (error, result) => {
     //       if (error) {
+    //         // console.log("availabel")
     //         console.log(error);
     //         return res.status(500).json({ error: true, message: error.message });
     //       } else {
+    //         // console.log("result is not ddefiensdfnlsjfnln")
     //         imageData = {
     //           public_id: result.public_id,
     //           url: result.secure_url,
@@ -62,10 +64,30 @@ let addTrusts=async(req,res)=>{
     //     }
     //   );
 
-    //   // Pipe the file buffer to Cloudinary
+      // Pipe the file buffer to Cloudinary
     //   const stream = cloudinary.uploader.upload_stream({ folder: 'TrustProfile' });
     //   stream.end(req.file.buffer); // Pass the file buffer to Cloudinary
-    // }
+
+      const uploadPromise = new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: "TrustProfile" }, // Upload to Cloudinary's TrustProfile folder
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+
+        // Pipe the file buffer to Cloudinary
+        stream.end(req.file.buffer);
+      });
+
+      const result = await uploadPromise;
+      imageData = {
+        public_id: result.public_id,
+        url: result.secure_url,
+      };
+    }
+    
 
         // console.log(currentPassword)
 
@@ -74,14 +96,14 @@ let addTrusts=async(req,res)=>{
             lastName,
             email,
             phone,
-            image: {
-                public_id:  result.public_id,
-                url: result.secure_url
-            },
+            // image: {
+            //     public_id:  result.public_id,
+            //     url: result.secure_url
+            // },
             // for cluster based
-            // image: imageData,
-             password: currentPassword,
-             confirmPassword: currentPassword,
+            image: imageData,
+            password: currentPassword,
+            confirmPassword: currentPassword,
             trustName,
              trustId,
              address,

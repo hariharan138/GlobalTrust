@@ -67,6 +67,7 @@ let Trustschema= new mongoose.Schema({
         }
     }
 },{
-    timestamps: true
+    timestamps: true,
+    minimize: true
 })
 module.exports= mongoose.model("Trust",Trustschema);
