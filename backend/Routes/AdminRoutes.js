@@ -3,6 +3,8 @@ const { adminLogin,
      getUsersAdmin,
     getTrustsAdmin,
     getTransactions,
+    searchUser,
+    searchTrust,
     deleteUsersAndTrusts } = require("../Controllers/Admin.controller")
 
 const express = require('express')
@@ -14,6 +16,8 @@ adminRoute.post('/adminlogout', adminLogout)
 adminRoute.get('/getusers/:page/:limit', adminAuth ,getUsersAdmin)
 adminRoute.get('/gettrusts/:page/:limit', adminAuth , getTrustsAdmin)
 adminRoute.get('/transactions/:page/:limit', adminAuth ,getTransactions)
+adminRoute.post('/searchuser', adminAuth, searchUser)
+adminRoute.post('/searchtrust', adminAuth, searchTrust)
 adminRoute.delete('/delete/:role/:id', adminAuth ,deleteUsersAndTrusts)
 
 module.exports = adminRoute

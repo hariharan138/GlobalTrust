@@ -7,6 +7,7 @@ const TrustModel = require("../models/Trust.model")
 const FoodModel = require("../models/Food.model")
 const mongoose = require("mongoose")
 const DeletedsModel = require("../models/Deleteds.model")
+const { options } = require("../Routes/TrustRoutes")
 
 
 
@@ -119,6 +120,45 @@ let getTransactions = async (req, res)=>{
     }
 }
 
+let searchUser = async (req, res)=>{
+    try{
+        let search = req.query.search
+        // let sort = req.query.sort
+
+        let totalDocuments = await UserModel.countDocuments()
+
+        let limit = req.query.limit > 20 ? 20 : req.query.limit || 10
+        // let restrictPage = totalDocuments / limit ? limit : 10
+        let page = req.query.page || 1
+        let skip = (page -1)* limit
+        console.log(search)
+       let data =  await UserModel.find({Name: {$regex: search, $options: "i"}}).skip(skip).limit(limit)
+        
+       if(!data.length>0){
+        throw new Error("No Users Available")
+       }
+        res.status(200).json({msg: "Users fetched successfully", data})
+    }
+    catch(err){
+        res.status(500).json({error:true,message:err.message})
+    }
+}
+
+let searchTrust = async (req, res)=>{
+    let search = req.query.search
+    let page = req.query.page || 1
+    let limit = req.query.limit || 10
+    let skip = (page-1) * limit
+
+    let data = await TrustModel.find({trustName: {$regex: search, $options: "i"}}).skip(skip).limit(limit)
+
+    if(!data.length>0){
+        throw new Error("No Trusts Available")
+       }
+   res.status(200).json({msg: "Trust fetched successfully", data})
+    
+}
+
 let deleteUsersAndTrusts = async (req, res)=>{
     try{
        let {id, role} = req.params
@@ -175,5 +215,7 @@ module.exports = {
     getUsersAdmin,
     getTrustsAdmin,
     getTransactions,
+    searchUser,
+    searchTrust,
     deleteUsersAndTrusts
 }

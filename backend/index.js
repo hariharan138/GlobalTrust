@@ -4,14 +4,21 @@ let app = express()
 require('dotenv').config()
 const cookieParser = require('cookie-parser')
 const cors = require("cors")
-app.use(cors())
+
+app.use(cors({
+    origin: 'http://localhost:3000'
+}))
+
 app.use(cookieParser())
+
 const trustRoutes = require('./Routes/TrustRoutes');
 const userRoute = require('./Routes/UserRoutes');
 const adminRoute = require('./Routes/AdminRoutes');
 const { connectDb } = require('./Database/ConnectDB');
+
 const fs = require("fs")
 const path = require("path")
+
 app.use(express.json())
 
 const uploadsDir = path.join(__dirname, 'uploads');
