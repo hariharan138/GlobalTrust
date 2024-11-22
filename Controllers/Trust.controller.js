@@ -5,6 +5,9 @@ const jwt = require('jsonwebtoken')
 const UserModel = require('../models/User.model')
 const TrustModel = require('../models/Trust.model')
 const FoodModel = require('../models/Food.model')
+const cloudinary = require('../CloudinaryConfig.js/cluoudinaryconfig')
+
+const fs = require('fs')
 
 let allowedFields = ["Name", "phone", "password"]
 
@@ -12,27 +15,50 @@ let addTrusts=async(req,res)=>{
     try{
         await validateTrust(req)
         let {firstName,email, lastName, phone, password, confirmPassword,trustName,
-             trustId, address, trustEmail,trustPhoneNumber }=req.body
+             trustId, address, trustEmail,trustPhoneNumber}=req.body
              
-        // if(phone.length!==10 && trustPhoneNumber.length!==10){
-        //     throw new Error("Mobile Number should be 10 digits long")
-        // }
+            if (!req.file || !req.file.path) {
+                return res.status(400).json({ error: true, message: "Image upload failed. Please try again." });
+            }
+            console.log(req.file.path)
+            //  console.log(req.files)  //09845723765-uploads/scrrenshot(10).png
+        // in the place of image it should get the image's path , if the client is passing 
+        // the image and not path, then here instead of image put image.path
+        // if we are not using clusters we shoudl use upload or if we use cluster then we should upload_stream 
+       let result = await cloudinary.uploader.upload(req.file.path, {
+            folder: "TrustProfile",
+            // resource_type: "image",
+            // size: 300,
+            // crop: "scale"
+        })
 
-        // let isExists = await Trust.findOne({$or: [{email: email}, {phone: phone}, {trustId: trustId}, {trustEmail: trustEmail}, {trustPhoneNumber: trustPhoneNumber}]})
-        
-        // if(isExists){
-        //     throw new Error("user is already exists")
-        // }
-
-        // if(password!==confirmPassword){
-        //     throw new Error("Password does not match with ConfirmPassword")
-        // }
+        fs.unlink(req.file.path, (err) => {
+            if (err) {
+                console.error("Error deleting file:", err);
+            }
+        });
 
         let currentPassword = await bcrypt.hash(password,10)
 
         // console.log(currentPassword)
 
-        let trustCredentials=await Trust.create({firstName,lastName,email,phone, password: currentPassword, confirmPassword: currentPassword,trustName, trustId, address, trustEmail,trustPhoneNumber }) 
+        let newTrust = await Trust.create({
+            firstName,
+            lastName,
+            email,
+            phone,
+            image: {
+                public_id:  result.public_id,
+                url: result.secure_url
+            },
+            // image: result,
+             password: currentPassword,
+             confirmPassword: currentPassword,
+            trustName,
+             trustId,
+             address,
+             trustEmail,
+            trustPhoneNumber }) 
 
         // let newTrust = new TrustModel({firstName,lastName,email,phone, password: currentPassword, confirmPassword: currentPassword,trustName, trustId, address, trustEmail,trustPhoneNumber })
         // await newTrust.save()

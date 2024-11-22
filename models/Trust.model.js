@@ -55,6 +55,16 @@ let Trustschema= new mongoose.Schema({
     role: {
         type: String,
         default: "trust"       
+    },
+    image:{
+        public_id: {
+                type: String,
+                // required: true,
+        },
+        url: {
+            type: String,
+            // required: true,
+        }
     }
 },{
     timestamps: true

@@ -11,8 +11,9 @@ const validateTrust = async (req)=>{
       let isExists = await Trust.findOne({$or: [{email: email}, {phone: phone}, {trustId: trustId}, {trustEmail: trustEmail}, {trustPhoneNumber: trustPhoneNumber}]})
 
       if(isExists){
+        console.log(isExists)
         console.log("user is already there")
-            throw new Error("User Already registered")
+        throw new Error("User Already registered")
       }
 
       if( phone.length!==10 || trustPhoneNumber.length!==10){

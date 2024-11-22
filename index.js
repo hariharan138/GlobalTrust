@@ -10,8 +10,16 @@ const trustRoutes = require('./Routes/TrustRoutes');
 const userRoute = require('./Routes/UserRoutes');
 const adminRoute = require('./Routes/AdminRoutes');
 const { connectDb } = require('./Database/ConnectDB');
-
+const fs = require("fs")
+const path = require("path")
 app.use(express.json())
+
+const uploadsDir = path.join(__dirname, 'uploads');
+
+// Check if the folder exists, and create it if it doesn't
+if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir);
+}
 
 app.use("/api/trust",trustRoutes )
 app.use('/api/user', userRoute)
