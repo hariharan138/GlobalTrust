@@ -171,6 +171,15 @@ let searchTrust = async (req, res)=>{
         let limit = req.query.limit || 10
         let skip = (page-1) * limit
     
+        let totalDocuments = await UserModel.countDocuments();
+        console.log(totalDocuments)
+
+        let totalPages = Math.ceil(totalDocuments / limit);
+
+        if (page > totalPages) {
+            throw new Error(`Not enough data available. Total pages: ${totalPages}`);
+        }
+        
         let data = await TrustModel.find({trustName: {$regex: search, $options: "i"}}).skip(skip).limit(limit)
     
         if(!data.length>0){

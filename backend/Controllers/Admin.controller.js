@@ -125,17 +125,24 @@ let searchUser = async (req, res)=>{
         let search = req.query.search
         // let sort = req.query.sort
 
-        let totalDocuments = await UserModel.countDocuments()
-console.log(totalDocuments)
         let limit = req.query.limit > 20 ? 20 : req.query.limit || 10
-        // let restrictPage = totalDocuments / limit ? limit : 10
         let page = req.query.page || 1
         
-        let totalDocumentsPerRequest = limit * page
+        // let totalDocuments = await UserModel.countDocuments()
+        // let totalDocumentsPerRequest = limit * page
+        
+        // if(totalDocumentsPerRequest > totalDocuments ){
+        //     if(totalDocumentsPerRequest % limit !== 0)
+        //     throw new Error("Not Enough data's are there...")
+        // }
 
-        if(totalDocumentsPerRequest > totalDocuments ){
-            if(totalDocumentsPerRequest % limit !== 0)
-            throw new Error("Not Enough data's are there...")
+        let totalDocuments = await UserModel.countDocuments();
+        console.log(totalDocuments)
+
+        let totalPages = Math.ceil(totalDocuments / limit);
+
+        if (page > totalPages) {
+            throw new Error(`Not enough data available. Total pages: ${totalPages}`);
         }
 
         let skip = (page -1)* limit
@@ -158,6 +165,15 @@ let searchTrust = async (req, res)=>{
     let page = req.query.page || 1
     let limit = req.query.limit || 10
     let skip = (page-1) * limit
+
+    let totalDocuments = await UserModel.countDocuments();
+    console.log(totalDocuments)
+
+    let totalPages = Math.ceil(totalDocuments / limit);
+
+    if (page > totalPages) {
+        throw new Error(`Not enough data available. Total pages: ${totalPages}`);
+    }
 
     let data = await TrustModel.find({trustName: {$regex: search, $options: "i"}}).skip(skip).limit(limit)
 

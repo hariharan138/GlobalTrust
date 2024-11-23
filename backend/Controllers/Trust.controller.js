@@ -229,12 +229,20 @@ let searchUser = async (req, res)=>{
         let search = req.query.search
         // let sort = req.query.sort
 
-        let totalDocuments = await UserModel.countDocuments()
 
         let limit = req.query.limit > 20 ? 20 : req.query.limit || 10
         // let restrictPage = totalDocuments / limit ? limit : 10
         let page = req.query.page || 1
         let skip = (page -1)* limit
+
+        let totalDocuments = await UserModel.countDocuments();
+        console.log(totalDocuments)
+
+        let totalPages = Math.ceil(totalDocuments / limit);
+
+        if (page > totalPages) {
+            throw new Error(`Not enough data available. Total pages: ${totalPages}`);
+        }
         // console.log(search)
        let data =  await UserModel.find({Name: {$regex: search, $options: "i"}}).skip(skip).limit(limit)
         
