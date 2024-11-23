@@ -41,7 +41,7 @@ let adminLogin = async (req, res)=>{
         //     throw new Error("incorrect password")
         //    }
 
-            let token = await jwt.sign({_id: isExists._id}, process.env.JWT_ADMIN_SECREAT_KEY, {expiresIn: process.env.JWT_ADMIN_TOKEN_EXPIRY})
+            let token = await jwt.sign({_id: isExists._id,  role: 'admin'}, process.env.JWT_ADMIN_SECREAT_KEY, {expiresIn: process.env.JWT_ADMIN_TOKEN_EXPIRY})
             res.cookie("admintoken", token, {expires: new Date(Date.now() + 8 * 300000)})
             res.status(200).json({msg: "admin has loggedin", success: true})       
     }

@@ -140,7 +140,7 @@ let loginTrusts = async (req, res)=>{
                 throw new Error("incorrect password")
             }
 
-            let token = await jwt.sign({_id: isExist._id}, process.env.JWT_SECREAT_KEY ,{expiresIn: process.env.JWT_TOKEN_EXPIRY})
+            let token = await jwt.sign({_id: isExist._id,  role: 'trust'}, process.env.JWT_SECREAT_KEY ,{expiresIn: process.env.JWT_TOKEN_EXPIRY})
         
             res.cookie("authToken", token, {expires: new Date(Date.now() + 8 * 300000)}) //in 40min cookie will expire
             res.status(200).json({msg: isExist.firstName + " login Successfull"})

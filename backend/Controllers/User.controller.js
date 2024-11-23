@@ -115,7 +115,7 @@ let userLogin = async (req, res)=>{
             throw new Error("password is not matching")
         }
 
-         let token = await jwt.sign({_id: isExists._id}, process.env.JWT_USER_SECREAT_KEY, {expiresIn: process.env.JWT_USER_TOKEN_EXPIRY})
+         let token = await jwt.sign({_id: isExists._id,  role: 'user'}, process.env.JWT_USER_SECREAT_KEY, {expiresIn: process.env.JWT_USER_TOKEN_EXPIRY})
          res.cookie("userlogintoken", token, {expires: new Date(Date.now() + 8 * 300000)})
          res.status(200).json({msg: isExists.Name + " has loggedin"})
     }
