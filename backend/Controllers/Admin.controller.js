@@ -46,7 +46,7 @@ let adminLogin = async (req, res)=>{
             res.status(200).json({msg: "admin has loggedin", success: true})       
     }
     catch(err){
-        res.status(500).json({error:true,message: "error occured" + err.message, success: false})
+        res.status(500).json({error:true,message: err.message, success: false})
     }
 }
 
