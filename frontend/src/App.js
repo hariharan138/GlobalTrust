@@ -14,7 +14,7 @@ import ContactUs from './components/ContactUs';
 
 function App() {
   return (
-    <Router>
+    <Router future={{v7_relativeSplatPath: true, v7_startTransition: true}}>
       <Routes>
       <Route path="/" element={<LoginPage />} />
         <Route path="/trust" element={<TrustPage />} />
