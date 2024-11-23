@@ -7,7 +7,13 @@ import reportWebVitals from './reportWebVitals';
 // import SetPage from './SetPage';
 // import Users from './Users';
 
+// dont uncomment it 
+// import { Buffer } from 'buffer';
+// import process from 'process';
+// import 'crypto-browserify'; // For crypto module
 
+// window.Buffer = Buffer;
+// window.process = process;
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

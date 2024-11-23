@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import { Bell, ChevronDown, Home, LayoutDashboard, HandHeart, LogOut, Menu, Settings, User } from 'lucide-react'
-import './Dash.css';
+import './components/AdminCompos/Dash.css';
 import { useNavigate } from 'react-router-dom';
 
 

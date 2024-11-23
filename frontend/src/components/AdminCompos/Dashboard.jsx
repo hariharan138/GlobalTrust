@@ -3,6 +3,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import { Bell, ChevronDown, Home, LayoutDashboard,HandHeart , LogOut, Menu, Settings, User } from 'lucide-react'
 import './Dash.css';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 const data = [
   { name: 'Jan', value: 400 },
   { name: 'Feb', value: 300 },
@@ -15,6 +16,34 @@ const data = [
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
  let navigate = useNavigate()
+
+ let handleLogout = async ()=>{
+  try{
+    let {data} = await axios.post("http://localhost:4000/api/admin/adminlogout", {}, {withCredentials: true})
+    console.log(data)
+    if(data.success){
+      navigate('/')
+    }
+    else{
+      alert("admin is not loggedin")
+    }
+
+    // WITHOUT AXIOS 
+    //  let res = await fetch("http://localhost:4000/api/admin/adminlogout", 
+    //   {method: 'POSt',
+    //     credentials: 'include'
+    //   })
+    //  res =  await res.json()
+    //  console.log(res)
+    // admintoken
+  }
+  catch(err){
+    if(err.response){
+      console.log(err.response.data.message)
+    }
+  }
+ }
+
   return (
     <div className="dashboard">
       {/* Sidebar */}
@@ -31,7 +60,7 @@ const Dashboard = () => {
           <button className="nav-button" onClick={()=>navigate("/alltrust")}><HandHeart />Trust</button>
           <button className="nav-button"><User /> Profile</button>
           <button className="nav-button" onClick={()=>navigate("/set")}><Settings /> Settings</button>
-          <button className="nav-button logout"><LogOut /> Logout</button>
+          <button className="nav-button logout" onClick={()=> handleLogout()}><LogOut /> Logout</button>
         </nav>
       </aside>
 
