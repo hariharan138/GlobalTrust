@@ -33,6 +33,12 @@ app.use("/api/trust",trustRoutes )
 app.use('/api/user', userRoute)
 app.use('/api/admin', adminRoute)
 
+
+app.use((err, req, res, next) => {
+    console.error("Unhandled error:", err); // Log unhandled errors
+    res.status(500).json({ error: true, message: "An unexpected error occurred: " + err.message, success: false });
+  });
+  
 // mongoose.connect('mongodb://127.0.0.1:27017/Trust').then((data) => {
 //     console.log("Mongodb Connected Succesfully")
 // }).catch((err) => {
