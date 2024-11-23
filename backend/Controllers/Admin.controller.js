@@ -147,7 +147,13 @@ let searchUser = async (req, res)=>{
 
         let skip = (page -1)* limit
         // console.log(search)
-       let data =  await UserModel.find({Name: {$regex: search, $options: "i"}}).skip(skip).limit(limit)
+
+        const regex = new RegExp(search, "i"); // 'i' makes it case-insensitive
+
+        // Find documents where the `name` field matches the regex
+        const data = await UserModel.find({ name: { $regex: regex } });
+
+    //  let data =  await UserModel.find({Name: {$regex: search, $options: "i"}}).skip(skip).limit(limit)
         
        if(!data.length>0){
         throw new Error("No Users Available")
@@ -175,7 +181,12 @@ let searchTrust = async (req, res)=>{
         throw new Error(`Not enough data available. Total pages: ${totalPages}`);
     }
 
-    let data = await TrustModel.find({trustName: {$regex: search, $options: "i"}}).skip(skip).limit(limit)
+    const regex = new RegExp(search, "i"); // 'i' makes it case-insensitive
+
+    // Find documents where the `name` field matches the regex
+    const data = await TrustModel.find({ name: { $regex: regex } });
+
+    // let data = await TrustModel.find({trustName: {$regex: search, $options: "i"}}).skip(skip).limit(limit)
 
     if(!data.length>0){
         throw new Error("No Trusts Available")
