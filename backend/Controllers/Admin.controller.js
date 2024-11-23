@@ -43,16 +43,16 @@ let adminLogin = async (req, res)=>{
 
             let token = await jwt.sign({_id: isExists._id}, process.env.JWT_ADMIN_SECREAT_KEY, {expiresIn: process.env.JWT_ADMIN_TOKEN_EXPIRY})
             res.cookie("admintoken", token, {expires: new Date(Date.now() + 8 * 300000)})
-            res.status(200).json({msg: "admin has loggedin"})       
+            res.status(200).json({msg: "admin has loggedin", success: true})       
     }
     catch(err){
-        res.status(500).json({error:true,message:err.message})
+        res.status(500).json({error:true,message:err.message, success: false})
     }
 }
 
 let adminLogout = async (req, res)=>{
     res.cookie("admintoken", null, {expires: new Date(Date.now())})
-    res.status(200).json({msg: "admin has loggedout"})       
+    res.status(200).json({msg: "admin has loggedout", success: true})       
 
 }
 
