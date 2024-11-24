@@ -188,7 +188,7 @@ let searchTrust = async (req, res)=>{
      }
 
     let totalDocuments = await TrustModel.countDocuments();
-    console.log(totalDocuments)
+    // console.log(totalDocuments)
 
     let totalPages = Math.ceil(totalDocuments / limit);
 
@@ -197,7 +197,7 @@ let searchTrust = async (req, res)=>{
     }
 
     const regex = new RegExp(search, "i"); // 'i' makes it case-insensitive
-    console.log(regex)
+    // console.log(regex)
     // Find documents where the `name` field matches the regex
     const data = await TrustModel.find({ trustName: { $regex: regex } }).skip(skip).limit(limit)
 
