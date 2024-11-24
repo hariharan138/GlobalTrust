@@ -12,6 +12,7 @@ import TrustLogin from './components/TrustLogin';
 import UserLogin from './components/UserLogin';
 import ContactUs from './components/ContactUs';
 import ProtectedRoute from './components/protectedRoutes/ProtectedRoute';
+import Trust from './Trust/Trust';
 
 function App() {
   return (
@@ -19,12 +20,18 @@ function App() {
       <Routes>
       <Route path="/" element={<LoginPage />} />
         <Route path="/trust" element={<TrustPage />} />
-        <Route path="/trustlogin" element={<TrustLogin/>} />
+        
         <Route path="/user" element={<UserPage />} />
         <Route path="/userlogin" element={<UserLogin/>} />
         <Route path="/contact" element={<ContactUs/>} />
 
 
+
+        <Route path="/trustlogin" element={<TrustLogin/>} />
+
+        <Route path="/trustMainpage" element={<ProtectedRoute requiredRole="trust">
+          <Trust/>
+        </ProtectedRoute>} />
 
 
         {/* admin login page does not protected */}

@@ -85,7 +85,7 @@ function ProtectedRoute({ children , requiredRole }) {
   };
 
     const checkAuth = () => {
-      const token = document.cookie.split(';').find(cookie => cookie.trim().startsWith('admintoken='));
+      const token = document.cookie.split(';').find(cookie => cookie.trim().startsWith('admintoken='||"authToken="||"userlogintoken="));
 
       if (token) {
         const decodedToken = jwtDecode(token.split('=')[1]);
