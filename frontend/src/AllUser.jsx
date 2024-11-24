@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Bell, ChevronDown, Home, LayoutDashboard, HandHeart, LogOut, Menu, Settings, User } from 'lucide-react'
 import './components/AdminCompos/Dash.css';
@@ -16,7 +16,9 @@ const AllUser = () => {
         console.log(data)
         setapidata(data)
     }
-    apiFetch()
+    useEffect(()=>{
+        apiFetch()
+    }, [])
 
 
     return (

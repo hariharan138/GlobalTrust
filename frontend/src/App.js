@@ -25,14 +25,25 @@ function App() {
         <Route path="/contact" element={<ContactUs/>} />
 
 
-    {/* <Route element={<ProtectedRoute />}> */}
+
+
+        {/* admin login page does not protected */}
         <Route path="/admin" element={<AdminPage />} />
-      {/* <Route path="/" element={<Dashboard/>} /> */}
-        <Route path="/Home" element={<Dashboard/>} />
-        <Route path="/alluser" element={<AllUser/>} />
+        
+        {/* pages where the admin should be a loggedin user then only he can access these pages */}
+        <Route path="/Home" element={<ProtectedRoute requiredRole="admin">
+          <Dashboard />
+        </ProtectedRoute>} />
+
+        <Route path="/alluser" element={<ProtectedRoute requiredRole="admin">
+          <AllUser/>
+        </ProtectedRoute>} />
+
+        <Route path="/alltrust" element={<ProtectedRoute requiredRole="admin">
+          <AllTrust />
+        </ProtectedRoute>}/>
+
         <Route path="/set" element={<SetPage />} />
-        <Route path="/alltrust" element={<AllTrust />}/>
-        {/* </Route> */}
       </Routes>
     </Router>
   );

@@ -20,14 +20,12 @@ function AdminPage() {
         e.preventDefault()
 
         if(!(formAdmin.email)){
-          e.preventDefault()
           console.log("email not")
           setErrorMessage("please enter the email") 
           return;
         }
   
         if(formAdmin.password.length<8){
-          e.preventDefault()
           console.log("passsword not")
           setErrorMessage("password must be atleast 8 characters") 
           return;
@@ -37,9 +35,10 @@ function AdminPage() {
           formAdmin, 
           {withCredentials: true}
          )
-         
+          
          if(response.data.success){
-            navigate('/Home')
+          document.cookie = `admintoken=${response.data.token}; path=/;`;
+          navigate('/Home')
          }
          else{
           setErrorMessage(response.data.message)
@@ -50,7 +49,8 @@ function AdminPage() {
         if (err.response) {
           console.error("Backend error:", err.response.data);
           setErrorMessage(err.response.data.message);
-        } else {
+        } else 
+        {
           console.error("Network error:", err.message);
           setErrorMessage("A network error occurred. Please try again.");
         }
