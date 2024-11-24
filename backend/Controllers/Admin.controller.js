@@ -58,7 +58,7 @@ let adminLogout = async (req, res)=>{
 
 let getUsersAdmin = async (req, res)=>{
     try{
-let allowedFields = ["Name", "phone", "password"]
+let allowedFields = ["Name", "phone", "email", "address", "image"]
             // let user = req.user
             
             // console.log(req.params)
@@ -77,11 +77,22 @@ let allowedFields = ["Name", "phone", "password"]
 }
 
 let getTrustsAdmin = async (req, res)=>{
-    let allowedFields = ["trustName", "trustEmail", "trustPhoneNumber", "address"]
+    let allowedFields = ["trustName", "trustEmail", "trustPhoneNumber", "address", "image"]
     try{
         let limit = (req.params.limit > 20 ? 10 : req.params.limit) || 10
         let page = req.params.page || 1
+
+        if (isNaN(page) || isNaN(limit)) {
+            throw new Error('Invalid page or limit');
+        }
+
+        limit = Number(limit)
+        page = Number(page)
+
         let skip = (page-1) * limit
+
+        skip = Number(skip)
+        
         let trusts =await TrustModel.find({}).skip(skip).limit(limit).select(allowedFields)
         res.status(201).json({error:false,message:"Trust Fetched succesfully",data:trusts})
     }
