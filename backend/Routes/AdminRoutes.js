@@ -16,8 +16,8 @@ adminRoute.post('/adminlogout', adminLogout)
 adminRoute.get('/getusers/:page/:limit', adminAuth ,getUsersAdmin)
 adminRoute.get('/gettrusts/:page/:limit', adminAuth , getTrustsAdmin)
 adminRoute.get('/transactions/:page/:limit', adminAuth ,getTransactions)
-adminRoute.post('/searchuser', adminAuth, searchUser)
-adminRoute.post('/searchtrust', adminAuth, searchTrust)
+adminRoute.get('/searchuser', adminAuth, searchUser)
+adminRoute.get('/searchtrust', adminAuth, searchTrust)
 adminRoute.delete('/delete/:role/:id', adminAuth ,deleteUsersAndTrusts)
 
 module.exports = adminRoute

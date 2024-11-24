@@ -148,7 +148,7 @@ let searchUser = async (req, res)=>{
         // }
 
         let totalDocuments = await UserModel.countDocuments();
-        console.log(totalDocuments)
+        // console.log(totalDocuments)
 
         let totalPages = Math.ceil(totalDocuments / limit);
 
@@ -162,17 +162,17 @@ let searchUser = async (req, res)=>{
         const regex = new RegExp(search, "i"); // 'i' makes it case-insensitive
 
         // Find documents where the `name` field matches the regex
-        const data = await UserModel.find({ name: { $regex: regex } });
+        const data = await UserModel.find({ Name: { $regex: regex } }).skip(skip).limit(limit)
 
     //  let data =  await UserModel.find({Name: {$regex: search, $options: "i"}}).skip(skip).limit(limit)
-        
-       if(!data.length>0){
+        // console.log(search)
+       if(data.length==0){
         throw new Error("No Users Available")
        }
         res.status(200).json({msg: "Users fetched successfully", data})
     }
     catch(err){
-        res.status(500).json({error:true,message:err.message})
+        res.status(500).json({error:true,message: err.message})
     }
 }
 
@@ -183,7 +183,11 @@ let searchTrust = async (req, res)=>{
     let limit = req.query.limit || 10
     let skip = (page-1) * limit
 
-    let totalDocuments = await UserModel.countDocuments();
+    if (!search) {
+        throw new Error("Search query is required");
+     }
+
+    let totalDocuments = await TrustModel.countDocuments();
     console.log(totalDocuments)
 
     let totalPages = Math.ceil(totalDocuments / limit);
@@ -193,9 +197,9 @@ let searchTrust = async (req, res)=>{
     }
 
     const regex = new RegExp(search, "i"); // 'i' makes it case-insensitive
-
+    console.log(regex)
     // Find documents where the `name` field matches the regex
-    const data = await TrustModel.find({ name: { $regex: regex } });
+    const data = await TrustModel.find({ trustName: { $regex: regex } }).skip(skip).limit(limit)
 
     // let data = await TrustModel.find({trustName: {$regex: search, $options: "i"}}).skip(skip).limit(limit)
 
@@ -205,7 +209,7 @@ let searchTrust = async (req, res)=>{
    res.status(200).json({msg: "Trust fetched successfully", data})
    }
    catch(err){
-    res.status(500).json({error:true,message:err.message})
+    res.status(500).json({error:true,message:"jkjddk"+err.message})
    }
     
 }
