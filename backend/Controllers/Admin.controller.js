@@ -58,7 +58,7 @@ let adminLogout = async (req, res)=>{
 
 let getUsersAdmin = async (req, res)=>{
     try{
-let allowedFields = ["Name", "phone", "email", "address", "image"]
+let allowedFields = ["Name", "phone", "email", "address", "image", "role"]
             // let user = req.user
             
             // console.log(req.params)
@@ -77,7 +77,7 @@ let allowedFields = ["Name", "phone", "email", "address", "image"]
 }
 
 let getTrustsAdmin = async (req, res)=>{
-    let allowedFields = ["trustName", "trustEmail", "trustPhoneNumber", "address", "image"]
+    let allowedFields = ["trustName", "trustEmail", "trustPhoneNumber", "address", "image", "role"]
     try{
         let limit = (req.params.limit > 20 ? 10 : req.params.limit) || 10
         let page = req.params.page || 1
@@ -133,6 +133,8 @@ let getTransactions = async (req, res)=>{
 
 let searchUser = async (req, res)=>{
     try{
+let allowedFields = ["Name", "phone", "email", "address", "image", "role"]
+
         let search = req.query.search
         // let sort = req.query.sort
 
@@ -162,7 +164,7 @@ let searchUser = async (req, res)=>{
         const regex = new RegExp(search, "i"); // 'i' makes it case-insensitive
 
         // Find documents where the `name` field matches the regex
-        const data = await UserModel.find({ Name: { $regex: regex } }).skip(skip).limit(limit)
+        const data = await UserModel.find({ Name: { $regex: regex } }).skip(skip).limit(limit).select(allowedFields)
 
     //  let data =  await UserModel.find({Name: {$regex: search, $options: "i"}}).skip(skip).limit(limit)
         // console.log(search)
@@ -178,6 +180,7 @@ let searchUser = async (req, res)=>{
 
 let searchTrust = async (req, res)=>{
    try{
+    let allowedFields = ["trustName", "trustEmail", "trustPhoneNumber", "address", "image", "role"]
     let search = req.query.search
     let page = req.query.page || 1
     let limit = req.query.limit || 10
@@ -199,7 +202,7 @@ let searchTrust = async (req, res)=>{
     const regex = new RegExp(search, "i"); // 'i' makes it case-insensitive
     // console.log(regex)
     // Find documents where the `name` field matches the regex
-    const data = await TrustModel.find({ trustName: { $regex: regex } }).skip(skip).limit(limit)
+    const data = await TrustModel.find({ trustName: { $regex: regex } }).skip(skip).limit(limit).select(allowedFields)
 
     // let data = await TrustModel.find({trustName: {$regex: search, $options: "i"}}).skip(skip).limit(limit)
 
@@ -209,7 +212,7 @@ let searchTrust = async (req, res)=>{
    res.status(200).json({msg: "Trust fetched successfully", data})
    }
    catch(err){
-    res.status(500).json({error:true,message:"jkjddk"+err.message})
+    res.status(500).json({error:true,message: err.message})
    }
     
 }
