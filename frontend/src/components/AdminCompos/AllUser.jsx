@@ -5,19 +5,66 @@ import './Dash.css';
 import { useNavigate } from 'react-router-dom';
 import DisplaygetData from './DisplaygetData';
 import useGetAdm from './CustomHooks/useGetAdm';
+import InputSearch from './InputSearch';
+import axios from 'axios';
 
 
 const AllUser = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false)
-    let [apidata, setApidata] = useGetAdm(`http://localhost:4000/api/admin/getusers/1/10`)
-
     let navigate = useNavigate()
 
-    console.log(apidata)
+    const [searchValue, setSearchValue] = useState("")
+    const [searchFinal, setSearchFinal] = useState("")
+    const [searchedResult, setSearchedResult] = useState([])
 
+    const [loading, setLoading] = useState(false)
+    const [errorMessage, setErrorMessage] = useState(null)
+
+    let [apidata, setApidata] = useGetAdm(`http://localhost:4000/api/admin/getusers/1/10`)
+    // console.log(apidata)
+
+    let handleSearch = ()=>{
+        setSearchFinal(searchValue)
+    }
+
+    let getSearchValue = async ()=>{
+        try{
+            setLoading(true)
+            // console.log("ente")
+            let {data} = await axios.get(`http://localhost:4000/api/admin/searchuser?search=${searchFinal}`,  {
+                withCredentials: true
+            })
+            console.log(data)
+            if(data && data?.data && data.data.length>0){
+                setSearchedResult(data?.data)
+                setLoading(false)
+            }
+            else{
+                setErrorMessage(data?.data?.msg)
+                setLoading(false)
+            }
+        }
+        catch(err){
+            // console.log(err.message)
+        console.log(err.response.data.message)
+        }
+    }
+
+    useEffect(()=>{
+       if(searchFinal){
+        getSearchValue()
+       }
+       else{
+        setSearchedResult([])
+       }
+    }, [searchFinal])
+
+    useEffect(()=>{
+       if(!searchFinal){
+            setSearchedResult(apidata)
+       }
+    }, [searchFinal, apidata])
    
-
-
     return (
         <div className="dashboard">
             {/* Sidebar */}
@@ -49,7 +96,10 @@ const AllUser = () => {
                     </button>
                     <h1>All Users</h1>
                     <div className="header-actions">
-                        <input type="search" placeholder="Search..." className="search-input" />
+                    <InputSearch searchValue={searchValue} setSearchValue={setSearchValue} />
+
+                    <button onClick={handleSearch}>search</button>
+
                         <button className="icon-button">
                             <Bell />
                         </button>
@@ -60,10 +110,10 @@ const AllUser = () => {
                 <main className="dashboard-content">
                     <div className="card-grid">
 
-                    {apidata.length>0 && apidata.map(({Name, _id, email, address, phone, image}) => {
+                    {searchedResult.length>0 && searchedResult.map(({Name, _id, email, address, phone, image}) => {
                             return (
                                 <>
-                                   
+                           
                                    <DisplaygetData  key={_id} _id={_id} Name={Name} email={email} address={address} image={image} phone={phone} />
 
                                 </>

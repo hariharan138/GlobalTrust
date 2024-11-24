@@ -6,16 +6,69 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import useGetAdm from './CustomHooks/useGetAdm';
 import DisplaygetData from './DisplaygetData';
+import InputSearch from './InputSearch';
 
 
 const AllTrust = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false)
-    let [apidata, setApidata] = useGetAdm(`http://localhost:4000/api/admin/gettrusts/1/10`)
+
+    const [searchValue, setSearchValue] = useState("")
+    const [searchFinal, setSearchFinal] = useState("")
+    const [searchedResult, setSearchedResult] = useState([])
+
+    const [loading, setLoading] = useState(false)
+    const [errorMessage, setErrorMessage] = useState(null)
 
     let navigate = useNavigate()
 
+    
+    let [apidata, setApidata] = useGetAdm(`http://localhost:4000/api/admin/gettrusts/1/10`)
     console.log(apidata)
 
+
+    let handleSearch = ()=>{
+        setSearchFinal(searchValue)
+    }
+
+
+    let getSearchValue = async ()=>{
+        try{
+            setLoading(true)
+            console.log("ente")
+            let {data} = await axios.get(`http://localhost:4000/api/admin/searchtrust?search=${searchFinal}`,  {
+                withCredentials: true
+            })
+            console.log(data)
+            if(data && data?.data && data.data.length>0){
+                setSearchedResult(data?.data)
+                setLoading(false)
+            }
+            else{
+                setErrorMessage(data?.data?.msg)
+                setLoading(false)
+            }
+        }
+        catch(err){
+            console.log(err.message)
+            console.log(err?.data?.message)
+        }
+    }
+
+    useEffect(()=>{
+       if(searchFinal){
+        getSearchValue()
+       }
+       else{
+        setSearchedResult([])
+       }
+    }, [searchFinal])
+
+    useEffect(()=>{
+       if(!searchFinal){
+            setSearchedResult(apidata)
+       }
+    }, [searchFinal, apidata])
+    
     return (
         <div className="dashboard">
             {/* Sidebar */}
@@ -36,8 +89,6 @@ const AllTrust = () => {
                 </nav>
             </aside>
 
-
-
             {/* Main Content */}
             <div className="main-content">
                 {/* Header */}
@@ -47,7 +98,10 @@ const AllTrust = () => {
                     </button>
                     <h1>All Trust</h1>
                     <div className="header-actions">
-                        <input type="search" placeholder="Search..." className="search-input" />
+                        
+                        <InputSearch searchValue={searchValue} setSearchValue={setSearchValue} />
+
+                            <button onClick={handleSearch}>search</button>
                         <button className="icon-button">
                             <Bell />
                         </button>
@@ -58,10 +112,23 @@ const AllTrust = () => {
                 <main className="dashboard-content">
                     <div className="card-grid">
 
-                        {apidata.length>0 && apidata.map(({trustName, _id, trustEmail, address, trustPhoneNumber, image}) => {
+                        
+                    {/* {(searchedResult.length>0 ? searchedResult : (apidata.length>0 && apidata)).map(({trustName, _id, trustEmail, address, trustPhoneNumber, image}) => {
                             return (
                                 <>
-                                   
+                           
+                                   <DisplaygetData  key={_id} _id={_id} Name={trustName} email={trustEmail} address={address} image={image} phone={trustPhoneNumber} />
+
+                                </>
+                            )
+                        })
+                        } */}
+
+
+                        {searchedResult.length>0 && searchedResult.map(({trustName, _id, trustEmail, address, trustPhoneNumber, image}) => {
+                            return (
+                                <>
+                           
                                    <DisplaygetData  key={_id} _id={_id} Name={trustName} email={trustEmail} address={address} image={image} phone={trustPhoneNumber} />
 
                                 </>
@@ -69,11 +136,7 @@ const AllTrust = () => {
                         })
                         }
 
-
-
-
                     </div>
-
                 </main>
             </div>
         </div>

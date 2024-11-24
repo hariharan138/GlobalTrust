@@ -11,7 +11,9 @@ const useGetAdm = (url) => {
                 withCredentials: true
             })
         // console.log(data?.data)
-        setApidata(data.data)
+        if(data?.data.length>0){
+            setApidata(data.data)
+        }
         }
         catch(err){
             // console.error('Error Message:', err.message); // Logs the error message
