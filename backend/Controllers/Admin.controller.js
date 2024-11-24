@@ -16,7 +16,7 @@ let adminLogin = async (req, res)=>{
             validateAdmin(req)
             let {email, password} = req.body
             let {admintoken} = req.cookies
-            // console.log(admintoken)
+            console.log(admintoken)
             if(admintoken){
                 let {_id} =  jwt.verify(admintoken, process.env.JWT_ADMIN_SECREAT_KEY)
                 // console.log(decodedData)
@@ -43,7 +43,7 @@ let adminLogin = async (req, res)=>{
 
             let token = await jwt.sign({_id: isExists._id,  role: 'admin'}, process.env.JWT_ADMIN_SECREAT_KEY, {expiresIn: process.env.JWT_ADMIN_TOKEN_EXPIRY})
             res.cookie("admintoken", token, {expires: new Date(Date.now() + 8 * 300000)})
-            res.status(200).json({msg: "admin has loggedin", success: true})       
+            res.status(200).json({msg: "admin has loggedin", success: true,  token: token })       
     }
     catch(err){
         res.status(500).json({error:true,message: err.message, success: false})
