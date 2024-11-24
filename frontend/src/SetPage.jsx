@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import './Settingpage.css';
+import { useNavigate } from 'react-router-dom';
 
 const SetPage = () => {
+
+  const navigate = useNavigate()
+
+
   const [settings, setSettings] = useState({
     notifications: true,
     darkMode: false,
@@ -31,9 +36,13 @@ const SetPage = () => {
     alert('Settings saved successfully!');
   };
 
+  const handleClose = ()=>{
+    navigate('/Home')
+  }
+
   return (
     <div className="settings-page">
-      <h1>Settings</h1>
+      <h1>Settings</h1>  {"                   "}   <span style={{cursor: 'pointer'}} onClick={()=> handleClose()}>X</span>
       <form onSubmit={handleSave}>
         <div className="setting-item">
           <label htmlFor="notifications">

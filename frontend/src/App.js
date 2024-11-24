@@ -2,8 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Dashboard from './components/AdminCompos/Dashboard';
 import SetPage from './SetPage'; // Assuming you have a settings page.
-import AllUser from './AllUser';
-import AllTrust from './AllTrust';
+import AllUser from './components/AdminCompos/AllUser';
+import AllTrust from './components/AdminCompos/AllTrust';
 import LoginPage from './components/LoginPage';
 import TrustPage from './components/TrustPage';
 import UserPage from './components/UserPage';

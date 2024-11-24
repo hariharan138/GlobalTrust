@@ -1,22 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Bell, ChevronDown, Home, LayoutDashboard, HandHeart, LogOut, Menu, Settings, User } from 'lucide-react'
-import './components/AdminCompos/Dash.css';
+import './Dash.css';
 import { useNavigate } from 'react-router-dom';
+import DisplaygetData from './DisplaygetData';
+import useGetAdm from './CustomHooks/useGetAdm';
 
 
-const AllTrust = () => {
+const AllUser = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false)
-    let [apidata, setapidata] = useState([])
+    let [apidata, setApidata] = useGetAdm(`http://localhost:4000/api/admin/getusers/1/10`)
+
     let navigate = useNavigate()
 
-    let apiFetch = async () => {
-        let api = await fetch("https://fakestoreapi.com/products")
-        let data = await api.json()
-        console.log(data)
-        setapidata(data)
-    }
-    apiFetch()
+    console.log(apidata)
+
+   
 
 
     return (
@@ -48,7 +47,7 @@ const AllTrust = () => {
                     <button className="icon-button mobile-only" onClick={() => setSidebarOpen(true)}>
                         <Menu />
                     </button>
-                    <h1>All Trust</h1>
+                    <h1>All Users</h1>
                     <div className="header-actions">
                         <input type="search" placeholder="Search..." className="search-input" />
                         <button className="icon-button">
@@ -61,22 +60,11 @@ const AllTrust = () => {
                 <main className="dashboard-content">
                     <div className="card-grid">
 
-                        {apidata.map((data) => {
+                    {apidata.length>0 && apidata.map(({Name, _id, email, address, phone, image}) => {
                             return (
                                 <>
-                                    <div className="card">
-                                        <div className="card-header">
-                                            <h3>{data.title}</h3>
-                                        </div>
-
-                                        <div className="card-content">
-                                            <div className="card-value"></div>
-                                            <p className="card-subtext">{data.title}</p>
-                                        </div>
-
-
-                                    </div>
-
+                                   
+                                   <DisplaygetData  key={_id} _id={_id} Name={Name} email={email} address={address} image={image} phone={phone} />
 
                                 </>
                             )
@@ -93,4 +81,4 @@ const AllTrust = () => {
     )
 }
 
-export default AllTrust;
+export default AllUser;
