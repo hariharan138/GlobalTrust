@@ -1,6 +1,39 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Button } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import axios from 'axios';
 
-const DisplaygetData = ({_id, Name, email, address, phone, image}) => {
+
+const DisplaygetData = ({_id, Name, email, address, phone, image, role}) => {
+
+  const [userDeleted, setUserDeleted] = useState(null)
+  const [deleteErrorMsg, setDeleteErrorMsg] = useState(null)
+
+ let deleteUser = async (userRole, id)=>{
+  console.log(userRole)
+  console.log(id) 
+  try{
+    let {data} = await axios.delete(`http://localhost:4000/api/admin/delete/${userRole}/${id}`, {
+      withCredentials: true
+    })
+  
+    if(data?.data){
+      setDeleteErrorMsg(null)
+      setUserDeleted(data?.data)
+    }
+  }
+catch(err){
+  console.log(err.response.data.message)
+}
+finally{
+  console.log(userDeleted)
+}
+  
+
+  
+ }
+
   return (
     <div className="card" key={_id}>
 
@@ -14,6 +47,14 @@ const DisplaygetData = ({_id, Name, email, address, phone, image}) => {
                                             <div className="card-value" style={{fontSize: "16px"}}>{email}</div>
                                             <div className="card-value" style={{fontSize: "16px"}}>{phone}</div>
                                             <p className="card-subtext">{phone}</p>
+                                            <IconButton 
+                                            aria-label="delete"
+                                            color='warning'
+                                            style={{fontSize: "20px", height: "35px", backgroundColor: "#cc9d70"}}
+                                            onClick={()=> deleteUser(role, _id)}
+                                            ><DeleteIcon /></IconButton>
+                                            
+                                            
                                         </div>
 
 

@@ -124,14 +124,16 @@ const AllTrust = () => {
                         })
                         } */}
 
+                        {loading && <div>Loading Please wait</div>}
+                        {errorMessage && <div>{errorMessage}</div>}
 
-                        {searchedResult.length>0 && searchedResult.map(({trustName, _id, trustEmail, address, trustPhoneNumber, image}) => {
+                        {!loading && !errorMessage && searchedResult.length>0 && searchedResult.map(({trustName, _id, trustEmail, role, address, trustPhoneNumber, image}) => {
                             return (
-                                <>
+                                
                            
-                                   <DisplaygetData  key={_id} _id={_id} Name={trustName} email={trustEmail} address={address} image={image} phone={trustPhoneNumber} />
+                                   <DisplaygetData  key={_id} _id={_id} Name={trustName} email={trustEmail} address={address} role={role} image={image} phone={trustPhoneNumber} />
 
-                                </>
+                                
                             )
                         })
                         }

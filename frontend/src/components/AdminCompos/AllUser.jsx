@@ -110,13 +110,16 @@ const AllUser = () => {
                 <main className="dashboard-content">
                     <div className="card-grid">
 
-                    {searchedResult.length>0 && searchedResult.map(({Name, _id, email, address, phone, image}) => {
-                            return (
-                                <>
-                           
-                                   <DisplaygetData  key={_id} _id={_id} Name={Name} email={email} address={address} image={image} phone={phone} />
+                    {loading && <div>Loading Please wait</div>}
+                    {errorMessage && <div>{errorMessage}</div>}
 
-                                </>
+                    {!loading && !errorMessage && searchedResult.length>0 && searchedResult.map(({Name, _id, email, address, phone, image, role}) => {
+                            return (
+                                
+                           
+                                   <DisplaygetData  key={_id} _id={_id} Name={Name} email={email} address={address} role={role} image={image} phone={phone} />
+
+                                
                             )
                         })
                         }
