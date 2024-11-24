@@ -13,6 +13,7 @@ import UserLogin from './components/UserLogin';
 import ContactUs from './components/ContactUs';
 import ProtectedRoute from './components/protectedRoutes/ProtectedRoute';
 import Trust from './Trust/Trust';
+import Transactions from './components/AdminCompos/Transactions';
 
 function App() {
   return (
@@ -49,6 +50,12 @@ function App() {
         <Route path="/alltrust" element={<ProtectedRoute requiredRole="admin">
           <AllTrust />
         </ProtectedRoute>}/>
+
+        <Route path='/transaction' element={<ProtectedRoute requiredRole="admin">
+          <Transactions />
+        </ProtectedRoute>} />
+
+        
 
         <Route path="/set" element={<SetPage />} />
       </Routes>

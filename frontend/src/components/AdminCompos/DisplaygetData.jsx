@@ -9,7 +9,9 @@ const DisplaygetData = ({_id, Name, email, address, phone, image, role}) => {
 
   const [userDeleted, setUserDeleted] = useState(null)
   const [deleteErrorMsg, setDeleteErrorMsg] = useState(null)
-
+// dummy data userDeleted={
+  // email: "lasjd@gmail.com",
+  // role: "trsut"}
  let deleteUser = async (userRole, id)=>{
   console.log(userRole)
   console.log(id) 
