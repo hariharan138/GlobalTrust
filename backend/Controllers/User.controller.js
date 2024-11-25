@@ -134,7 +134,7 @@ let getTrusts=async(req,res,next)=>{
     let limit = (req.params.limit > 20 ? 10 : req.params.limit) || 10
     let page = req.params.page || 1
     let skip = (page-1) * limit
-    let allowedFields = ["trustName", "trustEmail", "trustPhoneNumber", "address"]
+    let allowedFields = ["trustName", "trustEmail", "trustPhoneNumber", "address", "image"]
     try{
         let trusts =await Trust.find({}).select(allowedFields).skip(skip).limit(limit)
         res.status(201).json({error:false,message:"Trust Fetch succesfully",data:trusts})

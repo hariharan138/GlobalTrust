@@ -155,7 +155,7 @@ let logoutTrusts = async (req, res)=>{
 }
 
 let getUsers = async (req,res)=>{
-let allowedFields = ["Name", "phone", "email", "address", "_id"]
+let allowedFields = ["Name", "phone", "email", "address", "_id", "image"]
 
         try{
             // let user = req.user
