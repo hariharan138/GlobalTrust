@@ -172,7 +172,7 @@ let searchTrust = async (req, res)=>{
         let skip = (page-1) * limit
     
         let totalDocuments = await UserModel.countDocuments();
-        console.log(totalDocuments)
+        // console.log(totalDocuments)
 
         let totalPages = Math.ceil(totalDocuments / limit);
 
