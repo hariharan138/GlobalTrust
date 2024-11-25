@@ -130,10 +130,13 @@ let userLogout = async (req, res)=>{
 }
 
 let getTrusts=async(req,res,next)=>{
-    console.log("working")
+    // console.log("working")
+    let limit = (req.params.limit > 20 ? 10 : req.params.limit) || 10
+    let page = req.params.page || 1
+    let skip = (page-1) * limit
     let allowedFields = ["trustName", "trustEmail", "trustPhoneNumber", "address"]
     try{
-        let trusts =await Trust.find({}).select(allowedFields)
+        let trusts =await Trust.find({}).select(allowedFields).skip(skip).limit(limit)
         res.status(201).json({error:false,message:"Trust Fetch succesfully",data:trusts})
     }
     catch(err){

@@ -10,7 +10,6 @@ const cloudinary = require('../CloudinaryConfig.js/cluoudinaryconfig')
 const fs = require('fs')
 const { log } = require('console')
 
-let allowedFields = ["Name", "phone", "password"]
 
 let addTrusts=async(req,res)=>{
     try{
@@ -156,6 +155,8 @@ let logoutTrusts = async (req, res)=>{
 }
 
 let getUsers = async (req,res)=>{
+let allowedFields = ["Name", "phone", "email", "address", "_id"]
+
         try{
             // let user = req.user
             
