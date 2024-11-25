@@ -2,6 +2,12 @@ import React from 'react'
 import { Box, Typography, TextField, Button, Paper } from "@mui/material";
 
 const UserLogin = () => {
+
+  // sending the cookie name as "userlogintoken" 
+  // so when youre working with login for user use the below line once you fetched the api
+  // document.cookie = `userlogintoken=${response.data.token}; path=/;`;
+
+
   return (
     <Box className="trust-login-container">
       

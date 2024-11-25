@@ -15,6 +15,7 @@ import ProtectedRoute from './components/protectedRoutes/ProtectedRoute';
 import Trust from './Trust/Trust';
 import Transactions from './components/AdminCompos/Transactions';
 import TrustProvider from './context/TrustProvider';
+import TrustHome from './components/TrustHome';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
 
 
         <Route path="/trustlogin" element={<TrustLogin/>} />
+        <Route path="/trusthome" element={<TrustHome />} />
 
         <Route path="/trustMainpage" element={<ProtectedRoute requiredRole="trust">
           <Trust/>

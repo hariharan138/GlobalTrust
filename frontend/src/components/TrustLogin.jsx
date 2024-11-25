@@ -8,7 +8,7 @@ import "./TrustLogin.css"; // Import the CSS file
 const TrustLogin = () => {
   let navigate = useNavigate()
   const [formTrust, setFormTrust] = useState({
-    email: "",
+    trustEmail: "",
     password: ""
   })
 
@@ -22,7 +22,7 @@ const TrustLogin = () => {
     try {
       e.preventDefault()
 
-      if (!(formTrust.email)) {
+      if (!(formTrust.trustEmail)) {
         setErrorMessage("Please enter the email") 
         return;
       }
@@ -38,8 +38,8 @@ const TrustLogin = () => {
       )
         
       if (response.data.success) {
-        document.cookie = `trusttoken=${response.data.token}; path=/;`
-        navigate('/TrustHome')
+        document.cookie = `authToken=${response.data.token}; path=/;`
+        navigate('/Trusthome')
       } else {
         setErrorMessage(response.data.message)
       }
@@ -71,7 +71,7 @@ const TrustLogin = () => {
             label="Email"
             type="email"
             fullWidth
-            name='email'
+            name='trustEmail'
             required
             margin="normal"
             variant="outlined"
