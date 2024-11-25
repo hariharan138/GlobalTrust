@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';  
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Navbar from './Navbar';
 
 const UserCard = ({ user }) => {
   const userCardStyle = {
@@ -114,6 +115,11 @@ const Trust = () => {
     }
   };
 
+  const handleLogout = () => {
+    // Implement logout functionality here
+    console.log('Logout clicked');
+  };
+
   const containerStyle = {
     maxWidth: '1200px',
     margin: '0 auto',
@@ -171,38 +177,41 @@ const Trust = () => {
   };
 
   return (
-    <div style={containerStyle}>
-      <h1 style={{ textAlign: 'center', fontSize: '24px', fontWeight: 'bold' }}>Welcome to Trust Page</h1>
+    <div>
+      <Navbar onLogout={handleLogout} />
+      <div style={containerStyle}>
+        <h1 style={{ textAlign: 'center', fontSize: '24px', fontWeight: 'bold' }}>Welcome to Trust Page</h1>
 
-      <div style={flexContainerStyle}>
-        <div style={searchContainerStyle}>
-          <div>
-            <input
-              type="text"
-              placeholder="Search users Transaction ..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              style={inputStyle}
-            />
-            <button onClick={searchUser} style={buttonStyle}>Search</button>
+        <div style={flexContainerStyle}>
+          <div style={searchContainerStyle}>
+            <div>
+              <input
+                type="text"
+                placeholder="Search users Transaction ..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                style={inputStyle}
+              />
+              <button onClick={searchUser} style={buttonStyle}>Search</button>
+            </div>
+
+            <div style={userGridStyle}>
+              {loading && <p>Loading...</p>}
+              {users.map((user, index) => (
+                <UserCard key={index} user={user} />
+              ))}
+              {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+              {!loading && users.length === 0 && !error && (
+                <p style={{ textAlign: 'center', color: '#666', marginTop: '20px' }}>
+                  No users found. Try a different search term.
+                </p>
+              )}
+            </div>
           </div>
 
-          <div style={userGridStyle}>
-            {loading && <p>Loading...</p>}
-            {users.map((user, index) => (
-              <UserCard key={index} user={user} />
-            ))}
-            {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
-            {!loading && users.length === 0 && !error && (
-              <p style={{ textAlign: 'center', color: '#666', marginTop: '20px' }}>
-                No users found. Try a different search term.
-              </p>
-            )}
+          <div style={inboxContainerStyle}>
+            <Inbox messages={inboxMessages} />
           </div>
-        </div>
-
-        <div style={inboxContainerStyle}>
-          <Inbox messages={inboxMessages} />
         </div>
       </div>
     </div>
@@ -210,3 +219,4 @@ const Trust = () => {
 };
 
 export default Trust;
+
