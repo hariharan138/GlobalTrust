@@ -121,7 +121,7 @@ let addTrusts=async(req,res)=>{
 
 let loginTrusts = async (req, res)=>{
     try{
-            let {email, password} = req.body
+            let {trustEmail, password} = req.body
             const {authToken} = req.cookies
             if(authToken){
                 const decodedData = jwt.verify(authToken, process.env.JWT_SECREAT_KEY)
@@ -129,10 +129,10 @@ let loginTrusts = async (req, res)=>{
                     throw new Error("user is already logged in")
                 }
             }
-            let isExist = await Trust.findOne({email: email})
+            let isExist = await Trust.findOne({trustEmail: trustEmail})
             
             if(!isExist){
-                throw new Error("user is not registered")
+                throw new Error("Trust is not registered")
             }
 
             let isMatching = await bcrypt.compare(password, isExist.password)
@@ -143,7 +143,7 @@ let loginTrusts = async (req, res)=>{
             let token = await jwt.sign({_id: isExist._id,  role: 'trust'}, process.env.JWT_SECREAT_KEY ,{expiresIn: process.env.JWT_TOKEN_EXPIRY})
         
             res.cookie("authToken", token, {expires: new Date(Date.now() + 8 * 300000)}) //in 40min cookie will expire
-            res.status(200).json({msg: isExist.firstName + " login Successfull", token: token })
+            res.status(200).json({msg: isExist.firstName + " login Successfull", token: token, success: true })
     }
     catch(err){
         res.status(500).json({error:true,message:err.message})

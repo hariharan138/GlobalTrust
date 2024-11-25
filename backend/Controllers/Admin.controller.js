@@ -120,7 +120,7 @@ let getTransactions = async (req, res)=>{
         let skip = (page - 1) * limit
 
         let data = await FoodModel.find({acceptedBy : {$ne: null}}).skip(skip).limit(limit)
-
+        
         if(data.length==0){
             return res.status(200).json({error:false, message:"No Successfull Transaction"})  
         }
