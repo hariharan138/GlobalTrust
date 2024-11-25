@@ -2,7 +2,11 @@ const mongoose = require('mongoose')
 
 const connectDb = async ()=>{
     try{
-        let res = await mongoose.connect(process.env.CONNECTION_STRING)
+        await mongoose.connect(process.env.CONNECTION_STRING,
+            // {
+            //     serverSelectionTimeoutMS: 30000 
+            // }
+        )
         // console.log("database is connected successfully")
     }
     catch(err){
@@ -10,6 +14,4 @@ const connectDb = async ()=>{
     }
 }
 
-module.exports = {
-    connectDb
-}
+module.exports = connectDb

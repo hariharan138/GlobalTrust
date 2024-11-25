@@ -267,6 +267,24 @@ let deleteUsersAndTrusts = async (req, res)=>{
     }
 }
 
+let getNoOfTrusts = async (req, res)=>{
+    let data = await TrustModel.countDocuments()
+    res.status(200).json({msg: "Total number of Trusts fethed", data})
+}
+
+let getNoOfUsers = async (req, res)=>{
+    let data = await UserModel.countDocuments()
+    res.status(200).json({msg: "Total number of Users fethed", data})
+}
+
+let getNoOfTransactions = async (req, res)=>{
+    let data = await FoodModel.find({acceptedBy : {$ne: null}})
+    if(data.length==0){
+        return res.status(200).json({error:false, message:"No Successfull Transaction", data: 0})  
+    }
+    return res.status(200).json({msg: "total Of Transactions fetched", data: data.length})
+}
+
 module.exports = {
     adminLogin,
     adminLogout,
@@ -275,5 +293,8 @@ module.exports = {
     getTransactions,
     searchUser,
     searchTrust,
+    getNoOfTrusts,
+getNoOfUsers,
+getNoOfTransactions,
     deleteUsersAndTrusts
 }
