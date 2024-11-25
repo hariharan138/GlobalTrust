@@ -247,7 +247,7 @@ let searchUser = async (req, res)=>{
         const regex = new RegExp(search, "i"); // 'i' makes it case-insensitive
 
         // Find documents where the `name` field matches the regex
-        const data = await UserModel.find({ name: { $regex: regex } }).skip(skip).limit(limit)
+        const data = await UserModel.find({ Name: { $regex: regex } }).skip(skip).limit(limit)
         //    let data =  await UserModel.find({Name: {$regex: search, $options: "i"}}).skip(skip).limit(limit)
         
        if(!data.length>0){

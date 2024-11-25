@@ -14,7 +14,7 @@ route.get('/getusers/:page/:limit', trustUserAuth, getUsers)
 route.get('/getfoodorder/:page/:limit', trustUserAuth ,getRegisteredFoods)
 route.post('/acceptfoodorder/:orderId', trustUserAuth ,acceptFoodOrder)
 
-route.post('/searchuser', trustUserAuth, searchUser)
+route.get('/searchuser', trustUserAuth, searchUser)
 route.get('/gettrustprofile', trustUserAuth, getTrustProfile)
 
 module.exports=route;

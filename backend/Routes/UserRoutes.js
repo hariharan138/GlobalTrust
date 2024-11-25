@@ -11,6 +11,6 @@ userRoute.post('/loginuser', userLogin)
 userRoute.post('/logoutuser', userLogout)
 userRoute.get("/gettrust",userAuth, getTrusts);
 userRoute.post('/foodRegister', userAuth, foodRegister)
-userRoute.post('/searchtrust', userAuth, searchTrust)
+userRoute.get('/searchtrust', userAuth, searchTrust)
 userRoute.get('/getuserprofile', userAuth, getUserProfile)
 module.exports = userRoute

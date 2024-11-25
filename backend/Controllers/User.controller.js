@@ -183,7 +183,7 @@ let searchTrust = async (req, res)=>{
         const regex = new RegExp(search, "i"); // 'i' makes it case-insensitive
 
         // Find documents where the `name` field matches the regex
-        const data = await TrustModel.find({ name: { $regex: regex } }).skip(skip).limit(limit)
+        const data = await TrustModel.find({ trustName: { $regex: regex } }).skip(skip).limit(limit)
        
         // let data = await TrustModel.find({trustName: {$regex: search, $options: "i"}}).skip(skip).limit(limit)
     
