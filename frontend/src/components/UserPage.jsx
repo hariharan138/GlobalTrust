@@ -51,7 +51,7 @@ function UserPage() {
       });
 
       setSuccessMessage(response.data.message || 'Registration successful!');
-
+      
       // Clear form after successful submission
       setFormData({
         firstName: '',
@@ -66,7 +66,7 @@ function UserPage() {
       // Redirect to login page after success
       setTimeout(() => navigate('/userlogin'), 2000);
     } catch (error) {
-      setErrorMessage(error.response?.data?.error || error.message);
+      setErrorMessage(error.response?.data?.error || 'Something went wrong!');
     }
   };
 
@@ -105,7 +105,7 @@ function UserPage() {
           <Typography variant="h4" align="center" gutterBottom>
             Registration Form
           </Typography>
-          .
+.
           {errorMessage && (
             <Typography color="error" align="center">
               {errorMessage}
