@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';  
 import axios from 'axios';
+=======
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Navbar from './Navbar';
+>>>>>>> hari
 
 const UserCard = ({ user }) => {
   const userCardStyle = {
@@ -97,6 +103,7 @@ const Trust = () => {
     { id: 2, sender: 'Jane Smith', subject: 'New features', content: 'Check out our latest updates.' },
     { id: 3, sender: 'Admin', subject: 'Important notice', content: 'Please update your profile.' },
   ]);
+<<<<<<< HEAD
 
   const searchUser = async () => {
     setLoading(true);
@@ -210,3 +217,127 @@ const Trust = () => {
 };
 
 export default Trust;
+=======
+
+  const searchUser = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const { data } = await axios.get(
+        `http://localhost:4000/api/trust/searchuser`,
+        { params: { search: searchTerm }, withCredentials: true }
+      );
+      setUsers(data);
+    } catch (err) {
+      setError('Failed to fetch users. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLogout = () => {
+    // Implement logout functionality here
+    console.log('Logout clicked');
+  };
+
+  const containerStyle = {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    padding: '20px',
+    fontFamily: 'Arial, sans-serif',
+  };
+
+  const flexContainerStyle = {
+    display: 'flex',
+    gap: '20px',
+    '@media (max-width: 768px)': {
+      flexDirection: 'column',
+    },
+  };
+
+  const searchContainerStyle = {
+    flex: '2',
+  };
+
+  const inboxContainerStyle = {
+    flex: '1',
+    borderLeft: '1px solid #ccc',
+    paddingLeft: '20px',
+    '@media (max-width: 768px)': {
+      borderLeft: 'none',
+      paddingLeft: '0',
+    },
+  };
+
+  const inputStyle = {
+    width: '65%',
+    padding: '10px',
+    fontSize: '16px',
+    border: '1px solid #ccc',
+    borderRadius: '4px',
+    marginBottom: '10px',
+  };
+
+  const buttonStyle = {
+    padding: '10px 20px',
+    fontSize: '16px',
+    backgroundColor: '#007bff',
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    marginLeft: '10px',
+  };
+
+  const userGridStyle = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
+    gap: '20px',
+    marginTop: '20px',
+  };
+
+  return (
+    <div>
+      <Navbar onLogout={handleLogout} />
+      <div style={containerStyle}>
+        <h1 style={{ textAlign: 'center', fontSize: '24px', fontWeight: 'bold' }}>Welcome to Trust Page</h1>
+
+        <div style={flexContainerStyle}>
+          <div style={searchContainerStyle}>
+            <div>
+              <input
+                type="text"
+                placeholder="Search users Transaction ..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                style={inputStyle}
+              />
+              <button onClick={searchUser} style={buttonStyle}>Search</button>
+            </div>
+
+            <div style={userGridStyle}>
+              {loading && <p>Loading...</p>}
+              {users.map((user, index) => (
+                <UserCard key={index} user={user} />
+              ))}
+              {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+              {!loading && users.length === 0 && !error && (
+                <p style={{ textAlign: 'center', color: '#666', marginTop: '20px' }}>
+                  No users found. Try a different search term.
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div style={inboxContainerStyle}>
+            <Inbox messages={inboxMessages} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Trust;
+
+>>>>>>> hari

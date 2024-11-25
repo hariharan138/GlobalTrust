@@ -17,6 +17,7 @@ import Transactions from './components/AdminCompos/Transactions';
 import TrustProvider from './context/TrustProvider';
 import TrustHome from './components/TrustHome';
 import Users from './Users/Users';
+import TrustProfile from './Trust/TrustProfile';
 
 function App() {
   return (
@@ -39,8 +40,10 @@ function App() {
         <Route path="/trust" element={<TrustPage />} />
         <Route path="/trustlogin" element={<TrustLogin/>} />
 
+        <Route path="/trustProfile" element={<TrustProfile />} />
+
         <Route path="/trusthome" element={<ProtectedRoute requiredRole="trust">
-          <TrustHome />
+          <Trust />
         </ProtectedRoute>} />
 
         <Route path="/trustMainpage" element={<ProtectedRoute requiredRole="trust">
