@@ -5,7 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 
 
-const DisplaygetData = ({_id, Name, email, address, phone, image, role}) => {
+const DisplaygetData = ({ _id, Name, email, address, phone, image, role, searchedResult, setSearchedResult}) => {
 
   const [userDeleted, setUserDeleted] = useState(null)
   const [deleteErrorMsg, setDeleteErrorMsg] = useState(null)
@@ -13,23 +13,24 @@ const DisplaygetData = ({_id, Name, email, address, phone, image, role}) => {
   // email: "lasjd@gmail.com",
   // role: "trsut"}
  let deleteUser = async (userRole, id)=>{
-  console.log(userRole)
-  console.log(id) 
+  // console.log(userRole)
+  // console.log(id) 
   try{
     let {data} = await axios.delete(`http://localhost:4000/api/admin/delete/${userRole}/${id}`, {
       withCredentials: true
     })
-  
+    console.log(data)
     if(data?.data){
       setDeleteErrorMsg(null)
       setUserDeleted(data?.data)
+      setSearchedResult(searchedResult.filter(ele=> ele._id != data?.data._id))
     }
   }
 catch(err){
-  console.log(err.response.data.message)
+  console.log(err.response?.data?.message)
 }
 finally{
-  console.log(userDeleted)
+  // console.log(userDeleted)
 }
   
 

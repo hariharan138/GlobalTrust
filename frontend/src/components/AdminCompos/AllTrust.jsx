@@ -131,7 +131,7 @@ const AllTrust = () => {
                             return (
                                 
                            
-                                   <DisplaygetData  key={_id} _id={_id} Name={trustName} email={trustEmail} address={address} role={role} image={image} phone={trustPhoneNumber} />
+                                   <DisplaygetData setSearchedResult={setSearchedResult} searchedResult={searchedResult}  key={_id} _id={_id} Name={trustName} email={trustEmail} address={address} role={role} image={image} phone={trustPhoneNumber} />
 
                                 
                             )

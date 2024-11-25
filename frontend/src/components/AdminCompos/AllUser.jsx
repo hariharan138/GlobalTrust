@@ -117,7 +117,7 @@ const AllUser = () => {
                             return (
                                 
                            
-                                   <DisplaygetData  key={_id} _id={_id} Name={Name} email={email} address={address} role={role} image={image} phone={phone} />
+                                   <DisplaygetData setSearchedResult={setSearchedResult} searchedResult={searchedResult}  key={_id} _id={_id} Name={Name} email={email} address={address} role={role} image={image} phone={phone} />
 
                                 
                             )
