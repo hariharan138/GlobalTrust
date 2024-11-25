@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
-import { Bell, ChevronDown, Home, LayoutDashboard,HandHeart , LogOut, Menu, Settings, User } from 'lucide-react'
+import { Bell, ChevronDown, Home, LayoutDashboard,HandHeart , LogOut, Menu, Settings, User, Rss } from 'lucide-react'
 import './Dash.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { TrustContext } from '../../context/TrustProvider';
 const data = [
   { name: 'Jan', value: 400 },
   { name: 'Feb', value: 300 },
@@ -14,6 +15,14 @@ const data = [
 ]
 
 const Dashboard = () => {
+
+  let {getTotalTrust, getTotalUser, getTotalTransactions} = useContext(TrustContext)
+
+
+//   useEffect(()=>{
+//     getTotalTrust()
+// },[])
+  // console.log(getTotalTrust())
   const [sidebarOpen, setSidebarOpen] = useState(false)
  let navigate = useNavigate()
 
@@ -44,6 +53,28 @@ const Dashboard = () => {
     }
   }
  }
+ let [totalTrust, setTotalTrust]= useState(null);
+const [totalUser, setTotalUser] = useState(null)
+const [totalTransactions, setTotalTransactions] = useState(null)
+
+
+
+ useEffect(()=>{
+    getTotalTrust().then(res=> {
+      console.log(res)
+      console.log("klshfd")
+      setTotalTrust(res)
+    })
+
+    getTotalTransactions().then(res=>{
+        setTotalTransactions(res)
+    })
+
+    getTotalUser().then(res=>{
+      setTotalUser(res)
+    })
+    // console.log(totalTrust)
+ }, [])
 
   return (
     <div className="dashboard">
@@ -89,7 +120,7 @@ const Dashboard = () => {
                 <h3>Total Trust</h3>
               </div>
               <div className="card-content">
-                <div className="card-value">10</div>
+                <div className="card-value">{totalTrust}</div>
                 <p className="card-subtext">updated last month</p>
               </div>
             </div>
@@ -103,7 +134,7 @@ const Dashboard = () => {
                 </svg>
               </div>
               <div className="card-content">
-                <div className="card-value">15</div>
+                <div className="card-value">{totalUser}</div>
                 <p className="card-subtext">Updated 2 minutes ago</p>
               </div>
             </div>
@@ -116,11 +147,11 @@ const Dashboard = () => {
                 </svg>
               </div>
               <div className="card-content">
-                <div className="card-value">24</div>
+                <div className="card-value">{totalTransactions}</div>
                 <p className="card-subtext">Updated 2 minutes ago</p>
               </div>
             </div>
-            <div className="card">
+            {/* <div className="card">
               <div className="card-header">
                 <h3>Active Users</h3>
                 <svg viewBox="0 0 24 24" className="card-icon">
@@ -131,7 +162,7 @@ const Dashboard = () => {
                 <div className="card-value">5</div>
                 <p className="card-subtext">+201 since last hour</p>
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="chart-activities-grid">
             <div className="card">

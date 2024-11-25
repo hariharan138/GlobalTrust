@@ -14,11 +14,14 @@ import ContactUs from './components/ContactUs';
 import ProtectedRoute from './components/protectedRoutes/ProtectedRoute';
 import Trust from './Trust/Trust';
 import Transactions from './components/AdminCompos/Transactions';
+import TrustProvider from './context/TrustProvider';
 
 function App() {
   return (
     <Router future={{v7_relativeSplatPath: true, v7_startTransition: true}}>
-      <Routes>
+      <TrustProvider>
+        {/* navabar should be inside trsutProvider */}
+         <Routes>
       <Route path="/" element={<LoginPage />} />
         <Route path="/trust" element={<TrustPage />} />
         
@@ -55,10 +58,11 @@ function App() {
           <Transactions />
         </ProtectedRoute>} />
 
-        
-
         <Route path="/set" element={<SetPage />} />
       </Routes>
+      
+      </TrustProvider>
+     
     </Router>
   );
 }
