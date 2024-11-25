@@ -9,7 +9,7 @@ let userRoute = express.Router()
 userRoute.post('/registeruser',upload.single('profile'),userRegistration)
 userRoute.post('/loginuser', userLogin)
 userRoute.post('/logoutuser', userLogout)
-userRoute.get("/gettrust",userAuth, getTrusts);
+userRoute.get("/gettrust/:page/:limit",userAuth, getTrusts);
 userRoute.post('/foodRegister', userAuth, foodRegister)
 userRoute.get('/searchtrust', userAuth, searchTrust)
 userRoute.get('/getuserprofile', userAuth, getUserProfile)

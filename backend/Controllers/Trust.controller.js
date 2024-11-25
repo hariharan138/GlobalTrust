@@ -10,7 +10,6 @@ const cloudinary = require('../CloudinaryConfig.js/cluoudinaryconfig')
 const fs = require('fs')
 const { log } = require('console')
 
-let allowedFields = ["Name", "phone", "password"]
 
 let addTrusts=async(req,res)=>{
     try{
@@ -156,6 +155,8 @@ let logoutTrusts = async (req, res)=>{
 }
 
 let getUsers = async (req,res)=>{
+let allowedFields = ["Name", "phone", "email", "address", "_id", "image"]
+
         try{
             // let user = req.user
             
@@ -226,6 +227,7 @@ let acceptFoodOrder = async (req, res)=>{
 
 let searchUser = async (req, res)=>{
     try{
+        let allowedFields = ["Name", "phone", "email", "address", "image", "role"]
         let search = req.query.search
         // let sort = req.query.sort
 
@@ -246,8 +248,8 @@ let searchUser = async (req, res)=>{
         // console.log(search)
         const regex = new RegExp(search, "i"); // 'i' makes it case-insensitive
 
-        // Find documents where the `name` field matches the regex
-        const data = await UserModel.find({ Name: { $regex: regex } }).skip(skip).limit(limit)
+        // Find documents where the `Name` field matches the regex
+        const data = await UserModel.find({ Name: { $regex: regex } }).skip(skip).limit(limit).select(allowedFields)
         //    let data =  await UserModel.find({Name: {$regex: search, $options: "i"}}).skip(skip).limit(limit)
         
        if(!data.length>0){

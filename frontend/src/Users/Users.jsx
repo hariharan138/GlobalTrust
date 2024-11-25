@@ -40,13 +40,20 @@ const Users = () => {
     }
   }
 
+
+  
+
   let searchTrust = async  ()=>{
+    // use placeholdrs when you wnat to give value to the field ${} and use `` instead of '' or ""
+    // eg: http://localhost:4000/api/user/gettrust/:page/:limit //this api is for getting all the trusts from DB
     // to get all the trust just remove page and limit query parameter and make the searh as empty 
     // eg: http://localhost:4000/api/user/searchtrust?search=
     let {data} = await axios.get('http://localhost:4000/api/user/searchtrust?search=gokulTrust&page=1&limit=2', {
       withCredentials: true
     })
   }
+
+  
 
   return (
     <div className="dashboard">

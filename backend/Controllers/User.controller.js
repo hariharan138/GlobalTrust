@@ -130,10 +130,13 @@ let userLogout = async (req, res)=>{
 }
 
 let getTrusts=async(req,res,next)=>{
-    console.log("working")
-    let allowedFields = ["trustName", "trustEmail", "trustPhoneNumber", "address"]
+    // console.log("working")
+    let limit = (req.params.limit > 20 ? 10 : req.params.limit) || 10
+    let page = req.params.page || 1
+    let skip = (page-1) * limit
+    let allowedFields = ["trustName", "trustEmail", "trustPhoneNumber", "address", "image"]
     try{
-        let trusts =await Trust.find({}).select(allowedFields)
+        let trusts =await Trust.find({}).select(allowedFields).skip(skip).limit(limit)
         res.status(201).json({error:false,message:"Trust Fetch succesfully",data:trusts})
     }
     catch(err){
@@ -166,6 +169,7 @@ let foodRegister = async (req, res)=>{
 
 let searchTrust = async (req, res)=>{
     try{
+    let allowedFields = ["trustName", "trustEmail", "trustPhoneNumber", "address", "image", "role"]
         let search = req.query.search
         let page = req.query.page || 1
         let limit = req.query.limit || 10
@@ -183,7 +187,7 @@ let searchTrust = async (req, res)=>{
         const regex = new RegExp(search, "i"); // 'i' makes it case-insensitive
 
         // Find documents where the `name` field matches the regex
-        const data = await TrustModel.find({ trustName: { $regex: regex } }).skip(skip).limit(limit)
+        const data = await TrustModel.find({ trustName: { $regex: regex } }).skip(skip).limit(limit).select(allowedFields)
        
         // let data = await TrustModel.find({trustName: {$regex: search, $options: "i"}}).skip(skip).limit(limit)
     
