@@ -30,7 +30,7 @@ function App() {
         <Route path="/userlogin" element={<UserLogin/>} />
 
 
-        <Route path="/userhome" element={<ProtectedRoute>
+        <Route path="/userhome" element={<ProtectedRoute requiredRole="user">
           <Users />
         </ProtectedRoute>} />
         <Route path="/contact" element={<ContactUs/>} />

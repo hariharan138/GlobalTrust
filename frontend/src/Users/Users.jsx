@@ -40,6 +40,14 @@ const Users = () => {
     }
   }
 
+  let searchTrust = async  ()=>{
+    // to get all the trust just remove page and limit query parameter and make the searh as empty 
+    // eg: http://localhost:4000/api/user/searchtrust?search=
+    let {data} = await axios.get('http://localhost:4000/api/user/searchtrust?search=gokulTrust&page=1&limit=2', {
+      withCredentials: true
+    })
+  }
+
   return (
     <div className="dashboard">
 
