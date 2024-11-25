@@ -15,7 +15,7 @@ app.use(cookieParser())
 const trustRoutes = require('./Routes/TrustRoutes');
 const userRoute = require('./Routes/UserRoutes');
 const adminRoute = require('./Routes/AdminRoutes');
-const { connectDb } = require('./Database/ConnectDB');
+const connectDb  = require('./Database/ConnectDB');
 
 const fs = require("fs")
 const path = require("path")
