@@ -16,6 +16,7 @@ import Trust from './Trust/Trust';
 import Transactions from './components/AdminCompos/Transactions';
 import TrustProvider from './context/TrustProvider';
 import TrustHome from './components/TrustHome';
+import Users from './Users/Users';
 
 function App() {
   return (
@@ -24,16 +25,23 @@ function App() {
         {/* navabar should be inside trsutProvider */}
          <Routes>
       <Route path="/" element={<LoginPage />} />
-        <Route path="/trust" element={<TrustPage />} />
         
         <Route path="/user" element={<UserPage />} />
         <Route path="/userlogin" element={<UserLogin/>} />
+
+
+        <Route path="/userhome" element={<ProtectedRoute>
+          <Users />
+        </ProtectedRoute>} />
         <Route path="/contact" element={<ContactUs/>} />
 
 
-
+        <Route path="/trust" element={<TrustPage />} />
         <Route path="/trustlogin" element={<TrustLogin/>} />
-        <Route path="/trusthome" element={<TrustHome />} />
+
+        <Route path="/trusthome" element={<ProtectedRoute requiredRole="trust">
+          <TrustHome />
+        </ProtectedRoute>} />
 
         <Route path="/trustMainpage" element={<ProtectedRoute requiredRole="trust">
           <Trust/>

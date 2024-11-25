@@ -3,8 +3,11 @@ import {  Plus, Minus ,HandHeart,SendHorizontal,LogOut } from 'lucide-react'
 
 
 import './User.css'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 const Users = () => {
+  let naviagte = useNavigate()
   const [count, setCount] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [isVeg, setIsVeg] = useState(true)
@@ -22,6 +25,21 @@ const Users = () => {
     setIsVeg(prev => !prev)
   }
 
+  let handleLogout = async ()=>{
+    try{
+      let {data} = await axios.post('http://localhost:4000/api/user/logoutuser', {}, {
+        withCredentials: true
+      })
+      if(data.msg){
+        naviagte('/userlogin')
+      }
+    }
+    catch(err){
+      console.log(err?.response.data.message)
+      console.log(err?.data?.msg)
+    }
+  }
+
   return (
     <div className="dashboard">
 
@@ -29,7 +47,7 @@ const Users = () => {
         <h1>User Dashboard</h1>
         <div className="header-actions">
           <input type="search" placeholder="Search Trust..." className="search-input" />
-          <button className="incrementx-button">Logout<LogOut className="button-icon"  /></button>
+          <button className="incrementx-button" onClick={handleLogout}>Logout<LogOut className="button-icon"  /></button>
         </div>
       </header>
           

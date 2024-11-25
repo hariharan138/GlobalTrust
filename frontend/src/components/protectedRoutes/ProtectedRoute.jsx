@@ -80,12 +80,22 @@ function ProtectedRoute({ children , requiredRole }) {
 
   const roleToLoginPath = {
     admin: "/admin",   // path name for login page for admin
-    user: "/user",     // path name for login page for user
-    trust: "/trust",   // path name for login page for trust
+    user: "/userlogin",     // path name for login page for user
+    trust: "/trustlogin",   // path name for login page for trust
   };
 
     const checkAuth = () => {
-      const token = document.cookie.split(';').find(cookie => cookie.trim().startsWith('admintoken='||"authToken="||"userlogintoken="));
+
+      const roleToCookieName = {
+        admin: "admintoken",
+        trust: "authToken",
+        user: "userlogintoken",
+      };
+  
+      // Get the cookie name for the required role
+      const cookieName = roleToCookieName[requiredRole];
+
+      const token = document.cookie.split(';').find(cookie => cookie.trim().startsWith(`${cookieName}=`));
 
       if (token) {
         const decodedToken = jwtDecode(token.split('=')[1]);
