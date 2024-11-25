@@ -40,7 +40,7 @@ function App() {
         <Route path="/trustlogin" element={<TrustLogin/>} />
 
         <Route path="/trusthome" element={<ProtectedRoute requiredRole="trust">
-          <TrustHome />
+          <Trust />
         </ProtectedRoute>} />
 
         <Route path="/trustMainpage" element={<ProtectedRoute requiredRole="trust">
