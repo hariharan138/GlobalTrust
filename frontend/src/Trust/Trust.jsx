@@ -3,7 +3,7 @@ import React from 'react'
 const Trust = () => {
   return (
     <div>
-        <h1>      welcome to trust Page</h1>
+        <h1> welcome to Main trust </h1>
     </div>
   )
 }
