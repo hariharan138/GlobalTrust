@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Box, Typography, TextField, Button, Paper } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
@@ -38,7 +39,7 @@ const TrustLogin = () => {
         
       if (response.data.success) {
         document.cookie = `trusttoken=${response.data.token}; path=/;`
-        navigate('/trustMainpage')
+        navigate('/TrustHome')
       } else {
         setErrorMessage(response.data.message)
       }
