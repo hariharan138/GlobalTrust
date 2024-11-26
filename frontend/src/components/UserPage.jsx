@@ -10,7 +10,10 @@ import {
   TextField,
   Paper,
   Grid,
+  IconButton,
+  Alert,
 } from '@mui/material';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
 
 function UserPage() {
   const navigate = useNavigate();
@@ -22,37 +25,53 @@ function UserPage() {
     password: '',
     confirmPassword: '',
     address: '',
+    image: null,
   });
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [imagePreview, setImagePreview] = useState(null);
 
   const handleChange = (e) => {
-    if (errorMessage) setErrorMessage(''); // Clear errors on new input
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+    console.log(formData);
 
+    const { name, value, type, files } = e.target;
+
+  if (name === 'image') {
+    const file = files[0];
+    setFormData({ ...formData, image: file });
+    setImagePreview(URL.createObjectURL(file));
+  } else {
+    // console.log(value)
+    setFormData({ ...formData, [name]: value });
+  }
+}
+
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate passwords match
     if (formData.password !== formData.confirmPassword) {
       setErrorMessage('Passwords do not match!');
       return;
     }
 
+    const formDataToSend = new FormData();
+    formDataToSend.append('profile', formData.image); // Attach the image file
+    formDataToSend.append('Name', `${formData.firstName} ${formData.lastName}`)
+    formDataToSend.append('email', formData.email);
+    formDataToSend.append('phone', formData.phoneNumber);
+    formDataToSend.append('password', formData.password);
+    formDataToSend.append('confirmPassword', formData.confirmPassword)
+    formDataToSend.append('address', formData.address);
+
     try {
-      const response = await axios.post('http://localhost:4000/api/user/registeruser', {
-        Name: `${formData.firstName} ${formData.lastName}`,
-        email: formData.email,
-        password: formData.password,
-        confirmPassword: formData.confirmPassword,
-        phone: formData.phoneNumber,
-        address: formData.address,
-      });
+      const response = await axios.post(
+        'http://localhost:4000/api/user/registeruser',
+        formDataToSend,
+        { headers: { 'Content-Type': 'multipart/form-data' } }
+      );
 
       setSuccessMessage(response.data.message || 'Registration successful!');
-      
-      // Clear form after successful submission
       setFormData({
         firstName: '',
         lastName: '',
@@ -61,18 +80,22 @@ function UserPage() {
         password: '',
         confirmPassword: '',
         address: '',
+        image: null,
       });
+      setImagePreview(null);
 
-      // Redirect to login page after success
       setTimeout(() => navigate('/userlogin'), 2000);
     } catch (error) {
+      console.log(error)
+      console.log(error.message)
+      console.log(error.response.data.message)
       setErrorMessage(error.response?.data?.error || 'Something went wrong!');
     }
   };
 
+
   return (
     <>
-      {/* Navigation Bar */}
       <AppBar position="static" sx={{ backgroundColor: '#1976d2' }}>
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
@@ -90,7 +113,6 @@ function UserPage() {
         </Toolbar>
       </AppBar>
 
-      {/* Registration Form */}
       <Box
         sx={{
           minHeight: '100vh',
@@ -105,18 +127,18 @@ function UserPage() {
           <Typography variant="h4" align="center" gutterBottom>
             Registration Form
           </Typography>
-.
-          {errorMessage && (
-            <Typography color="error" align="center">
-              {errorMessage}
-            </Typography>
+
+          {/* {errorMessage && (
+            <Alert severity="error" sx={{ marginBottom: 2 }}>
+              {errorMessage || "An unknown error occurred!"}
+            </Alert>
           )}
 
           {successMessage && (
-            <Typography color="success" align="center">
-              {successMessage}
-            </Typography>
-          )}
+            <Alert severity="success" sx={{ marginBottom: 2 }}>
+              {successMessage || "Registration successful!"}
+            </Alert>
+          )} */}
 
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
@@ -170,10 +192,10 @@ function UserPage() {
                 <TextField
                   name="password"
                   value={formData.password}
-                  onChange={handleChange}
+                  onChange={(e)=> handleChange(e)}
                   fullWidth
                   label="Password"
-                  type="password"
+                  type="text"
                   variant="outlined"
                   required
                 />
@@ -185,7 +207,7 @@ function UserPage() {
                   onChange={handleChange}
                   fullWidth
                   label="Confirm Password"
-                  type="password"
+                  type="text"
                   variant="outlined"
                   required
                 />
@@ -203,16 +225,70 @@ function UserPage() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    fullWidth
-                    sx={{ padding: 1.5, backgroundColor: '#1976d2', width: '25%' }}
-                  >
-                    Register
-                  </Button>
-                </div>
+                <Typography variant="body1" gutterBottom>
+                  Upload Trust Document (Image)
+                </Typography>
+                <Box
+                  sx={{
+                    border: '2px dashed #1976d2',
+                    borderRadius: '8px',
+                    padding: '16px',
+                    textAlign: 'center',
+                    cursor: 'pointer',
+                    transition: '0.3s',
+                    '&:hover': { backgroundColor: 'rgba(25, 118, 210, 0.1)' },
+                  }}
+                  onClick={() => document.getElementById('fileInput').click()}
+                >
+                  {imagePreview ? (
+                    <Box>
+                      <img
+                        src={imagePreview}
+                        alt="Preview"
+                        style={{
+                          maxWidth: '100%',
+                          maxHeight: '150px',
+                          marginBottom: '8px',
+                        }}
+                      />
+                      <Typography variant="body2" color="textSecondary">
+                        Click to change the image
+                      </Typography>
+                    </Box>
+                  ) : (
+                    <Box>
+                      <IconButton color="primary">
+                        <UploadFileIcon fontSize="large" />
+                      </IconButton>
+                      <Typography variant="body2" color="textSecondary">
+                        Click to upload an image
+                      </Typography>
+                    </Box>
+                  )}
+                  <input
+                    id="fileInput"
+                    type="file"
+                    name="image"
+                    // accept="image/*"
+                    onChange={handleChange}
+                    style={{ display: 'none' }}
+                    
+                  />
+                </Box>
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  fullWidth
+                  sx={{
+                    padding: 1.5,
+                    backgroundColor: '#1976d2',
+                    width: '25%',
+                  }}
+                >
+                  Register
+                </Button>
               </Grid>
             </Grid>
           </form>
@@ -220,6 +296,7 @@ function UserPage() {
       </Box>
     </>
   );
+
 }
 
 export default UserPage;
