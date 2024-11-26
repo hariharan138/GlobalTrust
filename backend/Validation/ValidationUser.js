@@ -46,7 +46,7 @@ let validateUser = async (req, res)=>{
       throw new Error("please enter you address")
     }
 
-  if(password!==confirmPassword){
+  if(password!=confirmPassword){
     throw new Error("Password is not matching with confirm Password")
   }
   console.log("no problem")

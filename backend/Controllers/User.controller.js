@@ -59,12 +59,14 @@ let userRegistration = async(req, res)=>{
               };
             }
 
+            console.log(imageData)
+
             let newUser = new UserModel({
                 Name, 
                 email,
                 phone, 
                 address,
-                password: hashedPassword, 
+                password: hashedPassword,
                 confirmPassword: hashedPassword,
                 // image:{
                 //     public_id: result.public_id,
@@ -149,7 +151,9 @@ let foodRegister = async (req, res)=>{
     try{
         let user = req.user
         let {fromUserId, noOfPeople, veg, preferred, acceptedBy} = req.body
-            console.log(user)
+            // console.log(user)
+            console.log(noOfPeople)
+            console.log("type of noOfpeople",typeof noOfPeople)
         if(!noOfPeople){
             throw new Error("Atleast it should be afford to one person")
         }
