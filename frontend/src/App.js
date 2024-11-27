@@ -17,12 +17,13 @@ import Transactions from './components/AdminCompos/Transactions';
 import TrustProvider from './context/TrustProvider';
 import TrustHome from './components/TrustHome';
 import Users from './Users/Users';
+import UserProvider from './context/UserProvider';
 
 function App() {
   return (
     <Router future={{v7_relativeSplatPath: true, v7_startTransition: true}}>
       <TrustProvider>
-        {/* navabar should be inside trsutProvider */}
+        <UserProvider>
          <Routes>
       <Route path="/" element={<LoginPage />} />
         
@@ -70,7 +71,8 @@ function App() {
 
         <Route path="/set" element={<SetPage />} />
       </Routes>
-      
+
+      </UserProvider>
       </TrustProvider>
      
     </Router>
