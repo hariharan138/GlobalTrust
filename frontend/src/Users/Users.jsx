@@ -6,6 +6,7 @@ import './User.css'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { UserContext } from '../context/UserProvider'
+import Inbox from './Inbox'
 
 const Users = () => {
   let naviagte = useNavigate()
@@ -22,14 +23,14 @@ const Users = () => {
     })
   }, [])
 
-  const [count, setCount] = useState(0)
+  // const [count, setCount] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [isVeg, setIsVeg] = useState(true)
   const [totalTrust, setTotalTrust] = useState(null)
   const [totalTrustLoading, setTotalTrustLoading] = useState(false)
+  const [showInbox, setShowInbox] = useState(false)
   
-  // sample api below one is 
-  const [totalTrustItems, setTotalTrustItems] = useState([])
+  const [loading, setLoading] = useState(false)
   
   const [selectedTrust, setSelectedTrust] = useState([])
   const [createFoodDetail, setCreateFoodDetail] = useState({
@@ -49,7 +50,6 @@ const Users = () => {
       preferred: selectedTrust
     })
   }, [profileData, selectedTrust, quantity, isVeg])
-
 
   const [searchQuery, setSearchQuery] = useState('')
   // const incrementCount = () => {
@@ -90,38 +90,20 @@ const Users = () => {
 
         if(data?.data){
           setTotalTrust(data?.data.length)
-          setTotalTrustLoading(false)
     }
   }
     catch(err){
       console.log(err.response?.data?.msg)
     }
+    finally{
+      setTotalTrustLoading(false)
+    }
   }
+ 
 
   useEffect(()=>{
     getTotalTrust()
   }, [])
-
-
-  // delete this code below, no longer needed
-//   useEffect(()=>{
-//    async function getTotalTrust(){
-//     try{
-//       let {data} = await axios.get(`http://localhost:4000/api/user/gettrust/1/10`, {
-//         withCredentials: true
-//       })
-// if(data?.data){
-//   let finalData = data?.data
-//   console.log(finalData)
-//   setTotalTrustItems(finalData)
-// }
-//     }
-//     catch(err){
-//       console.log(err.response?.data?.msg)
-//     }
-//    }
-//    getTotalTrust()
-//   }, [])
 
 
   let handleSelectTrust = (id, {target: {checked}})=>{
@@ -147,49 +129,66 @@ const Users = () => {
         let foodstatus = data?.msg
         console.log(resp)
         setSuccessfullCreated(foodstatus=="food created" ? true : false)
+        setTimeout(() => {
+          setSuccessfullCreated(false)
+        }, 2000);
       }
     }
     catch(err){
       console.log(err.response?.data?.msg)
       console.log(err)
     }
+    finally{
+      setCreateFoodDetail({...createFoodDetail, preferred: [], noOfPeople: 0})
+    }
   }
 
   let getTrust = async  ()=>{
-  //   // use placeholdrs when you wnat to give value to the field ${} and use `` instead of '' or ""
-  //   // eg: http://localhost:4000/api/user/gettrust/:page/:limit //this api is for getting all the trusts from DB
-  //   // to get all the trust just remove page and limit query parameter and make the searh as empty 
-  //   // eg: http://localhost:4000/api/user/searchtrust?search=
-  //   let {data} = await axios.get('http://localhost:4000/api/user/searchtrust?search=gokulTrust&page=1&limit=2', {
-  //     withCredentials: true
-  //   })
-try{
+    try{
+  setLoading(true)
   let { data } = await axios.get('http://localhost:4000/api/user/searchtrust?search=', {
     withCredentials: true
   })
-  console.log(data)
-  setTrusts(data.data)
+  // console.log(data)
+  if(data?.data){
+      setTrusts(data?.data)
+      setLoading(false)
+  } 
 }
 catch (err) {
   console.error(err.response?.data?.message || 'Error fetching trusts');
 }
-
+finally{
+  setLoading(false)
 }
+
+  }
 
 
 useEffect(() => {
   getTrust(); // Fetch all trusts by default
 }, []);
   
-
+const [searchError, setSearchError] = useState("")
 const handleSearch = async () => {
   try {
+    setLoading(true)
     let { data } = await axios.get(`http://localhost:4000/api/user/searchtrust?search=${searchQuery}`, {
       withCredentials: true,
     });
-    setTrusts(data?.data);
+     if(data?.data){
+       setSearchError("")
+         setTrusts(data?.data)
+     } 
   } catch (err) {
-    console.error(err.response?.data?.message || 'Error fetching trusts');
+    console.log(err)
+    if(err){
+      setSearchError(err.response?.data?.message )
+    }
+    console.log(err.response?.data?.message || 'Error fetching trusts');
+  }
+  finally{
+    setLoading(false)
   }
 };
   
@@ -213,6 +212,7 @@ const handleSearch = async () => {
 <button className="incrementx-button" onClick={handleSearch}>
   Search
 </button>
+    {!showInbox ? <button onClick={()=> setShowInbox(true)}>inbox</button>: <Inbox setShowInbox={setShowInbox}/>}
 <button className="incrementx-button" onClick={handleLogout}>Logout<LogOut className="button-icon"  /></button>
         </div>
       </header>
@@ -229,7 +229,8 @@ const handleSearch = async () => {
               <div className="card-value">{totalTrustLoading ?
               <div style={{fontSize: "16px"}}>loading</div>
               : totalTrust}</div>
-              <p className="card-subtext">Active Trust in the system</p>
+              {/* <p className="card-subtext">Active Trust in the system</p> */}
+              <p className='card-subtext'>{successfullCreated ? "food order created" : null}</p>
             </div>
             <div className="quantity-control">
               <label htmlFor="quantity" className="quantity-label">Quantity:</label>
@@ -279,27 +280,27 @@ const handleSearch = async () => {
     <HandHeart className="card-icon" />
   </div>
   <div className="card-content">
-    <ul className="trusts-list">
-      {trusts.length > 0 ? (
-        trusts.map((trust, index) => (
-          <li key={index} className="trust-item">
-            <img src={trust.image} alt={trust.name} className="trust-image" />
-            <h3 className="trust-name">{trust.trustName}</h3>
-            {/* Add a checkbox here */}
-            <input 
-              type="checkbox" 
-              id={`trust-checkbox-${index}`} 
-              className="trust-checkbox" 
-              disabled={selectedTrust.length>3 && !selectedTrust.includes(trust._id)}
-              onChange={(e)=> handleSelectTrust(trust._id, e)}
-            />
-          </li>
-        ))
-      ) : (
-        <p>No trusts available.</p>
-      )}
-    </ul>
-  </div>
+{loading && <div style={{fontSize: "20px", textAlign: "center"}}>Loading..</div>}
+{!loading && searchError && <div style={{fontSize: "20px", textAlign: "center"}}>{searchError}</div>}
+ {!loading && !searchError && <ul className="trusts-list">
+  {trusts.length > 0 && (
+    trusts.map((trust, index) => (
+      <li key={index} className="trust-item">
+        <img src={trust.image} alt={trust.name} className="trust-image" />
+        <h3 className="trust-name">{trust.trustName}</h3>
+        {/* Add a checkbox here */}
+        <input 
+          type="checkbox" 
+          id={`trust-checkbox-${index}`} 
+          className="trust-checkbox" 
+          disabled={selectedTrust.length>3 && !selectedTrust.includes(trust._id)}
+          onChange={(e)=> handleSelectTrust(trust._id, e)}
+        />
+      </li>
+    ))
+  )}
+</ul> }
+          </div>
 </div>
 
         </div>
