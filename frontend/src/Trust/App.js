@@ -17,16 +17,13 @@ import Transactions from './components/AdminCompos/Transactions';
 import TrustProvider from './context/TrustProvider';
 import TrustHome from './components/TrustHome';
 import Users from './Users/Users';
-import UserProvider from './context/UserProvider';
-import Navbar from './Trust/Navbar';
 import TrustProfile from './Trust/TrustProfile';
 
 function App() {
   return (
     <Router future={{v7_relativeSplatPath: true, v7_startTransition: true}}>
       <TrustProvider>
-        <UserProvider>
-          {/* <Navbar /> */}
+        {/* navabar should be inside trsutProvider */}
          <Routes>
       <Route path="/" element={<LoginPage />} />
         
@@ -43,6 +40,8 @@ function App() {
         <Route path="/trust" element={<TrustPage />} />
         <Route path="/trustlogin" element={<TrustLogin/>} />
 
+        <Route path="/trustProfile" element={<TrustProfile />} />
+
         <Route path="/trusthome" element={<ProtectedRoute requiredRole="trust">
           <Trust />
         </ProtectedRoute>} />
@@ -50,11 +49,6 @@ function App() {
         <Route path="/trustMainpage" element={<ProtectedRoute requiredRole="trust">
           <Trust/>
         </ProtectedRoute>} />
-
-        <Route path="/Trustprofile" element={<ProtectedRoute requiredRole="trust">
-          <TrustProfile />
-        </ProtectedRoute>} />
-
 
 
         {/* admin login page does not protected */}
@@ -79,8 +73,7 @@ function App() {
 
         <Route path="/set" element={<SetPage />} />
       </Routes>
-
-      </UserProvider>
+      
       </TrustProvider>
      
     </Router>

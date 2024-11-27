@@ -1,35 +1,6 @@
-// import axios from 'axios'
-// import React from 'react'
-// import Navbar from './Navbar'
-
-// const Trust = () => {
-
-
-//   let searchUser = async  ()=>{
-//     // use placeholdrs when you wnat to give value to the field ${} and use `` instead of '' or ""
-//     // http://localhost:4000/api/trust/getusers/:page/:limit // this api is to get all the users in DB first params is for page second is for limit
-//     // in blow api to get all the user just remove page and limit query parameter and make the searh as empty 
-//     // eg: http://localhost:4000/api/trust/searchuser?search=
-//     // the above one give all the result
-//     let {data} = await axios.get(`http://localhost:4000/api/trust/searchuser?search=Ram&page=1&limit=2`, {
-//       withCredentials: true
-//     })
-//   }
-//   return (
-//     <div>
-//       <Navbar />
-//         <h1>      welcome to trust Page</h1>
-//     </div>
-//   )
-// }
-
-// export default Trust
-
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar from './Navbar';
-import { Button } from '@mui/material';
 
 const UserCard = ({ user }) => {
   const userCardStyle = {
@@ -79,9 +50,7 @@ const UserCard = ({ user }) => {
   );
 };
 
-const Inbox = ({ inboxMessages , setInboxMessages}) => {
-
-
+const Inbox = ({ messages }) => {
   const inboxMessageStyle = {
     borderBottom: '1px solid #eee',
     padding: '10px 0',
@@ -97,38 +66,14 @@ const Inbox = ({ inboxMessages , setInboxMessages}) => {
     fontSize: '14px',
   };
 
-  
-  let acceptOrder = async (id)=>{
-    // console.log(id)
-   try{
-    let {data} = await axios.post(`http://localhost:4000/api/trust/acceptfoodorder/${id}`, {} ,{
-      withCredentials: true
-  })
-
-  let finalData = data?.data
-  if(finalData){
-     let remainingMessages = inboxMessages.filter(({_id})=> _id != finalData._id )
-      setInboxMessages(remainingMessages)
-  }
-   }
-   catch(err){
-      console.log(err.response?.data?.msg)
-   }
-  }
-
   return (
     <>
       <h2 style={{ fontSize: '20px', fontWeight: 'bold', textAlign: 'center' }}>Inbox</h2>
-      {inboxMessages.map(({_id, fromUserId, noOfPeople, veg, address, createdAt}) => (
-        <div key={_id} style={inboxMessageStyle}>
-          <div style={inboxSubjectStyle}>{veg ? "Veg" : "Non-Veg"}</div>
-          <div style={inboxSenderStyle}>Address: {address}</div>
-          {/* <p>{address}</p> */}
-            <Button 
-            variant='contained'
-             sx={{width: "30px", fontSize: "12px"}}
-             onClick={()=> acceptOrder(_id)}
-            >Accept</Button>
+      {messages.map((message) => (
+        <div key={message.id} style={inboxMessageStyle}>
+          <div style={inboxSubjectStyle}>{message.subject}</div>
+          <div style={inboxSenderStyle}>From: {message.sender}</div>
+          <p>{message.content}</p>
         </div>
       ))}
     </>
@@ -136,49 +81,25 @@ const Inbox = ({ inboxMessages , setInboxMessages}) => {
 };
 
 const Trust = () => {
-
   const [searchTerm, setSearchTerm] = useState('');
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [inboxMessages, setInboxMessages] = useState([
-    // { id: 1, sender: 'John Doe', subject: 'Welcome!', content: 'Welcome to our platform.' },
-    // { id: 2, sender: 'Jane Smith', subject: 'New features', content: 'Check out our latest updates.' },
-    // { id: 3, sender: 'Admin', subject: 'Important notice', content: 'Please update your profile.' },
+  const [inboxMessages] = useState([
+    { id: 1, sender: 'John Doe', subject: 'Welcome!', content: 'Welcome to our platform.' },
+    { id: 2, sender: 'Jane Smith', subject: 'New features', content: 'Check out our latest updates.' },
+    { id: 3, sender: 'Admin', subject: 'Important notice', content: 'Please update your profile.' },
   ]);
-
-  let getRegisteredOrders = async ()=>{
-    // with pagination http://localhost:4000/api/trust/getfoodorder?limit=2&page=1
-   try{
-    let {data} = await axios.get(`http://localhost:4000/api/trust/getfoodorder`, {
-      withCredentials: true
-    })
-    
-    let finalData = data?.data
-    if(finalData.length>0){
-      console.log(finalData)
-      setInboxMessages(finalData)
-    }
-   }
-   catch(err){
-    console.log(err.response?.data?.msg)
-   }
-  }
-
-  useEffect(()=>{
-    getRegisteredOrders()
-    // console.log(inboxMessages)
-  }, [])
 
   const searchUser = async () => {
     setLoading(true);
     setError('');
     try {
       const { data } = await axios.get(
-        `http://localhost:4000/api/trust/searchuser?search=${searchTerm}`,
-        {  withCredentials: true }
+        'http://localhost:4000/api/trust/searchuser',
+        { params: { search: searchTerm }, withCredentials: true }
       );
-      setUsers(data?.data);
+      setUsers(data);
     } catch (err) {
       setError('Failed to fetch users. Please try again.');
     } finally {
@@ -236,10 +157,6 @@ const Trust = () => {
     marginTop: '20px',
   };
 
-  useEffect(()=>{
-    searchUser()
-  }, [])
-
   return (
     <div>
       <Navbar />
@@ -278,7 +195,7 @@ const Trust = () => {
           </div>
 
           <div style={inboxContainerStyle}>
-            <Inbox inboxMessages={inboxMessages} setInboxMessages={setInboxMessages}/>
+            <Inbox messages={inboxMessages} />
           </div>
         </div>
       </div>
