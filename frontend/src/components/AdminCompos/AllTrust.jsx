@@ -112,18 +112,6 @@ const AllTrust = () => {
                 <main className="dashboard-content">
                     <div className="card-grid">
 
-                        
-                    {/* {(searchedResult.length>0 ? searchedResult : (apidata.length>0 && apidata)).map(({trustName, _id, trustEmail, address, trustPhoneNumber, image}) => {
-                            return (
-                                <>
-                           
-                                   <DisplaygetData  key={_id} _id={_id} Name={trustName} email={trustEmail} address={address} image={image} phone={trustPhoneNumber} />
-
-                                </>
-                            )
-                        })
-                        } */}
-
                         {loading && <div>Loading Please wait</div>}
                         {errorMessage && <div>{errorMessage}</div>}
 
