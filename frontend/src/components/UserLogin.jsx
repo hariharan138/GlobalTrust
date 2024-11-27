@@ -44,7 +44,7 @@ const UserLogin = () => {
       } else {
         setErrorMessage(response.data.message)
       }
-      console.log(response)
+      // console.log(response)
     } catch (err) {
       if (err.response) {
         console.error("Backend error:", err.response.data);
