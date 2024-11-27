@@ -178,11 +178,11 @@ let getRegisteredFoods = async (req, res)=>{
     try{
         let user = req.user
 
-        let page = req.params.page || 1
-        let limit = (req.params.limit > 20 ? 10 : req.params.limit) || 10
+        let page = req.query.page || 1
+        let limit = (req.query.limit > 20 ? 10 : req.query.limit) || 10
         let skip = (page-1) * limit
         
-        let preferredOrders = await FoodModel.find({preferred: {$in: [user._id]}}).skip(skip).limit(limit).select("fromUserId noOfPeople address veg createdAt")
+        let preferredOrders = await FoodModel.find({preferred: {$in: [user._id]}, acceptedBy: {$eq: null}}).skip(skip).limit(limit).select("fromUserId noOfPeople address veg createdAt")
         
         let preferedOrdersSenderId = preferredOrders?.map(order=>{
         return order.fromUserId.toString()
@@ -190,7 +190,7 @@ let getRegisteredFoods = async (req, res)=>{
         
         console.log(preferedOrdersSenderId)
         
-          let normalOrders = await FoodModel.find({fromUserId: {$nin : preferedOrdersSenderId}}).skip(skip).limit(limit)
+          let normalOrders = await FoodModel.find({fromUserId: {$nin : preferedOrdersSenderId}, acceptedBy: {$eq: null}}).skip(skip).limit(limit)
 
          let data = preferredOrders.concat(normalOrders)
         res.status(200).json({msg: "data fetched correctly", data}) 

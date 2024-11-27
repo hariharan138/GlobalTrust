@@ -11,7 +11,7 @@ route.post("/logintrust",loginTrusts);
 route.post("/logouttrust",logoutTrusts);
 route.get('/getusers/:page/:limit', trustUserAuth, getUsers)
 
-route.get('/getfoodorder/:page/:limit', trustUserAuth ,getRegisteredFoods)
+route.get('/getfoodorder', trustUserAuth ,getRegisteredFoods)
 route.post('/acceptfoodorder/:orderId', trustUserAuth ,acceptFoodOrder)
 
 route.get('/searchuser', trustUserAuth, searchUser)
