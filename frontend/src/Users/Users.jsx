@@ -1,20 +1,58 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {  Plus, Minus ,HandHeart,SendHorizontal,LogOut } from 'lucide-react'
 
 
 import './User.css'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { UserContext } from '../context/UserProvider'
 
 const Users = () => {
   let naviagte = useNavigate()
+
+  let {getProfileData} = useContext(UserContext)
+
+  const [profileData, setProfileData] = useState(null)
+
+  // getting the profile data
+  useEffect(()=>{
+    getProfileData().then(res=>{
+      setProfileData(res)
+    })
+  }, [])
+
   const [count, setCount] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [isVeg, setIsVeg] = useState(true)
+  
+  const [totalTrust, setTotalTrust] = useState(null)
+  const [totalTrustLoading, setTotalTrustLoading] = useState(false)
+  
+  // sample api below one is 
+  const [totalTrustItems, setTotalTrustItems] = useState([])
+  
+  const [selectedTrust, setSelectedTrust] = useState([])
+  const [createFoodDetail, setCreateFoodDetail] = useState({
+    fromUserId: "",
+    noOfPeople: 1,
+    veg: true,
+    preferred: [],
+  })
+  const [successfullCreated, setSuccessfullCreated] = useState(false)
 
-  const incrementCount = () => {
-    setCount(prevCount => prevCount + quantity)
-  }
+  useEffect(()=>{
+    // console.log(profileData)
+    setCreateFoodDetail({...createFoodDetail, 
+      fromUserId: profileData?._id,
+      noOfPeople: quantity,
+      veg: isVeg,
+      preferred: selectedTrust
+    })
+  }, [profileData, selectedTrust, quantity, isVeg])
+
+  // const incrementCount = () => {
+  //   setCount(prevCount => prevCount + quantity)
+  // }
 
   const handleQuantityChange = (event) => {
     const value = parseInt(event.target.value, 10)
@@ -40,18 +78,90 @@ const Users = () => {
     }
   }
 
+  // this function is to get the total trust present in the database
+  let getTotalTrust = async ()=>{
+    setTotalTrustLoading(true)
+    try{
+       let {data} = await axios.get(`http://localhost:4000/api/user/gettrust/1/10`, {
+          withCredentials: true
+        })
 
-  
-
-  let searchTrust = async  ()=>{
-    // use placeholdrs when you wnat to give value to the field ${} and use `` instead of '' or ""
-    // eg: http://localhost:4000/api/user/gettrust/:page/:limit //this api is for getting all the trusts from DB
-    // to get all the trust just remove page and limit query parameter and make the searh as empty 
-    // eg: http://localhost:4000/api/user/searchtrust?search=
-    let {data} = await axios.get('http://localhost:4000/api/user/searchtrust?search=gokulTrust&page=1&limit=2', {
-      withCredentials: true
-    })
+        if(data?.data){
+          setTotalTrust(data?.data.length)
+          setTotalTrustLoading(false)
+    }
   }
+    catch(err){
+      console.log(err.response?.data?.msg)
+    }
+  }
+
+  useEffect(()=>{
+    getTotalTrust()
+  }, [])
+
+
+  // delete this code below, no longer needed
+//   useEffect(()=>{
+//    async function getTotalTrust(){
+//     try{
+//       let {data} = await axios.get(`http://localhost:4000/api/user/gettrust/1/10`, {
+//         withCredentials: true
+//       })
+// if(data?.data){
+//   let finalData = data?.data
+//   console.log(finalData)
+//   setTotalTrustItems(finalData)
+// }
+//     }
+//     catch(err){
+//       console.log(err.response?.data?.msg)
+//     }
+//    }
+//    getTotalTrust()
+//   }, [])
+
+
+  let handleSelectTrust = (id, {target: {checked}})=>{
+    if(!selectedTrust.includes(id) && checked && selectedTrust.length<5){
+      setSelectedTrust((prev)=> [...prev, id])
+    }
+    else if(selectedTrust.includes(id) && !checked){
+      let removePreferedTrust = selectedTrust.filter(ele=> ele != id)
+      setSelectedTrust(removePreferedTrust)
+    }
+  }
+
+  let createFoodOrder = async ()=>{
+    try{
+      let {data} = await axios.post('http://localhost:4000/api/user/foodRegister',
+          createFoodDetail,    
+      {
+        withCredentials: true
+      })
+        // console.log(data?.data)
+      if(data?.data){
+        let resp = data?.data
+        let foodstatus = data?.msg
+        console.log(resp)
+        setSuccessfullCreated(foodstatus=="food created" ? true : false)
+      }
+    }
+    catch(err){
+      console.log(err.response?.data?.msg)
+      console.log(err)
+    }
+  }
+
+  // let searchTrust = async  ()=>{
+  //   // use placeholdrs when you wnat to give value to the field ${} and use `` instead of '' or ""
+  //   // eg: http://localhost:4000/api/user/gettrust/:page/:limit //this api is for getting all the trusts from DB
+  //   // to get all the trust just remove page and limit query parameter and make the searh as empty 
+  //   // eg: http://localhost:4000/api/user/searchtrust?search=
+  //   let {data} = await axios.get('http://localhost:4000/api/user/searchtrust?search=gokulTrust&page=1&limit=2', {
+  //     withCredentials: true
+  //   })
+  // }
 
   
 
@@ -66,7 +176,8 @@ const Users = () => {
         </div>
       </header>
           
-      <main className="dashboard-content">
+     <div style={{display: 'flex'}}>
+     <main className="dashboard-content">
         <div className="card-grid">
           <div className="card">
             <div className="card-header">
@@ -75,7 +186,9 @@ const Users = () => {
               
             </div>
             <div className="card-content">
-              <div className="card-value">10</div>
+              <div className="card-value">{totalTrustLoading ?
+              <div style={{fontSize: "16px"}}>loading</div>
+              : totalTrust}</div>
               <p className="card-subtext">Active Trust in the system</p>
             </div>
             <div className="quantity-control">
@@ -112,7 +225,8 @@ const Users = () => {
                 </div>
               </label>
             </div>
-            <button className="increment-button" onClick={incrementCount}>
+            <button className="increment-button"
+             onClick={createFoodOrder}>
               {/* <Plus className="button-icon" /> */}
               Send Food Availablity
               <SendHorizontal className="button-icon" />
@@ -120,6 +234,25 @@ const Users = () => {
           </div>
         </div>
       </main>
+
+      <section className='render-items'>
+        <div>
+              {totalTrustItems.length>0 && totalTrustItems.map(ele=>(
+                <div key={ele._id} style={{border: "2px solid black",  margin: "2px"}}>
+                  <p>{ele.trustEmail}</p>
+                  <p>
+                    <input 
+                   disabled={ selectedTrust.length === 4 && !selectedTrust.includes(ele._id)}
+                    type="checkbox" 
+                    onChange={(e)=> handleSelectTrust(ele._id, e)}/>
+                  </p>
+                  {/* <p>{ele.trustName}</p>
+                  <p>{ele.address}</p> */}
+                  </div>
+              ))}
+        </div>
+      </section>
+     </div>
       
     </div>
   )
