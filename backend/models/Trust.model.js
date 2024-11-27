@@ -34,7 +34,7 @@ let Trustschema= new mongoose.Schema({
         required:true,
     },
     trustId:{
-        required:true,
+        // required:true,
         unique: true,
         type: String
     },
