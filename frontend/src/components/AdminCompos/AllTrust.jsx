@@ -116,12 +116,8 @@ const AllTrust = () => {
                         {errorMessage && <div>{errorMessage}</div>}
 
                         {!loading && !errorMessage && searchedResult.length>0 && searchedResult.map(({trustName, _id, trustEmail, role, address, trustPhoneNumber, image}) => {
-                            return (
-                                
-                           
-                                   <DisplaygetData setSearchedResult={setSearchedResult} searchedResult={searchedResult}  key={_id} _id={_id} Name={trustName} email={trustEmail} address={address} role={role} image={image} phone={trustPhoneNumber} />
-
-                                
+                            return (              
+                        <DisplaygetData setSearchedResult={setSearchedResult} searchedResult={searchedResult}  key={_id} _id={_id} Name={trustName} email={trustEmail} address={address} role={role} image={image} phone={trustPhoneNumber} />
                             )
                         })
                         }
