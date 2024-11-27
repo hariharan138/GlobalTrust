@@ -223,6 +223,17 @@ let getUserProfile = async (req, res)=>{
     }
 }
 
+let getNotification = async (req, res)=>{
+    try{
+        let user = req.user
+        let foodOrdersAccepted = await FoodModel.find({fromUserId: user._id, acceptedBy: {$ne: null}}).select("acceptedBy acceptedTrustName veg noOfPeople")
+        res.status(200).json({msg: "accepted orders data fetched", data: foodOrdersAccepted})
+    }
+    catch(err){
+        res.status(500).json({error:true, message:err.message})
+    }
+}
+
 
 module.exports= {
     userRegistration,
@@ -231,5 +242,6 @@ module.exports= {
     getTrusts,
     foodRegister,
     searchTrust,
-    getUserProfile
+    getUserProfile,
+    getNotification
 }

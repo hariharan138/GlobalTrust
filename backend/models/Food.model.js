@@ -34,6 +34,10 @@ let FoodSchema = new mongoose.Schema({
         ref: "Trust",
         default: null
     },
+    acceptedTrustName:{
+        type: String,
+        default: null
+    }
 },
 {
     timestamps: true

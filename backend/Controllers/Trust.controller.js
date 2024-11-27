@@ -216,6 +216,7 @@ let acceptFoodOrder = async (req, res)=>{
         }
 
         isAvailable.acceptedBy = user._id
+        isAvailable.acceptedTrustName = user.trustName
         await isAvailable.save()
         res.status(200).json({msg: user.firstName + " accepted the order", data: isAvailable})
 
@@ -265,7 +266,6 @@ let searchUser = async (req, res)=>{
 let getTrustProfile =  (req, res)=>{
     try{
         let user = req.user
-
         let encodedUserData = {}
         let allowedField = ["image", "_id", "firstName", "lastName", "email", "phone", "trustName", "address", "trustPhoneNumber", "createdAt", "updatedAt"]
 
