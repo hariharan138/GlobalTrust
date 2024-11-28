@@ -31,7 +31,6 @@ const Inbox = ({setShowInbox}) => {
         getNotification()
     }, [])
     console.log(notifications)
-    // if(loading) return <div style={{fontSize: "22px", fontWeight: "500", }}>Loading...</div>
 
     let mainContainer = {
             top: "110px",
@@ -48,7 +47,6 @@ const Inbox = ({setShowInbox}) => {
     <div style={mainContainer}>
         <div style={{
             display: "flex",
-            //  border: "2px solid red",
               justifyContent: "space-between", 
               alignItems: "center", 
               padding: "10px 0",
@@ -67,7 +65,6 @@ const Inbox = ({setShowInbox}) => {
                         <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
                         <p style={{fontSize: "20px", color: "#4299e1", margin: "0px"}}>{veg ? "veg" : "non-veg"}</p>
                         <p style={{fontSize: "16px", color: "#4299e1"}}>No Of People: <span style={{color: "#000"}}>{noOfPeople}</span></p>
-                                {/* <p>your order for {noOfPeople} food is {veg ? "veg" : "non-veg"} accepted by {acceptedTrustName}</p> */}
                     </div>
                         <p style={{color: "#4299e1"}}>Accepted by: <span style={{color: "#000"}}>{acceptedTrustName}</span></p>
                 </div>
