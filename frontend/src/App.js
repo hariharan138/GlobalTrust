@@ -21,6 +21,7 @@ import UserProvider from './context/UserProvider';
 import Navbar from './Trust/Navbar';
 import TrustProfile from './Trust/TrustProfile';
 import './index.css'
+import PageNotFound from './components/PageNotFound';
 function App() {
   return (
     <Router future={{v7_relativeSplatPath: true, v7_startTransition: true}}>
@@ -78,11 +79,11 @@ function App() {
         </ProtectedRoute>} />
 
         <Route path="/set" element={<SetPage />} />
+     <Route path='*' element={<PageNotFound />}/>
       </Routes>
 
       </UserProvider>
       </TrustProvider>
-     
     </Router>
   );
 }

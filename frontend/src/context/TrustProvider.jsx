@@ -4,10 +4,6 @@ import React, { createContext, useState } from 'react'
 export const TrustContext = createContext()
 
 const TrustProvider = (props) => {
-
-    // const [getNoOfTrust, setGetNoOfTrust] = useState(0)
-    // const [getNoOfTransactions, setGetNoOfTransactions] = useState(0)
-
     let getTotalTrust = async ()=>{
        try{
         let {data} = await axios.get('http://localhost:4000/api/admin/getnooftrusts', {
@@ -17,10 +13,8 @@ const TrustProvider = (props) => {
 
         let totalNoOfTrust = data?.data
         if(totalNoOfTrust){
-            console.log(totalNoOfTrust)
-            // setGetNoOfTransactions(totalNoOfTrust + 1)
+            return totalNoOfTrust
         }
-        return totalNoOfTrust
        }
        catch(err){
         console.log(err.response?.message)

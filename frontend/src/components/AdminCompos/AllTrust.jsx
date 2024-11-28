@@ -7,6 +7,7 @@ import axios from 'axios';
 import useGetAdm from './CustomHooks/useGetAdm';
 import DisplaygetData from './DisplaygetData';
 import InputSearch from './InputSearch';
+import AdminNavbar from './AdminNavbar';
 
 
 const AllTrust = () => {
@@ -72,7 +73,7 @@ const AllTrust = () => {
     return (
         <div className="dashboard">
             {/* Sidebar */}
-            <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
+            {/* <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
                 <div className="sidebar-header">
                     <h2>Dashboard</h2>
                     <button className="icon-button mobile-only" onClick={() => setSidebarOpen(false)}>
@@ -87,7 +88,8 @@ const AllTrust = () => {
                     <button className="nav-button" onClick={() => navigate("/set")}><Settings /> Settings</button>
                     <button className="nav-button logout"><LogOut /> Logout</button>
                 </nav>
-            </aside>
+            </aside> */}
+            <AdminNavbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}  />
 
             {/* Main Content */}
             <div className="main-content">
@@ -113,7 +115,7 @@ const AllTrust = () => {
                     <div className="card-grid">
 
                         {loading && <div>Loading Please wait</div>}
-                        {errorMessage && <div>{errorMessage}</div>}
+                        {!loading && errorMessage && <div>{errorMessage}</div>}
 
                         {!loading && !errorMessage && searchedResult.length>0 && searchedResult.map(({trustName, _id, trustEmail, role, address, trustPhoneNumber, image}) => {
                             return (              

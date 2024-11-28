@@ -7,6 +7,7 @@ import DisplaygetData from './DisplaygetData';
 import useGetAdm from './CustomHooks/useGetAdm';
 import InputSearch from './InputSearch';
 import axios from 'axios';
+import AdminNavbar from './AdminNavbar';
 
 
 const AllUser = () => {
@@ -68,7 +69,7 @@ const AllUser = () => {
     return (
         <div className="dashboard">
             {/* Sidebar */}
-            <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
+            {/* <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
                 <div className="sidebar-header">
                     <h2>Dashboard</h2>
                     <button className="icon-button mobile-only" onClick={() => setSidebarOpen(false)}>
@@ -83,8 +84,9 @@ const AllUser = () => {
                     <button className="nav-button" onClick={() => navigate("/set")}><Settings /> Settings</button>
                     <button className="nav-button logout"><LogOut /> Logout</button>
                 </nav>
-            </aside>
-
+            </aside> */}
+            
+            <AdminNavbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
 
             {/* Main Content */}

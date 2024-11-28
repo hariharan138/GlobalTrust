@@ -5,6 +5,7 @@ import './Dash.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { TrustContext } from '../../context/TrustProvider';
+import AdminNavbar from './AdminNavbar';
 const data = [
   { name: 'Jan', value: 400 },
   { name: 'Feb', value: 300 },
@@ -18,13 +19,12 @@ const Dashboard = () => {
 
   let {getTotalTrust, getTotalUser, getTotalTransactions} = useContext(TrustContext)
 
-
 //   useEffect(()=>{
 //     getTotalTrust()
 // },[])
   // console.log(getTotalTrust())
   const [sidebarOpen, setSidebarOpen] = useState(false)
- let navigate = useNavigate()
+  let navigate = useNavigate()
 
  let handleLogout = async ()=>{
   try{
@@ -53,7 +53,8 @@ const Dashboard = () => {
     }
   }
  }
- let [totalTrust, setTotalTrust]= useState(null);
+
+let [totalTrust, setTotalTrust]= useState(null);
 const [totalUser, setTotalUser] = useState(null)
 const [totalTransactions, setTotalTransactions] = useState(null)
 
@@ -61,8 +62,6 @@ const [totalTransactions, setTotalTransactions] = useState(null)
 
  useEffect(()=>{
     getTotalTrust().then(res=> {
-      console.log(res)
-      console.log("klshfd")
       setTotalTrust(res)
     })
 
@@ -73,13 +72,12 @@ const [totalTransactions, setTotalTransactions] = useState(null)
     getTotalUser().then(res=>{
       setTotalUser(res)
     })
-    // console.log(totalTrust)
  }, [])
 
   return (
     <div className="dashboard">
       {/* Sidebar */}
-      <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
+      {/* <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
           <h2>Dashboard</h2>
           <button className="icon-button mobile-only" onClick={() => setSidebarOpen(false)}>
@@ -94,7 +92,8 @@ const [totalTransactions, setTotalTransactions] = useState(null)
           <button className="nav-button" onClick={()=>navigate("/set")}><Settings /> Settings</button>
           <button className="nav-button logout" onClick={()=> handleLogout()}><LogOut /> Logout</button>
         </nav>
-      </aside>
+      </aside> */}
+      <AdminNavbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
       {/* Main Content */}
       <div className="main-content">
