@@ -12,7 +12,7 @@ const { options } = require("../Routes/TrustRoutes")
 
 
 let adminLogin = async (req, res)=>{
-    try{
+    try{ 
             validateAdmin(req)
             let {email, password} = req.body
             let {admintoken} = req.cookies

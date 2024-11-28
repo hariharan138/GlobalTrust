@@ -12,4 +12,6 @@ let adminSchema = new mongoose.Schema({
     }
 })
 
+// adminSchema.indexes({email: 1})
+
 module.exports = mongoose.model("AdminModel", adminSchema)
