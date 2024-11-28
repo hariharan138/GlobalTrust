@@ -50,7 +50,11 @@ const Inbox = ({setShowInbox}) => {
               justifyContent: "space-between", 
               alignItems: "center", 
               padding: "10px 0",
-              borderBottom: "2px solid gray"}}>
+              borderBottom: "2px solid gray",
+              position: "static",
+              top: "0",
+            //   width: "100%",
+              backgroundColor: '#fff'}}>
         <h2>Notifications</h2>
         <span 
         style={{fontSize: "22px", cursor: "pointer"}}
@@ -59,7 +63,7 @@ const Inbox = ({setShowInbox}) => {
         </div>
         {loading && <div style={{fontSize: "22px", fontWeight: "500", }}>Loading...</div>}
         <div>
-            {!loading && notifications && notifications.length>0 && notifications.map(({acceptedTrustName, acceptedBy, _id, veg, noOfPeople})=>(
+            {!loading && notifications && notifications.length>0 && notifications.map(({acceptedTrustName, acceptedTrustPhoneNumber, acceptedBy, _id, veg, noOfPeople})=>(
                 <div key={_id} style={{padding: "5px",borderRadius: "10px" , boxShadow: "0px 2px 5px gray", margin: "10px"}}>
                         <p><span  style={{color: "#4299e1"}}>Order id:</span> <span style={{fontSize: "14px"}}>{_id}</span></p>
                         <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
@@ -67,6 +71,7 @@ const Inbox = ({setShowInbox}) => {
                         <p style={{fontSize: "16px", color: "#4299e1"}}>No Of People: <span style={{color: "#000"}}>{noOfPeople}</span></p>
                     </div>
                         <p style={{color: "#4299e1"}}>Accepted by: <span style={{color: "#000"}}>{acceptedTrustName}</span></p>
+                        <p style={{color: "#4299e1"}}>Trust Phone No: <span style={{color: "#000"}}>{acceptedTrustPhoneNumber}</span></p>
                 </div>
             ))
         }
