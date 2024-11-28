@@ -1,3 +1,4 @@
+import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 
@@ -35,30 +36,45 @@ const Inbox = ({setShowInbox}) => {
     let mainContainer = {
             top: "110px",
             right: "20px",
-         boxShadow: "2px 2px 5px 10px #000",
+         boxShadow: "2px 2px 5px 2px #000",
          position: "absolute",
          background: "#fff", 
+         height: "300px",
+         width: "300px",
+         padding: "10px 10px",
+         overflow: "auto",
          zIndex: 1}
   return (
     <div style={mainContainer}>
-        <div style={{display: "flex",
-             border: "2px solid red", justifyContent: "space-between", alignItems: "center", padding: "0 20px"}}>
+        <div style={{
+            display: "flex",
+            //  border: "2px solid red",
+              justifyContent: "space-between", 
+              alignItems: "center", 
+              padding: "10px 0",
+              borderBottom: "2px solid gray"}}>
         <h2>Notifications</h2>
         <span 
         style={{fontSize: "22px", cursor: "pointer"}}
         onClick={()=>{setShowInbox(false)}}
-        >X</span>
+        ><CloseIcon /></span>
         </div>
         {loading && <div style={{fontSize: "22px", fontWeight: "500", }}>Loading...</div>}
         <div>
-            {notifications && notifications.length>0 ? notifications.map(({acceptedTrustName, acceptedBy, _id})=>(
-                <div key={_id}>
-                    <p>your order for {_id} is accepted by {acceptedTrustName}</p>
+            {!loading && notifications && notifications.length>0 && notifications.map(({acceptedTrustName, acceptedBy, _id, veg, noOfPeople})=>(
+                <div key={_id} style={{padding: "5px",borderRadius: "10px" , boxShadow: "0px 2px 5px gray", margin: "10px"}}>
+                        <p><span  style={{color: "#4299e1"}}>Order id:</span> <span style={{fontSize: "14px"}}>{_id}</span></p>
+                        <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                        <p style={{fontSize: "20px", color: "#4299e1", margin: "0px"}}>{veg ? "veg" : "non-veg"}</p>
+                        <p style={{fontSize: "16px", color: "#4299e1"}}>No Of People: <span style={{color: "#000"}}>{noOfPeople}</span></p>
+                                {/* <p>your order for {noOfPeople} food is {veg ? "veg" : "non-veg"} accepted by {acceptedTrustName}</p> */}
+                    </div>
+                        <p style={{color: "#4299e1"}}>Accepted by: <span style={{color: "#000"}}>{acceptedTrustName}</span></p>
                 </div>
             ))
-            : 
-            <div style={{fontSize: "22px", fontWeight: "500"}} >no notifications so far...</div>
-            }
+        }
+           {!loading && !notifications.length>0 && <div style={{fontSize: "22px", fontWeight: "500"}} >no notifications so far...</div>
+        }  
     </div>
     </div>
   )

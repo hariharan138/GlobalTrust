@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {  Plus, Minus ,HandHeart,SendHorizontal,LogOut } from 'lucide-react'
-
+import { IconButton } from '@mui/material';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 import './User.css'
 import { useNavigate } from 'react-router-dom'
@@ -200,20 +202,33 @@ const handleSearch = async () => {
         <h1>User Dashboard</h1>
         <div className="header-actions">
         <input
-  type="search"
-  placeholder="Search Trust..."
-  className="search-input"
-  value={searchQuery}
-  onChange={(e) => setSearchQuery(e.target.value)}
-  onKeyDown={(e) => {
-    if (e.key === 'Enter') handleSearch();
-  }}
-/>
-<button className="incrementx-button" onClick={handleSearch}>
-  Search
-</button>
-    {!showInbox ? <button onClick={()=> setShowInbox(true)}>inbox</button>: <Inbox setShowInbox={setShowInbox}/>}
-<button className="incrementx-button" onClick={handleLogout}>Logout<LogOut className="button-icon"  /></button>
+          type="search"
+          placeholder="Search Trust..."
+          className="search-input"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') handleSearch();
+         }}
+        />
+{/* <button className="incrementx-button search-btn" onClick={handleSearch}>
+  Search */}
+{/* </button> */}
+
+  <IconButton >
+  <SearchOutlinedIcon className='search-btn' sx={{width: "35px", height: "35px"}} onClick={handleSearch}/>
+  </IconButton>
+  {/* <button onClick={()=> setShowInbox(true)}>inbox</button> */}
+    {!showInbox ? <NotificationsIcon sx={{cursor: "pointer", bgcolor: "#efefer", borderRadius: "50%", width: "34px", height: "35px"}} onClick={()=> setShowInbox(true)} />: <Inbox setShowInbox={setShowInbox}/>}
+{/* <button className="incrementx-button" onClick={handleLogout}>Logout<LogOut className="button-icon"  /></button> */}
+<IconButton onClick={handleLogout} sx={{borderRadius: "5px", padding: "5px", fontSize: "20px", bgcolor: "#fd4545", color: "#363030", 
+   "&:hover": {
+    bgcolor: "#ee6060", // Hover state border color
+  },
+  }}>
+  logout {"       "}
+  <LogOut />
+</IconButton>
         </div>
       </header>
           

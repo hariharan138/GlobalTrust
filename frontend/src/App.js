@@ -20,7 +20,7 @@ import Users from './Users/Users';
 import UserProvider from './context/UserProvider';
 import Navbar from './Trust/Navbar';
 import TrustProfile from './Trust/TrustProfile';
-
+import './index.css'
 function App() {
   return (
     <Router future={{v7_relativeSplatPath: true, v7_startTransition: true}}>
