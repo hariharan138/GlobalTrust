@@ -141,14 +141,11 @@ const Trust = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [inboxMessages, setInboxMessages] = useState([
-    // { id: 1, sender: 'John Doe', subject: 'Welcome!', content: 'Welcome to our platform.' },
-    // { id: 2, sender: 'Jane Smith', subject: 'New features', content: 'Check out our latest updates.' },
-    // { id: 3, sender: 'Admin', subject: 'Important notice', content: 'Please update your profile.' },
-  ]);
+  const [inboxMessages, setInboxMessages] = useState([]);
 
   let getRegisteredOrders = async ()=>{
     // with pagination http://localhost:4000/api/trust/getfoodorder?limit=2&page=1
+    setLoading(true)
    try{
     let {data} = await axios.get(`http://localhost:4000/api/trust/getfoodorder`, {
       withCredentials: true
@@ -162,6 +159,9 @@ const Trust = () => {
    }
    catch(err){
     console.log(err.response?.data?.msg)
+   }
+   finally{
+    setLoading(false)
    }
   }
 
@@ -265,8 +265,8 @@ const Trust = () => {
 
             <div style={userGridStyle}>
               {loading && <p>Loading...</p>}
-              {users.map((user, index) => (
-                <UserCard key={index} user={user} />
+              {!loading && users.length && users.length>0 && users.map((user, index) => (
+                <UserCard key={index} user={user}  />
               ))}
               {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
               {!loading && users.length === 0 && !error && (
