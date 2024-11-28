@@ -37,6 +37,18 @@ let FoodSchema = new mongoose.Schema({
     acceptedTrustName:{
         type: String,
         default: null
+    },
+    acceptedTrustPhoneNumber:{
+        default: null,
+        type: String
+    },
+    senderName:{
+        default: null,
+        type: String
+    },
+    senderPhoneNumber:{
+        default: null,
+        type: String
     }
 },
 {

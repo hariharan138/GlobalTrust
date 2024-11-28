@@ -163,7 +163,9 @@ let foodRegister = async (req, res)=>{
         }
         
         let data = await FoodModel.create({fromUserId, noOfPeople, veg, preferred, address: user.address, acceptedBy})
-
+        data.senderName = user.Name
+        data.senderPhoneNumber = user.phone
+        await data.save()
         res.status(201).json({msg: "food created", data})
     }
     catch(err){
@@ -226,7 +228,7 @@ let getUserProfile = async (req, res)=>{
 let getNotification = async (req, res)=>{
     try{
         let user = req.user
-        let foodOrdersAccepted = await FoodModel.find({fromUserId: user._id, acceptedBy: {$ne: null}}).select("acceptedBy acceptedTrustName veg noOfPeople")
+        let foodOrdersAccepted = await FoodModel.find({fromUserId: user._id, acceptedBy: {$ne: null}}).select("acceptedBy acceptedTrustName acceptedTrustPhoneNumber veg noOfPeople")
         res.status(200).json({msg: "accepted orders data fetched", data: foodOrdersAccepted})
     }
     catch(err){

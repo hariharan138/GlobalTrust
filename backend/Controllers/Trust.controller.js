@@ -182,7 +182,7 @@ let getRegisteredFoods = async (req, res)=>{
         let limit = (req.query.limit > 20 ? 10 : req.query.limit) || 10
         let skip = (page-1) * limit
         
-        let preferredOrders = await FoodModel.find({preferred: {$in: [user._id]}, acceptedBy: {$eq: null}}).skip(skip).limit(limit).select("fromUserId noOfPeople address veg createdAt")
+        let preferredOrders = await FoodModel.find({preferred: {$in: [user._id]}, acceptedBy: {$eq: null}}).skip(skip).limit(limit).select("fromUserId noOfPeople address veg createdAt senderName senderPhoneNumber")
         
         let preferedOrdersSenderId = preferredOrders?.map(order=>{
         return order.fromUserId.toString()
@@ -217,6 +217,7 @@ let acceptFoodOrder = async (req, res)=>{
         // console.log(user)
         isAvailable.acceptedBy = user._id
         isAvailable.acceptedTrustName = user.trustName
+        isAvailable.acceptedTrustPhoneNumber = user.trustPhoneNumber
         // console.log(isAvailable)
         await isAvailable.save()
         // console.log(isAvailable)

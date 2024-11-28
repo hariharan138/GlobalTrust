@@ -70,4 +70,7 @@ let Trustschema= new mongoose.Schema({
     timestamps: true,
     minimize: true
 })
+
+Trustschema.indexes({trustEmail: 1})
+
 module.exports= mongoose.model("Trust",Trustschema);
