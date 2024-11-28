@@ -8,6 +8,8 @@ import useGetAdm from './CustomHooks/useGetAdm';
 import DisplaygetData from './DisplaygetData';
 import InputSearch from './InputSearch';
 import AdminNavbar from './AdminNavbar';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import { IconButton } from '@mui/material';
 
 
 const AllTrust = () => {
@@ -103,7 +105,10 @@ const AllTrust = () => {
                         
                         <InputSearch searchValue={searchValue} setSearchValue={setSearchValue} />
 
-                            <button onClick={handleSearch}>search</button>
+                            {/* <button onClick={handleSearch}>search</button> */}
+                            <IconButton onClick={handleSearch}>
+  <SearchOutlinedIcon className='search-btn1' sx={{width: "35px", height: "35px"}} />
+  </IconButton>
                         <button className="icon-button">
                             <Bell />
                         </button>

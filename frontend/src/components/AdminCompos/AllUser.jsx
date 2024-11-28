@@ -8,6 +8,9 @@ import useGetAdm from './CustomHooks/useGetAdm';
 import InputSearch from './InputSearch';
 import axios from 'axios';
 import AdminNavbar from './AdminNavbar';
+import { IconButton } from '@mui/material';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+
 
 
 const AllUser = () => {
@@ -100,8 +103,10 @@ const AllUser = () => {
                     <div className="header-actions">
                     <InputSearch searchValue={searchValue} setSearchValue={setSearchValue} />
 
-                    <button onClick={handleSearch}>search</button>
-
+                    {/* <button onClick={handleSearch}>search</button> */}
+                    <IconButton onClick={handleSearch}>
+                            <SearchOutlinedIcon className='search-btn1' sx={{width: "35px", height: "35px"}} />
+                    </IconButton>
                         <button className="icon-button">
                             <Bell />
                         </button>
