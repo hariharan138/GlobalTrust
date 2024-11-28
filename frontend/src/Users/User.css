@@ -1,12 +1,11 @@
-.dashboard {
-  /* border: 2px solid blue; */
+.dashboard1 {
   display: flex;
   flex-direction: column;
   height: 100vh;
   background-color: #f0f2f5;
 }
 
-.dashboard-header {
+.dashboard-header1 {
   background-color: #ffffff;
   padding: 1rem;
   display: flex;
@@ -15,34 +14,33 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.header-actions {
+.header-actions1 {
   display: flex;
   gap: 1rem;
   align-items: center;
 }
 
-.search-input {
+.search-input1 {
   padding: 0.5rem;
   border: 1px solid #e2e8f0;
   border-radius: 4px;
 }
 
-.dashboard-content {
-  /* border: 2px solid black; */
+.dashboard-content1 {
   flex: 1;
   width: 100%;
   padding: 1rem;
   overflow-y: auto;
 }
 
-.card-container {
+.card-container1 {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   justify-content: space-around;
 }
 
-.card {
+.card1user {
   width: 30%;
   height: 350px;
   background-color: #ffffff;
@@ -51,7 +49,7 @@
   padding: 1rem;
 }
 
-.card2 {
+.card2user {
   width: 50%;
   background-color: #ffffff;
   border-radius: 8px;
@@ -59,48 +57,48 @@
   padding: 1rem;
 }
 
-.card-header {
+.card-header1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
 }
 
-.card-icon {
+.card-icon1 {
   width: 24px;
   height: 24px;
   color: #4a5568;
 }
 
-.card-value {
+.card-value1 {
   font-size: 3rem;
   font-weight: bold;
   color: #2d3748;
   margin-bottom: 0.5rem;
 }
 
-.card-subtext {
+.card-subtext1 {
   color: #718096;
   font-size: 0.875rem;
 }
 
-.quantity-control {
+.quantity-control1 {
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
 
-.quantity-label {
+.quantity-label1 {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: bold;
 }
 
-.quantity-input-wrapper {
+.quantity-input-wrapper1 {
   display: flex;
   align-items: center;
 }
 
-.quantity-input {
+.quantity-input1 {
   width: 60px;
   padding: 0.5rem;
   text-align: center;
@@ -109,7 +107,7 @@
   font-size: 1rem;
 }
 
-.quantity-button {
+.quantity-button1 {
   background-color: #e2e8f0;
   border: none;
   padding: 0.5rem;
@@ -119,36 +117,36 @@
   justify-content: center;
 }
 
-.quantity-button:hover {
+.quantity-button1:hover {
   background-color: #cbd5e0;
 }
 
-.toggle-control {
+.toggle-control1 {
   margin-bottom: 1rem;
 }
 
-.toggle-label {
+.toggle-label1 {
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
 }
 
-.toggle-switch {
+.toggle-switch1 {
   position: relative;
   display: inline-block;
   width: 60px;
   height: 34px;
 }
 
-.toggle-input {
+.toggle-input1 {
   border: none;
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-.toggle-slider {
+.toggle-slider1 {
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -160,7 +158,7 @@
   border-radius: 34px;
 }
 
-.increment-button {
+.increment-button1 {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -176,15 +174,15 @@
   width: 100%;
 }
 
-.increment-button:hover {
+.increment-button1:hover {
   background-color: #3182ce;
 }
 
-.trust-item {
+.trust-item1 {
   display: flex;
   align-items: center;
-  position: relative; /* Required for positioning the checkbox */
-  gap: 10px; /* Space between image, name, and other content */
+  position: relative; 
+  gap: 10px; 
   margin-bottom: 1rem;
   padding: 0.5rem;
   background-color: #ffffff;
@@ -192,28 +190,28 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.trust-image {
+.trust-image1 {
   width: 50px;
   height: 50px;
   border-radius: 50%;
 }
 
-.trust-name {
+.trust-name1 {
   font-size: 1rem;
   font-weight: bold;
   color: #2d3748;
 }
 
-.trust-checkbox {
+.trust-checkbox1 {
   position: absolute;
-  top: 10px; /* Position at the top-right corner */
+  top: 10px; 
   right: 10px;
   width: 20px;
   height: 20px;
   cursor: pointer;
 }
 
-.trust-checkbox input {
+.trust-checkbox1 input {
   width: 100%;
   height: 100%;
   cursor: pointer;
