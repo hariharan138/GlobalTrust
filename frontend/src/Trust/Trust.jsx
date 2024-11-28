@@ -64,10 +64,12 @@ const UserCard = ({ user }) => {
     margin: '5px 0 0',
   };
 
+  let noProfileImage = "data:image/png;base64,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"
+
   return (
     <div style={userCardStyle}>
       <img
-        src={user.avatar || '/placeholder.svg'}
+        src={user?.image?.url != "N/A" ? user?.image?.url : noProfileImage ||'/placeholder.svg'}
         alt={user.name}
         style={avatarStyle}
       />
@@ -85,6 +87,9 @@ const Inbox = ({ inboxMessages , setInboxMessages}) => {
   const inboxMessageStyle = {
     borderBottom: '1px solid #eee',
     padding: '10px 0',
+    display: "flex",
+    flexDirection: "column",
+    gap: "5px"
   };
 
   const inboxSubjectStyle = {
@@ -97,6 +102,15 @@ const Inbox = ({ inboxMessages , setInboxMessages}) => {
     fontSize: '14px',
   };
 
+  const inboxSenderNameStyle = {
+    fontSize: "16px",
+    color: "gray"
+  }
+
+  const inboxSenderPhoneStyle = {
+    fontSize: "16px",
+    color: "gray"
+  }
   
   let acceptOrder = async (id)=>{
     // console.log(id)
@@ -119,10 +133,13 @@ const Inbox = ({ inboxMessages , setInboxMessages}) => {
   return (
     <>
       <h2 style={{ fontSize: '20px', fontWeight: 'bold', textAlign: 'center' }}>Inbox</h2>
-      {inboxMessages.map(({_id, fromUserId, noOfPeople, veg, address, createdAt}) => (
+      {inboxMessages.map(({_id, fromUserId, noOfPeople, veg, address, createdAt, senderPhoneNumber, senderName}) => (
         <div key={_id} style={inboxMessageStyle}>
-          <div style={inboxSubjectStyle}>{veg ? "Veg" : "Non-Veg"}</div>
-          <div style={inboxSenderStyle}>Address: {address}</div>
+          <p>User Name: <span style={inboxSenderNameStyle}>{senderName}</span></p>
+          <p>Phone no: <span style={inboxSenderPhoneStyle}>{senderPhoneNumber}</span></p>
+          <p>No Of People: <span style={inboxSenderPhoneStyle}>{noOfPeople}</span></p>
+          <div >Type of food <span style={inboxSubjectStyle}>{veg ? "Veg" : "Non-Veg"}</span></div>
+          <div>Address: <span style={inboxSenderStyle}>{address}</span></div>
           {/* <p>{address}</p> */}
             <Button 
             variant='contained'
@@ -167,9 +184,8 @@ const Trust = () => {
 
   useEffect(()=>{
     getRegisteredOrders()
-    // console.log(inboxMessages)
   }, [])
-
+// console.log(inboxMessages)
   const searchUser = async () => {
     setLoading(true);
     setError('');

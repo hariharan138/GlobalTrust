@@ -37,7 +37,7 @@ const TrustLogin = () => {
         {withCredentials: true}
       )
         
-      if (response.data.success) {
+      if (response?.data?.success) {
         document.cookie = `authToken=${response.data.token}; path=/;`
         navigate('/Trusthome')
       } else {
@@ -46,10 +46,15 @@ const TrustLogin = () => {
       console.log(response)
     } catch (err) {
       if (err.response) {
-        console.error("Backend error:", err.response.data);
-        setErrorMessage(err.response.data.message);
+        console.log("Backend error:", err.response.data);
+        if(err.response.data.message == "Operation `trusts.findOne()` buffering timed out after 10000ms"){
+          setErrorMessage("please refresh the page and try again")
+        }
+        else{
+          setErrorMessage(err.response.data.message);
+        }
       } else {
-        console.error("Network error:", err.message);
+        console.log("Network error:", err.message);
         setErrorMessage("A network error occurred. Please try again.");
       }
     }
