@@ -59,6 +59,10 @@
     align-items: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
+
+  .typeusers-admin-title{
+    margin-bottom: 5px;
+  }
   
   .header-actions {
     display: flex;
@@ -92,6 +96,7 @@
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
     margin-bottom: 1rem;
+    justify-items:  center;
   }
   
   .chart-activities-grid {
@@ -194,3 +199,12 @@
       display: none;
     }
   }
+
+
+  @media (max-width: 420px), (max-width: 440px),(max-width: 475px){
+    .typeusers-admin-title{
+      font-size: 22px;
+      margin-bottom: 5px;
+    }
+  }
+

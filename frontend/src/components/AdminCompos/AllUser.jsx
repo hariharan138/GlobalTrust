@@ -99,7 +99,7 @@ const AllUser = () => {
                     <button className="icon-button mobile-only" onClick={() => setSidebarOpen(true)}>
                         <Menu />
                     </button>
-                    <h1>All Users</h1>
+                    <h1 className='typeusers-admin-title'>All Users</h1>
                     <div className="header-actions">
                     <InputSearch searchValue={searchValue} setSearchValue={setSearchValue} />
 

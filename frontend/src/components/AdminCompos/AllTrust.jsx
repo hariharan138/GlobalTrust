@@ -100,7 +100,7 @@ const AllTrust = () => {
                     <button className="icon-button mobile-only" onClick={() => setSidebarOpen(true)}>
                         <Menu />
                     </button>
-                    <h1>All Trust</h1>
+                    <h1 className='typeusers-admin-title'>All Trust</h1>
                     <div className="header-actions">
                         
                         <InputSearch searchValue={searchValue} setSearchValue={setSearchValue} />
@@ -109,9 +109,9 @@ const AllTrust = () => {
                             <IconButton onClick={handleSearch}>
   <SearchOutlinedIcon className='search-btn1' sx={{width: "35px", height: "35px"}} />
   </IconButton>
-                        <button className="icon-button">
+                        {/* <button className="icon-button">
                             <Bell />
-                        </button>
+                        </button> */}
                     </div>
                 </header>
 
