@@ -76,8 +76,9 @@ const UserCard = ({ user }) => {
         style={avatarStyle}
       />
       <div style={userInfoStyle}>
-        <h2 style={nameStyle}>{user.name}</h2>
-        <p style={emailStyle}>{user.email}</p>
+        <h2 style={nameStyle}>Name: {user.Name}</h2>
+        <p style={emailStyle}>Email: {user.email}</p>
+        <p style={emailStyle}>Phone: {user.phone}</p>
       </div>
     </div>
   );

@@ -302,7 +302,10 @@ let noTrustImage = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAsJC
     trusts.map((trust, index) => (
       <li key={index} className="trust-item1">
         <img src={trust?.image?.url != "N/A" ? trust.image.url : noTrustImage} alt={trust.name} className="trust-image1" />
+        <div className='user-detail1'>
         <h3 className="trust-name1">{trust.trustName}</h3>
+        <p className='user-phone-title'>Phone: <span>{trust.trustPhoneNumber}</span></p>
+        </div>
         {/* Add a checkbox here */}
         <input 
           type="checkbox" 

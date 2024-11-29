@@ -43,7 +43,8 @@
 .card1user {
   width: 30%;
   height: 350px;
-  background-color: #ffffff;
+  /* background-color: #ffffff; */
+  background-color: #fcffff;
   border-radius: 8px;
    box-shadow: 5px 5px 5px #0d0d0d58;
   padding: 1rem;
@@ -51,7 +52,8 @@
 
 .card2user {
   width: 50%;
-  background-color: #ffffff;
+  /* background-color: #ffffff; */
+  background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   padding: 1rem;
@@ -191,7 +193,7 @@
   position: relative; 
   gap: 10px; 
   margin-bottom: 1rem;
-  padding: 0.5rem;
+  padding: 1rem ;
   background-color: #ffffff;
   border-radius: 4px;
   /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
@@ -207,6 +209,21 @@
 .trust-name1 {
   font-size: 1rem;
   font-weight: bold;
+  color: #2d3748;
+}
+
+.user-detail1{
+  margin: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.user-phone-title{
+  font-weight: 600;
+}
+
+.user-phone-title span{
   color: #2d3748;
 }
 
