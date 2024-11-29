@@ -182,17 +182,35 @@ let getRegisteredFoods = async (req, res)=>{
         let limit = (req.query.limit > 20 ? 10 : req.query.limit) || 10
         let skip = (page-1) * limit
         
-        let preferredOrders = await FoodModel.find({preferred: {$in: [user._id]}, acceptedBy: {$eq: null}}).skip(skip).limit(limit).select("fromUserId noOfPeople address veg createdAt senderName senderPhoneNumber")
+        // let preferredOrders = await FoodModel.find({preferred: {$in: [user._id]}, acceptedBy: {$eq: null}}).skip(skip).limit(limit).select("fromUserId noOfPeople address veg createdAt preferred senderName senderPhoneNumber acceptedBy acceptedTrustName acceptedTrustPhoneNumber")
         
-        let preferedOrdersSenderId = preferredOrders?.map(order=>{
-        return order.fromUserId.toString()
+        // let preferredOrdersSenderId = preferredOrders?.map(order=>{
+        // return order.fromUserId.toString()
+        // })
+        
+        // // console.log(preferredOrders)
+        // console.log(preferredOrdersSenderId)
+        
+        //   let normalOrders = await FoodModel.find({preferred: {$nin : [preferredOrdersSenderId]}, acceptedBy: {$eq: null}}).skip(skip).limit(limit)
+        // //   let normalOrders = await TrustModel.find({_id: {$nin : [preferredOrdersSenderId]}}).skip(skip).limit(limit).select("trustName")
+        //     console.log(normalOrders)
+
+        //  let data = preferredOrders.concat(normalOrders)
+
+        let preferredOrders = await FoodModel.find({preferred: {$in: [user._id]}, acceptedBy: {$eq: null}}).skip(skip).limit(limit).select("fromUserId noOfPeople address veg createdAt preferred senderName senderPhoneNumber acceptedBy acceptedTrustName acceptedTrustPhoneNumber")
+        // preferredOrders = []
+        let preferredOrdersSenderId = preferredOrders?.map(order=>{
+        return order._id.toString()
         })
         
-        // console.log(preferedOrdersSenderId)
-        
-          let normalOrders = await FoodModel.find({fromUserId: {$nin : preferedOrdersSenderId}, acceptedBy: {$eq: null}}).skip(skip).limit(limit)
+        // console.log(preferredOrders)
+        // let preferredOrdersSenderId = []
+        // console.log(preferredOrdersSenderId)
+          let normalOrders = await FoodModel.find({_id: {$nin : [preferredOrdersSenderId]}, acceptedBy: {$eq: null}}).skip(skip).limit(limit)
+            // console.log(normalOrders)
 
          let data = preferredOrders.concat(normalOrders)
+         
         res.status(200).json({msg: "data fetched correctly", data}) 
     }
     catch(err){
