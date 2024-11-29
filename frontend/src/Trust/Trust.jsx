@@ -29,7 +29,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar from './Navbar';
-import { Button } from '@mui/material';
+import { Button, outlinedInputClasses } from '@mui/material';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { IconButton } from '@mui/material';
+
 
 const UserCard = ({ user }) => {
   const userCardStyle = {
@@ -165,6 +169,25 @@ const Trust = () => {
   const [error, setError] = useState('');
   const [inboxMessages, setInboxMessages] = useState([]);
 
+
+  const [PageNo, setPageNo] = useState(1);
+  const [hasNext, setHasNext] = useState(false);
+
+  let dataLimitPerPage = 10;
+
+  let handlePageNo = (action)=>{
+      if(action == "prev"){
+        if(PageNo>1){
+          setPageNo((p)=> p-1)
+        }
+      }
+
+      if(action == "next"){
+        setPageNo((p)=> p+1)
+      }
+  }
+
+
   let getRegisteredOrders = async ()=>{
     // with pagination http://localhost:4000/api/trust/getfoodorder?limit=2&page=1
     setLoading(true)
@@ -196,12 +219,14 @@ const Trust = () => {
     setError('');
     try {
       const { data } = await axios.get(
-        `http://localhost:4000/api/trust/searchuser?search=${searchTerm}`,
+        `http://localhost:4000/api/trust/searchuser?search=${searchTerm}&page=${PageNo}`,
         {  withCredentials: true }
       );
       setUsers(data?.data);
+      setHasNext(data?.data.length < dataLimitPerPage ?true: false)
     } catch (err) {
-      setError('Failed to fetch users. Please try again.');
+      console.log(err?.response?.data?.message)
+      setError( err?.response?.data?.message || 'Failed to fetch users. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -257,9 +282,30 @@ const Trust = () => {
     marginTop: '20px',
   };
 
+    const paginationTrust = {
+      padding: "10px",
+      // border: "2px solid red",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: "10px",
+      margin: "10px 0"
+    }
+
+    const pageBtn = {
+        borderRadius: "5px",
+        backgroundColor: "#3182ce",
+        padding: "2px",
+        fontSize: "20px",
+        display: "flex",
+        justifyContent: "center",
+        outline: "none",
+        border: "none"
+    }
+
   useEffect(()=>{
     searchUser()
-  }, [])
+  }, [PageNo])
 
   return (
     <div style={{backgroundColor: "#f5f5f5"}}>
@@ -286,15 +332,35 @@ const Trust = () => {
 
             <div style={userGridStyle}>
               {loading && <p>Loading...</p>}
-              {!loading && users.length && users.length>0 && users.map((user, index) => (
+              {!loading && error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+
+              {!loading && !error && users.length && users.length>0 && users.map((user, index) => (
                 <UserCard key={index} user={user}  />
               ))}
-              {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
-              {!loading && users.length === 0 && !error && (
+              {!loading && !error && users.length === 0 && !error && (
                 <p style={{ textAlign: 'center', color: '#666', marginTop: '20px' }}>
                   No users found. Try a different search term.
                 </p>
               )}
+
+                
+
+            </div>
+            <div style={paginationTrust} >
+                <button style={pageBtn}
+                onClick={()=> handlePageNo('prev')}
+                disabled={PageNo<2}> 
+                  <ArrowBackIosIcon />
+                 Prev
+                </button>
+
+                <button style={pageBtn} 
+                onClick={()=> handlePageNo("next")}
+                disabled={hasNext}
+                >
+                Next
+                <ArrowForwardIosIcon />
+                </button>
             </div>
           </div>
 

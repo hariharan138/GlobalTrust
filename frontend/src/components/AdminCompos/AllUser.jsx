@@ -10,12 +10,31 @@ import axios from 'axios';
 import AdminNavbar from './AdminNavbar';
 import { IconButton } from '@mui/material';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-
+import { Button, outlinedInputClasses } from '@mui/material';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 
 const AllUser = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false)
     let navigate = useNavigate()
+
+    const [PageNo, setPageNo] = useState(1);
+    const [hasNext, setHasNext] = useState(false);
+  
+    let dataLimitPerPage = 10;
+  
+    let handlePageNo = (action)=>{
+        if(action == "prev"){
+          if(PageNo>1){
+            setPageNo((p)=> p-1)
+          }
+        }
+  
+        if(action == "next"){
+          setPageNo((p)=> p+1)
+        }
+    }
 
     const [searchValue, setSearchValue] = useState("")
     const [searchFinal, setSearchFinal] = useState("")
@@ -35,12 +54,14 @@ const AllUser = () => {
         try{
             setLoading(true)
             // console.log("ente")
-            let {data} = await axios.get(`http://localhost:4000/api/admin/searchuser?search=${searchFinal}`,  {
+            let {data} = await axios.get(`http://localhost:4000/api/admin/searchuser?search=${searchFinal}&page=${PageNo}`,  {
                 withCredentials: true
             })
             console.log(data)
+            setHasNext(true)
             if(data && data?.data && data.data.length>0){
                 setSearchedResult(data?.data)
+                setHasNext(data?.data.length < dataLimitPerPage ? true: false)
                 setLoading(false)
             }
             else{
@@ -64,10 +85,35 @@ const AllUser = () => {
     }, [searchFinal])
 
     useEffect(()=>{
+        getSearchValue()
+    }, [PageNo])
+
+    useEffect(()=>{
        if(!searchFinal){
             setSearchedResult(apidata)
        }
     }, [searchFinal, apidata])
+
+    const paginationTrust = {
+        padding: "10px",
+        // border: "2px solid red",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: "10px"
+      }
+  
+      const pageBtn = {
+          borderRadius: "5px",
+          backgroundColor: "#3182ce",
+          padding: "2px",
+          fontSize: "20px",
+          display: "flex",
+          justifyContent: "center",
+          outline: "none",
+          border: "none"
+      }
+  
    
     return (
         <div className="dashboard">
@@ -134,7 +180,22 @@ const AllUser = () => {
 
 
                     </div>
+                    <div style={paginationTrust} >
+                <button style={pageBtn}
+                onClick={()=> handlePageNo('prev')}
+                disabled={PageNo<2}> 
+                  <ArrowBackIosIcon />
+                 Prev
+                </button>
 
+                <button style={pageBtn} 
+                onClick={()=> handlePageNo("next")}
+                disabled={hasNext}
+                >
+                Next
+                <ArrowForwardIosIcon />
+                </button>
+                </div>
                 </main>
             </div>
         </div>

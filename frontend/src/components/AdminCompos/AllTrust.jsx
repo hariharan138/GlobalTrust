@@ -10,6 +10,9 @@ import InputSearch from './InputSearch';
 import AdminNavbar from './AdminNavbar';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { IconButton } from '@mui/material';
+import { Button, outlinedInputClasses } from '@mui/material';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 
 const AllTrust = () => {
@@ -24,9 +27,29 @@ const AllTrust = () => {
 
     let navigate = useNavigate()
 
+
+    
+  const [PageNo, setPageNo] = useState(1);
+  const [hasNext, setHasNext] = useState(false);
+
+  let dataLimitPerPage = 10;
+
+  let handlePageNo = (action)=>{
+      if(action == "prev"){
+        if(PageNo>1){
+          setPageNo((p)=> p-1)
+        }
+      }
+
+      if(action == "next"){
+        setPageNo((p)=> p+1)
+      }
+  }
+
+
     
     let [apidata, setApidata] = useGetAdm(`http://localhost:4000/api/admin/gettrusts/1/10`)
-    console.log(apidata)
+    // console.log(apidata)
 
 
     let handleSearch = ()=>{
@@ -37,13 +60,15 @@ const AllTrust = () => {
     let getSearchValue = async ()=>{
         try{
             setLoading(true)
-            console.log("ente")
-            let {data} = await axios.get(`http://localhost:4000/api/admin/searchtrust?search=${searchFinal}`,  {
+            // console.log("ente")
+            let {data} = await axios.get(`http://localhost:4000/api/admin/searchtrust?search=${searchFinal}&page=${PageNo}`,  {
                 withCredentials: true
             })
             console.log(data)
+            setHasNext(true)
             if(data && data?.data && data.data.length>0){
                 setSearchedResult(data?.data)
+                setHasNext(data?.data.length < dataLimitPerPage ? true: false)
                 setLoading(false)
             }
             else{
@@ -67,10 +92,35 @@ const AllTrust = () => {
     }, [searchFinal])
 
     useEffect(()=>{
+        getSearchValue()
+    }, [PageNo])
+
+    useEffect(()=>{
        if(!searchFinal){
             setSearchedResult(apidata)
        }
-    }, [searchFinal, apidata])
+    }, [searchFinal, apidata, PageNo])
+
+    const paginationTrust = {
+        padding: "10px",
+        // border: "2px solid red",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: "10px"
+      }
+  
+      const pageBtn = {
+          borderRadius: "5px",
+          backgroundColor: "#3182ce",
+          padding: "2px",
+          fontSize: "20px",
+          display: "flex",
+          justifyContent: "center",
+          outline: "none",
+          border: "none"
+      }
+  
     
     return (
         <div className="dashboard">
@@ -130,6 +180,27 @@ const AllTrust = () => {
                         }
 
                     </div>
+                    
+                        
+                    <div style={paginationTrust} >
+                <button style={pageBtn}
+                onClick={()=> handlePageNo('prev')}
+                disabled={PageNo<2}> 
+                  <ArrowBackIosIcon />
+                 Prev
+                </button>
+
+                <button style={pageBtn} 
+                onClick={()=> handlePageNo("next")}
+                disabled={hasNext}
+                >
+                Next
+                <ArrowForwardIosIcon />
+                </button>
+                </div>
+
+
+
                 </main>
             </div>
         </div>
