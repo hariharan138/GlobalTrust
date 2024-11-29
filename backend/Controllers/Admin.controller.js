@@ -186,9 +186,9 @@ let searchTrust = async (req, res)=>{
     let limit = req.query.limit || 10
     let skip = (page-1) * limit
 
-    if (!search) {
-        throw new Error("Search query is required");
-     }
+    // if (!search) {
+    //     throw new Error("Search query is required");
+    //  }
 
     let totalDocuments = await TrustModel.countDocuments();
     // console.log(totalDocuments)

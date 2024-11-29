@@ -236,6 +236,11 @@ let getNotification = async (req, res)=>{
     }
 }
 
+let getNoOfTrusts = async (req, res)=>{
+    let data = await TrustModel.countDocuments()
+    res.status(200).json({msg: "Total number of Trusts fethed", data})
+}
+
 
 module.exports= {
     userRegistration,
@@ -245,5 +250,6 @@ module.exports= {
     foodRegister,
     searchTrust,
     getUserProfile,
-    getNotification
+    getNotification,
+    getNoOfTrusts
 }
