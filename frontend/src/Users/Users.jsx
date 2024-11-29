@@ -73,7 +73,7 @@ const Users = () => {
         withCredentials: true
       })
       if (data.msg) {
-        naviagte('/userlogin')
+        naviagte('/')
       }
     }
     catch (err) {

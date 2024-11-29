@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Box, Typography, TextField, Button, Paper } from "@mui/material";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import UserloginNavbar from './UserloginNavbar';
 
 const UserLogin = () => {
   let navigate = useNavigate()
@@ -57,6 +58,9 @@ const UserLogin = () => {
   }
 
   return (
+    <div>
+      <UserloginNavbar />
+
     <Box className="trust-login-container">
       
     <Paper elevation={3} className="trust-login-paper">
@@ -97,6 +101,8 @@ const UserLogin = () => {
       </form>
     </Paper>
   </Box>
+
+    </div>
 );
   
 }

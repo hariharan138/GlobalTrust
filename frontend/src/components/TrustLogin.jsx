@@ -4,6 +4,7 @@ import { Box, Typography, TextField, Button, Paper } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import "./TrustLogin.css"; // Import the CSS file
+import TrustLoginNavbar from "./TrustLoginNavbar";
 
 const TrustLogin = () => {
   let navigate = useNavigate()
@@ -61,6 +62,10 @@ const TrustLogin = () => {
   }
 
   return (
+    <div>
+
+<TrustLoginNavbar />
+
     <Box className="trust-login-container">
       <Paper elevation={3} className="trust-login-paper">
         <Typography variant="h4" className="trust-login-title">
@@ -105,6 +110,8 @@ const TrustLogin = () => {
         </form>
       </Paper>
     </Box>
+
+    </div>
   );
 };
 

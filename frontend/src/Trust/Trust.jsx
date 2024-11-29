@@ -39,6 +39,8 @@ const UserCard = ({ user }) => {
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
+    backgroundColor: "#ffffff",
+    boxShadow: "5px 5px 5px #0000007d"
   };
 
   const avatarStyle = {
@@ -86,10 +88,12 @@ const Inbox = ({ inboxMessages , setInboxMessages}) => {
 
   const inboxMessageStyle = {
     borderBottom: '1px solid #eee',
-    padding: '10px 0',
+    padding: '10px 10px',
     display: "flex",
     flexDirection: "column",
-    gap: "5px"
+    gap: "5px",
+    backgroundColor: "#ffffff",
+    boxShadow: "5px 5px 5px #0000007d"
   };
 
   const inboxSubjectStyle = {
@@ -257,7 +261,7 @@ const Trust = () => {
   }, [])
 
   return (
-    <div>
+    <div style={{backgroundColor: "#f5f5f5"}}>
       <Navbar />
       <div style={containerStyle}>
         <h1 style={{ textAlign: 'center', fontSize: '24px', fontWeight: 'bold' }}>

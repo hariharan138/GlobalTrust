@@ -44,7 +44,7 @@ function LoginPage() {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() => handleLogin('/trust')}
+                onClick={() => handleLogin('/trustlogin')}
                 className="card-button"
               >
                 Login
@@ -68,7 +68,7 @@ function LoginPage() {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() => handleLogin('/user')}
+                onClick={() => handleLogin('/userlogin')}
                 className="card-button"
               >
                 Login

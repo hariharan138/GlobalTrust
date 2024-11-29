@@ -45,7 +45,7 @@
   height: 350px;
   background-color: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+   box-shadow: 5px 5px 5px #0d0d0d58;
   padding: 1rem;
 }
 
@@ -130,6 +130,7 @@
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
+  margin-bottom: 5px;
 }
 
 .toggle-switch1 {
@@ -153,9 +154,15 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: #6da5da;
   transition: 0.4s;
   border-radius: 34px;
+  outline: none;
+  border: none;
+}
+
+.toggle-slider1:active{
+  background-color: #b7cde1;
 }
 
 .increment-button1 {
@@ -187,7 +194,8 @@
   padding: 0.5rem;
   background-color: #ffffff;
   border-radius: 4px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+  box-shadow: 5px 5px 5px #00000050;
 }
 
 .trust-image1 {
