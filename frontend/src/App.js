@@ -22,6 +22,7 @@ import Navbar from './Trust/Navbar';
 import TrustProfile from './Trust/TrustProfile';
 import './index.css'
 import PageNotFound from './components/PageNotFound';
+import Inbox from './Users/Inbox';
 function App() {
   return (
     <Router future={{v7_relativeSplatPath: true, v7_startTransition: true}}>
@@ -38,6 +39,11 @@ function App() {
         <Route path="/userhome" element={<ProtectedRoute requiredRole="user">
           <Users />
         </ProtectedRoute>} />
+
+        <Route path="/notification" element={<ProtectedRoute requiredRole="user">
+          <Inbox />
+        </ProtectedRoute>} />
+
         <Route path="/contact" element={<ContactUs/>} />
 
 

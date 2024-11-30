@@ -49,7 +49,8 @@ const UserLogin = () => {
     } catch (err) {
       if (err.response) {
         console.error("Backend error:", err.response.data);
-        setErrorMessage(err.response.data.message);
+        let errorMsg = err.response?.data?.message
+        setErrorMessage(errorMsg == "Operation `usermodels.findOne()` buffering timed out after 10000ms" ? "please try again sometime" : errorMsg);
       } else {
         console.error("Network error:", err.message);
         setErrorMessage("A network error occurred. Please try again.");

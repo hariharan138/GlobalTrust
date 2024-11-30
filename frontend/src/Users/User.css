@@ -487,17 +487,17 @@
 
 /* For tablets (screens 768px and below) */
 @media (max-width: 768px) {
-  .dashboard1 {
+  /* .dashboard1 {
     flex-direction: column;
   }
 
   .dashboard-header1 {
     flex-direction: column;
     align-items: flex-start;
-  }
+  } */
 
   .header-actions1 {
-    flex-direction: column;
+    flex-direction: row;
     gap: 0.5rem;
   }
 
@@ -513,7 +513,7 @@
   }
 
   .quantity-control1 {
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .trust-item1 {
@@ -537,6 +537,11 @@
     padding: 0.5rem;
   }
 
+  .dashboard-header1 h1 {
+    font-size: 20px;
+    font-weight: 700;
+  }
+
   .header-actions1 {
     gap: 0.25rem;
     flex-direction: row; /* Ensure icons are displayed in a row */
@@ -556,8 +561,12 @@
     height: auto;
   }
 
+  .quantity-control1{
+    flex-direction: row;
+  }
+
   .quantity-input-wrapper1 {
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-start;
     gap: 0.5rem;
   }
