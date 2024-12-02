@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import {  Plus, Minus ,HandHeart,SendHorizontal,LogOut } from 'lucide-react'
+import React, { useEffect, useState } from 'react'
+import { Plus, Minus, HandHeart, SendHorizontal, LogOut } from 'lucide-react'
 
 
 import './User.css'
@@ -11,6 +11,8 @@ const Users = () => {
   const [count, setCount] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [isVeg, setIsVeg] = useState(true)
+  const [trusts, setTrusts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const incrementCount = () => {
     setCount(prevCount => prevCount + quantity)
@@ -25,33 +27,57 @@ const Users = () => {
     setIsVeg(prev => !prev)
   }
 
-  let handleLogout = async ()=>{
-    try{
-      let {data} = await axios.post('http://localhost:4000/api/user/logoutuser', {}, {
+  let handleLogout = async () => {
+    try {
+      let { data } = await axios.post('http://localhost:4000/api/user/logoutuser', {}, {
         withCredentials: true
       })
-      if(data.msg){
+      if (data.msg) {
         naviagte('/userlogin')
       }
     }
-    catch(err){
+    catch (err) {
       console.log(err?.response.data.message)
       console.log(err?.data?.msg)
     }
   }
 
 
-  
 
   let searchTrust = async  ()=>{
+
     // use placeholdrs when you wnat to give value to the field ${} and use `` instead of '' or ""
     // eg: http://localhost:4000/api/user/gettrust/:page/:limit //this api is for getting all the trusts from DB
     // to get all the trust just remove page and limit query parameter and make the searh as empty 
     // eg: http://localhost:4000/api/user/searchtrust?search=
-    let {data} = await axios.get('http://localhost:4000/api/user/searchtrust?search=gokulTrust&page=1&limit=2', {
-      withCredentials: true
-    })
+    try {
+      let { data } = await axios.get('http://localhost:4000/api/user/searchtrust?search=', {
+        withCredentials: true
+      })
+      console.log(data)
+      setTrusts(data.data)
+      
+
+    }
+    catch (err) {
+      console.error(err.response?.data?.message || 'Error fetching trusts');
+    }
+
   }
+  useEffect(() => {
+    searchTrust(); // Fetch all trusts by default
+  }, []);
+  const handleSearch = async () => {
+    try {
+      let { data } = await axios.get(`http://localhost:4000/api/user/searchtrust?search=${searchQuery}`, {
+        withCredentials: true,
+      });
+      setTrusts(data.data);
+    } catch (err) {
+      console.error(err.response?.data?.message || 'Error fetching trusts');
+    }
+  };
+
 
   
 
@@ -61,18 +87,29 @@ const Users = () => {
       <header className="dashboard-header">
         <h1>User Dashboard</h1>
         <div className="header-actions">
-          <input type="search" placeholder="Search Trust..." className="search-input" />
-          <button className="incrementx-button" onClick={handleLogout}>Logout<LogOut className="button-icon"  /></button>
+        <input
+  type="search"
+  placeholder="Search Trust..."
+  className="search-input"
+  value={searchQuery}
+  onChange={(e) => setSearchQuery(e.target.value)}
+  onKeyDown={(e) => {
+    if (e.key === 'Enter') handleSearch();
+  }}
+/>
+<button className="incrementx-button" onClick={handleSearch}>
+  Search
+</button>
         </div>
       </header>
-          
+
       <main className="dashboard-content">
-        <div className="card-grid">
+        <div className="card-container">
+          {/* Total Trust Card */}
           <div className="card">
             <div className="card-header">
               <h2>Total Trust</h2>
               <HandHeart className="card-icon" />
-              
             </div>
             <div className="card-content">
               <div className="card-value">10</div>
@@ -113,14 +150,43 @@ const Users = () => {
               </label>
             </div>
             <button className="increment-button" onClick={incrementCount}>
-              {/* <Plus className="button-icon" /> */}
-              Send Food Availablity
+              Send Food Availability
               <SendHorizontal className="button-icon" />
             </button>
           </div>
+
+         {/* All Trusts Card */}
+<div className="card2">
+  <div className="card-header">
+    <h2>All Trusts</h2>
+    <HandHeart className="card-icon" />
+  </div>
+  <div className="card-content">
+    <ul className="trusts-list">
+      {trusts.length > 0 ? (
+        trusts.map((trust, index) => (
+          <li key={index} className="trust-item">
+            <img src={trust.image} alt={trust.name} className="trust-image" />
+            <h3 className="trust-name">{trust.trustName}</h3>
+            {/* Add a checkbox here */}
+            <input 
+              type="checkbox" 
+              id={`trust-checkbox-${index}`} 
+              className="trust-checkbox" 
+            />
+          </li>
+        ))
+      ) : (
+        <p>No trusts available.</p>
+      )}
+    </ul>
+  </div>
+</div>
+
         </div>
       </main>
-      
+
+
     </div>
   )
 }
