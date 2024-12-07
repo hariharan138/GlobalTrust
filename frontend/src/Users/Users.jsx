@@ -303,11 +303,19 @@ const Users = () => {
                         <Typography variant="subtitle1">{trust.trustName}</Typography>
                         <Typography variant="body2">Phone: {trust.trustPhoneNumber}</Typography>
                       </div>
-                      <Checkbox
+                      {/* <Checkbox
                         checked={selectedTrust.includes(trust._id)}
                         onChange={(e) => handleSelectTrust(trust._id, e)}
                         disabled={selectedTrust.length >= 5 && !selectedTrust.includes(trust._id)}
-                      />
+                      /> */}
+
+                  <input 
+                   type="checkbox" 
+                   id={`trust-checkbox-${index}`} 
+                   className="trust-checkbox1" 
+                   disabled={selectedTrust.length>3 && !selectedTrust.includes(trust._id)}
+                   onChange={(e)=> handleSelectTrust(trust._id, e)}
+                 />
                     </div>
                   ))}
                 </div>
