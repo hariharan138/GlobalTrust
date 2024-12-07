@@ -48,7 +48,7 @@ const UserLogin = () => {
       // console.log(response)
     } catch (err) {
       if (err.response) {
-        console.error("Backend error:", err.response.data);
+        console.error("Backend error:", err.response?.data);
         let errorMsg = err.response?.data?.message
         setErrorMessage(errorMsg == "Operation `usermodels.findOne()` buffering timed out after 10000ms" ? "please try again sometime" : errorMsg);
       } else {
@@ -68,6 +68,7 @@ const UserLogin = () => {
       <Typography variant="h4" className="trust-login-title">
         User Login
       </Typography>
+      {errorMessage && <div style={{fontSize: "22px", textAlign: "center", color: "red"}}>{errorMessage}</div>}
       <form onSubmit={handleSubmit}>
         <TextField
           label="Email"

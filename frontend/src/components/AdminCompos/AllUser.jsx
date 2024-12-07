@@ -91,6 +91,7 @@ const AllUser = () => {
     useEffect(()=>{
        if(!searchFinal){
             setSearchedResult(apidata)
+            setErrorMessage("")
        }
     }, [searchFinal, apidata])
 

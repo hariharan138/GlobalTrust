@@ -62,6 +62,7 @@ const [totalTransactions, setTotalTransactions] = useState(null)
 
  useEffect(()=>{
     getTotalTrust().then(res=> {
+      console.log(res)
       setTotalTrust(res)
     })
 

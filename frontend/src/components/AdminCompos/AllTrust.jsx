@@ -71,14 +71,14 @@ const AllTrust = () => {
                 setHasNext(data?.data.length < dataLimitPerPage ? true: false)
                 setLoading(false)
             }
-            else{
+            else{ 
                 setErrorMessage(data?.data?.msg)
                 setLoading(false)
             }
         }
         catch(err){
             console.log(err.message)
-            console.log(err?.data?.message)
+            console.log(err?.response?.data?.message)
         }
     }
 
@@ -98,6 +98,7 @@ const AllTrust = () => {
     useEffect(()=>{
        if(!searchFinal){
             setSearchedResult(apidata)
+            setErrorMessage("")
        }
     }, [searchFinal, apidata, PageNo])
 

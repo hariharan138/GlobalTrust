@@ -12,7 +12,7 @@ const TrustProvider = (props) => {
         console.log(data)
 
         let totalNoOfTrust = data?.data
-        if(totalNoOfTrust){
+        if(totalNoOfTrust  || totalNoOfTrust==0){
             return totalNoOfTrust
         }
        }
