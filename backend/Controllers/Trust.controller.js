@@ -305,7 +305,18 @@ let getTrustProfile =  (req, res)=>{
 let getTrustTransactions = async (req, res)=>{
 try{
     let user = req.user
-    let data = await FoodModel.find({acceptedBy: user._id}).select("acceptedBy acceptedTrustName senderName senderPhoneNumber veg noOfPeople")
+    let search = req.query.search
+    console.log(search)
+    const regex = new RegExp(search, "i"); // 'i' makes it case-insensitive
+
+    console.log(regex)
+    // if(!regex){
+    // console.log()
+    // let data = await FoodModel.find({acceptedBy: user._id}).select("acceptedBy acceptedTrustName senderName senderPhoneNumber veg noOfPeople")
+    // return res.status(200).json({msg: "Users fetched successfully", data})  
+    // }
+
+    let data = await FoodModel.find({$and: [{acceptedBy: user._id},{senderName: {$regex: regex}}]}).select("acceptedBy acceptedTrustName senderName senderPhoneNumber veg noOfPeople")
     res.status(200).json({msg: "Users fetched successfully", data})
 }
 catch(err){
