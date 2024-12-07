@@ -306,17 +306,25 @@ let getTrustTransactions = async (req, res)=>{
 try{
     let user = req.user
     let search = req.query.search
-    console.log(search)
+
+    let limit = req.query.limit > 20 ? 20 : req.query.limit || 10
+    // let restrictPage = totalDocuments / limit ? limit : 10
+    let page = req.query.page || 1
+    let skip = (page -1)* limit
+
+
     const regex = new RegExp(search, "i"); // 'i' makes it case-insensitive
 
-    console.log(regex)
-    // if(!regex){
-    // console.log()
-    // let data = await FoodModel.find({acceptedBy: user._id}).select("acceptedBy acceptedTrustName senderName senderPhoneNumber veg noOfPeople")
-    // return res.status(200).json({msg: "Users fetched successfully", data})  
-    // }
+    let totalNoOfDocumentsAvailable = await FoodModel.find({$and: [{acceptedBy: user._id},{senderName: {$regex: regex}}]})
 
-    let data = await FoodModel.find({$and: [{acceptedBy: user._id},{senderName: {$regex: regex}}]}).select("acceptedBy acceptedTrustName senderName senderPhoneNumber veg noOfPeople")
+    let totalPages = Math.ceil(totalNoOfDocumentsAvailable.length / limit);
+
+    if (page > totalPages) {
+        throw new Error(`Not enough data available. Total pages: ${totalPages}`);
+    }
+
+
+    let data = await FoodModel.find({$and: [{acceptedBy: user._id},{senderName: {$regex: regex}}]}).select("acceptedBy acceptedTrustName senderName senderPhoneNumber veg noOfPeople").skip(skip).limit(limit)
     res.status(200).json({msg: "Users fetched successfully", data})
 }
 catch(err){
