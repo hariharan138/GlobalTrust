@@ -103,21 +103,18 @@ let getTrustsAdmin = async (req, res)=>{
 
 let getTransactions = async (req, res)=>{
     try{
-        let page = Number(req.params.page)
-        let limit = parseInt(req.params.limit)
-        console.log(typeof limit)
-        
-        if(typeof limit !== "number"){
-            throw new Error("limit should be a number")
-        }
+        let limit = req.query.limit > 20 ? 20 : req.query.limit || 10
 
-        if(typeof page !== "number"){
-            throw new Error("page should be a number")
-        }
+        let page = req.query.page || 1
 
-         limit = req.params.limit > 20 ? 10 : req.params.limit || 10
-         page = req.params.page || 1
-        let skip = (page - 1) * limit
+        let skip = (page -1)* limit
+        let totalDocuments = await FoodModel.countDocuments();
+
+        let totalPages = Math.ceil(totalDocuments / limit);
+
+        if (page > totalPages) {
+            throw new Error(`Not enough data available. Total pages: ${totalPages}`);
+        }
 
         let data = await FoodModel.find({acceptedBy : {$ne: null}}).skip(skip).limit(limit)
         
@@ -285,21 +282,7 @@ let getNoOfTransactions = async (req, res)=>{
     return res.status(200).json({msg: "total Of Transactions fetched", data: data.length})
 }
 
-let getAllTransactions = async (req, res)=>{
-  try{
-    let data = await FoodModel.find({acceptedBy : {$ne: null}})
 
-    if(data.length==0){
-        return res.status(200).json({error:false, message: "No Successfull Transactions"})
-    }
-
-    return res.status(200).json({msg: "total Of Transactions fetched", data: data})
-
-  }
-  catch(err){
-    res.status(500).json({error:true,message:err.message})
-  }
-}
 
 module.exports = {
     adminLogin,
@@ -313,5 +296,4 @@ module.exports = {
 getNoOfUsers,
 getNoOfTransactions,
     deleteUsersAndTrusts,
-    getAllTransactions
 }

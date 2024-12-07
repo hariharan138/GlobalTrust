@@ -9,7 +9,7 @@ const { adminLogin,
     getNoOfUsers,
     getNoOfTrusts,
     getNoOfTransactions,
-    getAllTransactions} = require("../Controllers/Admin.controller")
+    } = require("../Controllers/Admin.controller")
 
 const express = require('express')
 const {adminAuth} = require('../Authentication/AdminAuth')
@@ -25,7 +25,6 @@ adminRoute.get('/searchtrust', adminAuth, searchTrust)
 adminRoute.get('/getnooftrusts', adminAuth, getNoOfTrusts)
 adminRoute.get('/getnoofusers', adminAuth, getNoOfUsers)
 adminRoute.get('/getnooftransactions', adminAuth, getNoOfTransactions)
-adminRoute.get('/getalltransactions', adminAuth, getAllTransactions)
 adminRoute.delete('/delete/:role/:id', adminAuth ,deleteUsersAndTrusts)
 
 module.exports = adminRoute
