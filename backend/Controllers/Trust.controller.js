@@ -206,7 +206,7 @@ let getRegisteredFoods = async (req, res)=>{
         // console.log(preferredOrders)
         // let preferredOrdersSenderId = []
         // console.log(preferredOrdersSenderId)
-          let normalOrders = await FoodModel.find({_id: {$nin : [preferredOrdersSenderId]}, acceptedBy: {$eq: null}}).skip(skip).limit(limit)
+          let normalOrders = await FoodModel.find({_id: {$nin : preferredOrdersSenderId}, acceptedBy: {$eq: null}}).skip(skip).limit(limit)
             // console.log(normalOrders)
 
          let data = preferredOrders.concat(normalOrders)

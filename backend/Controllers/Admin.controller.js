@@ -285,6 +285,17 @@ let getNoOfTransactions = async (req, res)=>{
     return res.status(200).json({msg: "total Of Transactions fetched", data: data.length})
 }
 
+let getAllTransactions = async (req, res)=>{
+    let data = await FoodModel.find({acceptedBy : {$ne: null}})
+
+    if(data.length==0){
+        return res.status(200).json({error:false, message: "No Successfull Transactions"})
+    }
+
+    return res.status(200).json({msg: "total Of Transactions fetched", data: data})
+
+}
+
 module.exports = {
     adminLogin,
     adminLogout,
@@ -296,5 +307,6 @@ module.exports = {
     getNoOfTrusts,
 getNoOfUsers,
 getNoOfTransactions,
-    deleteUsersAndTrusts
+    deleteUsersAndTrusts,
+    getAllTransactions
 }
