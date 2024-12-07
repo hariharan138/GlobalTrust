@@ -1,6 +1,6 @@
 const express = require('express');
 
-const {addTrusts, loginTrusts, logoutTrusts, getUsers, getRegisteredFoods, acceptFoodOrder, searchUser, getTrustProfile} = require('../Controllers/Trust.controller');
+const {addTrusts, loginTrusts, logoutTrusts, getUsers, getRegisteredFoods, acceptFoodOrder, searchUser, getTrustProfile, getTrustTransactions} = require('../Controllers/Trust.controller');
 const { trustUserAuth } = require('../Authentication/TrustUserAuth');
 const upload = require('../utils/multer');
 
@@ -16,5 +16,6 @@ route.post('/acceptfoodorder/:orderId', trustUserAuth ,acceptFoodOrder)
 
 route.get('/searchuser', trustUserAuth, searchUser)
 route.get('/gettrustprofile', trustUserAuth, getTrustProfile)
+route.get('/gettrusttransactions', trustUserAuth, getTrustTransactions)
 
 module.exports=route;

@@ -302,6 +302,17 @@ let getTrustProfile =  (req, res)=>{
     }
 }
 
+let getTrustTransactions = async (req, res)=>{
+try{
+    let user = req.user
+    let data = await FoodModel.find({acceptedBy: user._id}).select("acceptedBy acceptedTrustName senderName senderPhoneNumber veg noOfPeople")
+    res.status(200).json({msg: "Users fetched successfully", data})
+}
+catch(err){
+    res.status(500).json({error:true,message:err.message})
+}
+}
+
 
 module.exports={
     addTrusts,
@@ -311,5 +322,6 @@ module.exports={
     getRegisteredFoods,
     acceptFoodOrder,
     searchUser,
-    getTrustProfile
+    getTrustProfile,
+    getTrustTransactions
 }

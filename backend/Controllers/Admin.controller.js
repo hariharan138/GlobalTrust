@@ -286,6 +286,7 @@ let getNoOfTransactions = async (req, res)=>{
 }
 
 let getAllTransactions = async (req, res)=>{
+  try{
     let data = await FoodModel.find({acceptedBy : {$ne: null}})
 
     if(data.length==0){
@@ -294,6 +295,10 @@ let getAllTransactions = async (req, res)=>{
 
     return res.status(200).json({msg: "total Of Transactions fetched", data: data})
 
+  }
+  catch(err){
+    res.status(500).json({error:true,message:err.message})
+  }
 }
 
 module.exports = {
