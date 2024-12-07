@@ -51,7 +51,7 @@ const AdminNavbar = ({sidebarOpen, setSidebarOpen}) => {
           <button className="nav-button" onClick={()=>navigate("/Home")}><Home /> Home</button>
           <button className="nav-button" onClick={()=>navigate("/alluser")}><LayoutDashboard />User</button>
           <button className="nav-button" onClick={()=>navigate("/alltrust")}><HandHeart />Trust</button>
-          <button className="nav-button"><User /> Profile</button>
+
           <button className="nav-button" onClick={()=>navigate("/set")}><Settings /> Settings</button>
           <button className="nav-button logout" onClick={()=> handleLogout()}><LogOut /> Logout</button>
         </nav>
