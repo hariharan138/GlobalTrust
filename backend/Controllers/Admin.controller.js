@@ -121,7 +121,7 @@ let getTransactions = async (req, res)=>{
         if(data.length==0){
             return res.status(200).json({error:false, message:"No Successfull Transaction"})  
         }
-        res.status(200).json({error:false, message:"Transactions Fetched succesfully",data}).skip(skip).limit(limit)
+        res.status(200).json({error:false, message:"Transactions Fetched succesfully",data})
     }
     catch(err){
         res.status(500).json({error:true,message:err.message})

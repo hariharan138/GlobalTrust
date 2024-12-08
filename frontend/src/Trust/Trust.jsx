@@ -5,30 +5,30 @@ import { Button, TextField, Paper, Typography, Grid, Card, CardContent, Avatar, 
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import SearchIcon from '@mui/icons-material/Search';
+import FoodBankIcon from '@mui/icons-material/FoodBank';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import PeopleIcon from '@mui/icons-material/People';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 
 const UserCard = ({ user }) => {
+
   return (
     <Card elevation={3}>
       <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <Avatar
-          src={user?.image?.url !== "N/A" ? user?.image?.url : "/placeholder.svg"}
-          alt={user.name}
-          sx={{ width: 60, height: 60 }}
-        />
+        
         <div>
           <Typography variant="h6">{user.Name}</Typography>
           <Typography variant="body2" color="text.secondary">
-            <EmailIcon fontSize="small" sx={{ mr: 1 }} />
-            {user.email}
+            <PersonOutlineOutlinedIcon fontSize="small" sx={{ mr: 1 }} />
+            {user.senderName} to  {user.acceptedTrustName}
           </Typography>
+
           <Typography variant="body2" color="text.secondary">
-            <PhoneIcon fontSize="small" sx={{ mr: 1 }} />
-            {user.phone}
+            <FoodBankIcon fontSize="small" sx={{ mr: 1 }} />
+            Quantity:{user.noOfPeople} Peoples can eat
           </Typography>
         </div>
       </CardContent>
@@ -119,9 +119,12 @@ const Trust = () => {
     setError('');
     try {
       const { data } = await axios.get(
-        `http://localhost:4000/api/trust/searchuser?search=${searchTerm}&page=${pageNo}`,
+        // http://localhost:4000/api/trust/gettrusttransactions?search=ram&page=1&limit=10
+
+        `http://localhost:4000/api/trust/gettrusttransactions?search=${searchTerm}&page=${pageNo}&limit=10`,
         { withCredentials: true }
       );
+        console.log(data.data)
       setUsers(data?.data);
       setHasNext(data?.data.length < dataLimitPerPage);
     } catch (err) {
