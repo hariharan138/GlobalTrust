@@ -181,33 +181,14 @@ let getRegisteredFoods = async (req, res)=>{
         let page = req.query.page || 1
         let limit = (req.query.limit > 20 ? 10 : req.query.limit) || 10
         let skip = (page-1) * limit
-        
-        // let preferredOrders = await FoodModel.find({preferred: {$in: [user._id]}, acceptedBy: {$eq: null}}).skip(skip).limit(limit).select("fromUserId noOfPeople address veg createdAt preferred senderName senderPhoneNumber acceptedBy acceptedTrustName acceptedTrustPhoneNumber")
-        
-        // let preferredOrdersSenderId = preferredOrders?.map(order=>{
-        // return order.fromUserId.toString()
-        // })
-        
-        // // console.log(preferredOrders)
-        // console.log(preferredOrdersSenderId)
-        
-        //   let normalOrders = await FoodModel.find({preferred: {$nin : [preferredOrdersSenderId]}, acceptedBy: {$eq: null}}).skip(skip).limit(limit)
-        // //   let normalOrders = await TrustModel.find({_id: {$nin : [preferredOrdersSenderId]}}).skip(skip).limit(limit).select("trustName")
-        //     console.log(normalOrders)
-
-        //  let data = preferredOrders.concat(normalOrders)
-
+       
         let preferredOrders = await FoodModel.find({preferred: {$in: [user._id]}, acceptedBy: {$eq: null}}).skip(skip).limit(limit).select("fromUserId noOfPeople address veg createdAt preferred senderName senderPhoneNumber acceptedBy acceptedTrustName acceptedTrustPhoneNumber")
-        // preferredOrders = []
         let preferredOrdersSenderId = preferredOrders?.map(order=>{
         return order._id.toString()
         })
         
-        // console.log(preferredOrders)
-        // let preferredOrdersSenderId = []
-        // console.log(preferredOrdersSenderId)
+        
           let normalOrders = await FoodModel.find({_id: {$nin : preferredOrdersSenderId}, acceptedBy: {$eq: null}}).skip(skip).limit(limit)
-            // console.log(normalOrders)
 
          let data = preferredOrders.concat(normalOrders)
          
@@ -223,7 +204,6 @@ let acceptFoodOrder = async (req, res)=>{
         let user = req.user
         let {orderId} = req.params
         let isAvailable = await FoodModel.findById(orderId)
-        // console.log(isAvailable)
         if(!isAvailable){
             throw new Error("order not found")
         }
@@ -232,13 +212,10 @@ let acceptFoodOrder = async (req, res)=>{
             throw new Error("already accepted")
         }
         
-        // console.log(user)
         isAvailable.acceptedBy = user._id
         isAvailable.acceptedTrustName = user.trustName
         isAvailable.acceptedTrustPhoneNumber = user.trustPhoneNumber
-        // console.log(isAvailable)
         await isAvailable.save()
-        // console.log(isAvailable)
         res.status(200).json({msg: user.firstName + " accepted the order", data: isAvailable})
 
     }
@@ -251,28 +228,21 @@ let searchUser = async (req, res)=>{
     try{
         let allowedFields = ["Name", "phone", "email", "address", "image", "role"]
         let search = req.query.search
-        // let sort = req.query.sort
-
 
         let limit = req.query.limit > 20 ? 20 : req.query.limit || 10
-        // let restrictPage = totalDocuments / limit ? limit : 10
         let page = req.query.page || 1
         let skip = (page -1)* limit
 
         let totalDocuments = await UserModel.countDocuments();
-        // console.log(totalDocuments)
 
         let totalPages = Math.ceil(totalDocuments / limit);
 
         if (page > totalPages) {
             throw new Error(`Not enough data available. Total pages: ${totalPages}`);
         }
-        // console.log(search)
         const regex = new RegExp(search, "i"); // 'i' makes it case-insensitive
 
-        // Find documents where the `Name` field matches the regex
         const data = await UserModel.find({ Name: { $regex: regex } }).skip(skip).limit(limit).select(allowedFields)
-        //    let data =  await UserModel.find({Name: {$regex: search, $options: "i"}}).skip(skip).limit(limit)
         
        if(!data.length>0){
         throw new Error("No Users Available")
@@ -308,7 +278,6 @@ try{
     let search = req.query.search
 
     let limit = req.query.limit > 20 ? 20 : req.query.limit || 10
-    // let restrictPage = totalDocuments / limit ? limit : 10
     let page = req.query.page || 1
     let skip = (page -1)* limit
 
