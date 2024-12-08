@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React, { useState } from 'react'
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the base URL from .env
 
 const Transactions = () => {
     const [successfulltransactions, setSuccessfulltransactions] = useState([])
@@ -13,7 +14,7 @@ const Transactions = () => {
     // createdAt: time stamp
 // }
     let getSuccessfulltransactions = async ()=>{
-        let {data} = await axios.get('http://localhost:4000/api/admin/transactions/1/10', {
+        let {data} = await axios.get(`${API_BASE_URL}/admin/transactions/1/10`, {
             withCredentials: true
         })
         

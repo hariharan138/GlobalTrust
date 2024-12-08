@@ -4,6 +4,7 @@ import styles from './Notifications.module.css';
 
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the base URL from .env
 
 const Inbox = ({setShowInbox}) => {
 
@@ -15,7 +16,7 @@ const Inbox = ({setShowInbox}) => {
     let getNotification = async()=>{
         setLoading(true)
         try{
-            let {data} = await axios.get('http://localhost:4000/api/user/getnotification', {
+            let {data} = await axios.get(`${API_BASE_URL}/user/getnotification`, {
                 withCredentials: true
             })
     

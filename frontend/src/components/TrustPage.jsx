@@ -280,6 +280,8 @@ import {
 } from '@mui/material';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the base URL from .env
+
 function TrustPage() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -348,7 +350,7 @@ function TrustPage() {
 
     try {
       const response = await axios.post(
-        'http://localhost:4000/api/trust/addtrust',
+        `${API_BASE_URL}/trust/addtrust`,
         formDataToSend,
         { headers: { 'Content-Type': 'multipart/form-data' } }
       );

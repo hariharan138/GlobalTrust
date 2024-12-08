@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import "./TrustLogin.css"; // Import the CSS file
 import TrustLoginNavbar from "./TrustLoginNavbar";
-
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the base URL from .env
 const TrustLogin = () => {
   let navigate = useNavigate()
   const [formTrust, setFormTrust] = useState({
@@ -33,7 +33,7 @@ const TrustLogin = () => {
         return;
       }
 
-      let response = await axios.post('http://localhost:4000/api/trust/logintrust',
+      let response = await axios.post(`${API_BASE_URL}/trust/logintrust`,
         formTrust, 
         {withCredentials: true}
       )

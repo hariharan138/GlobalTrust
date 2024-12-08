@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the base URL from .env
 
 const Navbar = () => {
   const navigate = useNavigate(); // Hook to handle navigation
@@ -42,7 +43,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       const { data } = await axios.post(
-        'http://localhost:4000/api/trust/logouttrust',
+        `${API_BASE_URL}/trust/logouttrust`,
         {},
         { withCredentials: true }
       );

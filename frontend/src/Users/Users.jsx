@@ -7,6 +7,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { UserContext } from '../context/UserProvider';
 import "./User.css"
+
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the base URL from .env
+
 const Users = () => {
   const navigate = useNavigate();
   const { getProfileData } = useContext(UserContext);
@@ -58,7 +61,7 @@ const Users = () => {
 
   const handleLogout = async () => {
     try {
-      const { data } = await axios.post('http://localhost:4000/api/user/logoutuser', {}, {
+      const { data } = await axios.post(`${API_BASE_URL}/user/logoutuser`, {}, {
         withCredentials: true
       });
       if (data.msg) {
@@ -81,7 +84,7 @@ const Users = () => {
   const getTotalTrust = async () => {
     setTotalTrustLoading(true);
     try {
-      const { data } = await axios.get(`http://localhost:4000/api/user/getnooftrust`, {
+      const { data } = await axios.get(`${API_BASE_URL}/user/getnooftrust`, {
         withCredentials: true
       });
       if (data?.data) {
@@ -108,7 +111,7 @@ const Users = () => {
 
   const createFoodOrder = async () => {
     try {
-      const { data } = await axios.post('http://localhost:4000/api/user/foodRegister',
+      const { data } = await axios.post('${API_BASE_URL}/user/foodRegister',
         createFoodDetail,
         { withCredentials: true }
       );
@@ -148,7 +151,7 @@ const Users = () => {
   const getTrust = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get('http://localhost:4000/api/user/searchtrust?search=', {
+      const { data } = await axios.get(`${API_BASE_URL}/user/searchtrust?search=`, {
         withCredentials: true
       });
       if (data?.data) {
@@ -168,7 +171,7 @@ const Users = () => {
   const handleSearch = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(`http://localhost:4000/api/user/searchtrust?search=${searchQuery}&page=${pageNo}`, {
+      const { data } = await axios.get(`${API_BASE_URL}/user/searchtrust?search=${searchQuery}&page=${pageNo}`, {
         withCredentials: true,
       });
       if (data?.data) {

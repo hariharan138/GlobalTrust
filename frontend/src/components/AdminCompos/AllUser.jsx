@@ -13,7 +13,7 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { Button, outlinedInputClasses } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the base URL from .env
 
 const AllUser = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -43,7 +43,7 @@ const AllUser = () => {
     const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState(null)
 
-    let [apidata, setApidata] = useGetAdm(`http://localhost:4000/api/admin/getusers/1/10`)
+    let [apidata, setApidata] = useGetAdm(`${API_BASE_URL}/admin/getusers/1/10`)
     // console.log(apidata)
 
     let handleSearch = ()=>{
@@ -54,7 +54,7 @@ const AllUser = () => {
         try{
             setLoading(true)
             // console.log("ente")
-            let {data} = await axios.get(`http://localhost:4000/api/admin/searchuser?search=${searchFinal}&page=${PageNo}`,  {
+            let {data} = await axios.get(`${API_BASE_URL}/admin/searchuser?search=${searchFinal}&page=${PageNo}`,  {
                 withCredentials: true
             })
             console.log(data)

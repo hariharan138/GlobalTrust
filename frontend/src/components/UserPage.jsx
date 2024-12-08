@@ -14,6 +14,7 @@ import {
   Alert,
 } from '@mui/material';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the base URL from .env
 
 function UserPage() {
   const navigate = useNavigate();
@@ -66,7 +67,7 @@ function UserPage() {
 
     try {
       const response = await axios.post(
-        'http://localhost:4000/api/user/registeruser',
+        `${API_BASE_URL}/user/registeruser`,
         formDataToSend,
         { headers: { 'Content-Type': 'multipart/form-data' } }
       );

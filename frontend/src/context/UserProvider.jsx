@@ -1,11 +1,12 @@
 import axios from 'axios'
 import React, { createContext } from 'react'
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the base URL from .env
 
 export const UserContext = createContext()
 const UserProvider = ({children}) => {
 
     let getProfileData = async ()=>{
-       let {data} = await axios.get('http://localhost:4000/api/user/getuserprofile', {
+       let {data} = await axios.get(`${API_BASE_URL}/user/getuserprofile `, {
         withCredentials: true
        })
 

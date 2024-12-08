@@ -14,6 +14,7 @@ import { Button, outlinedInputClasses } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the base URL from .env
 
 const AllTrust = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -48,7 +49,7 @@ const AllTrust = () => {
 
 
     
-    let [apidata, setApidata] = useGetAdm(`http://localhost:4000/api/admin/gettrusts/1/10`)
+    let [apidata, setApidata] = useGetAdm(`${API_BASE_URL}/admin/gettrusts/1/10`)
     // console.log(apidata)
 
 
@@ -61,7 +62,7 @@ const AllTrust = () => {
         try{
             setLoading(true)
             // console.log("ente")
-            let {data} = await axios.get(`http://localhost:4000/api/admin/searchtrust?search=${searchFinal}&page=${PageNo}`,  {
+            let {data} = await axios.get(`${API_BASE_URL}/admin/searchtrust?search=${searchFinal}&page=${PageNo}`,  {
                 withCredentials: true
             })
             console.log(data)

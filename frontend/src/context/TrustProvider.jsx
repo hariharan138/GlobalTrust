@@ -1,12 +1,14 @@
 import axios from 'axios'
 import React, { createContext, useState } from 'react'
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the base URL from .env
 
 export const TrustContext = createContext()
 
 const TrustProvider = (props) => {
     let getTotalTrust = async ()=>{
        try{
-        let {data} = await axios.get('http://localhost:4000/api/admin/getnooftrusts', {
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the base URL from .env
+        let {data} = await axios.get(`${API_BASE_URL}/admin/getnooftrusts`, {
             withCredentials: true
         })
         console.log(data)
@@ -24,7 +26,7 @@ const TrustProvider = (props) => {
 
     let getTotalTransactions = async ()=>{
         try{
-            let {data} = await axios.get('http://localhost:4000/api/admin/getnooftransactions', {
+            let {data} = await axios.get(`${API_BASE_URL}/admin/getnooftransactions`, {
                 withCredentials: true
             })
             console.log(data)
@@ -39,7 +41,7 @@ const TrustProvider = (props) => {
 
     let getTotalUser = async ()=>{
         try{
-            let {data} = await axios.get('http://localhost:4000/api/admin/getnoofusers', {
+            let {data} = await axios.get(`${API_BASE_URL}/admin/getnoofusers`, {
                 withCredentials: true
             })
             console.log(data)

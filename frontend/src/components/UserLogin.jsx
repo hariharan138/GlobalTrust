@@ -3,6 +3,7 @@ import { Box, Typography, TextField, Button, Paper } from "@mui/material";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import UserloginNavbar from './UserloginNavbar';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the base URL from .env
 
 const UserLogin = () => {
   let navigate = useNavigate()
@@ -34,7 +35,8 @@ const UserLogin = () => {
         return;
       }
 
-      let response = await axios.post('http://localhost:4000/api/user/loginuser',
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the base URL from .env
+      let response = await axios.post(`${API_BASE_URL}/user/loginuser`,
         formUser, 
         {withCredentials: true}
       )

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar from './Navbar';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the base URL from .env
 
 const TrustProfile = () => {
   const [profile, setProfile] = useState(null);
@@ -11,7 +12,7 @@ const TrustProfile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/trust/gettrustprofile', {
+        const response = await axios.get(`${API_BASE_URL}/trust/gettrustprofile`, {
           withCredentials: true,
         });
         setProfile(response.data.user);

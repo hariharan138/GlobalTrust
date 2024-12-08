@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { TrustContext } from '../../context/TrustProvider'
 import AdminNavbar from './AdminNavbar'
-
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the base URL from .env
 const Dashboard = () => {
   const { getTotalTrust, getTotalUser, getTotalTransactions } = useContext(TrustContext)
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -23,7 +23,7 @@ const Dashboard = () => {
   const handleLogout = async () => {
     try {
       console.log("logout generate")
-      const { data } = await axios.post("http://localhost:4000/api/admin/adminlogout", {}, { withCredentials: true })
+      const { data } = await axios.post(`${API_BASE_URL}/admin/adminlogout`, {}, { withCredentials: true })
       console.log(data)
       if (data.success) {
         navigate('/')
@@ -40,7 +40,7 @@ const Dashboard = () => {
   const fetchTransactionHistory = async (page) => {
     setIsLoading(true)
     try {
-      const response = await axios.get(`http://localhost:4000/api/admin/transactions?page=${page}&limit=10`, { withCredentials: true })
+      const response = await axios.get(`${API_BASE_URL}/admin/transactions?page=${page}&limit=10`, { withCredentials: true })
       setTransactionHistory(response.data.data)   
       console.log(response.data.data)
        getTotalTransactions().then(res=>{console.log(setTotalPages (Math.ceil(res/10))) })

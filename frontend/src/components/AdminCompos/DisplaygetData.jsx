@@ -4,6 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import dd from './Displaydata.module.css'
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the base URL from .env
 
 const DisplaygetData = ({ _id, Name, email, address, phone, image, role, searchedResult, setSearchedResult}) => {
 
@@ -13,7 +14,7 @@ const DisplaygetData = ({ _id, Name, email, address, phone, image, role, searche
  let deleteUser = async (userRole, id)=>{
 
   try{
-    let {data} = await axios.delete(`http://localhost:4000/api/admin/delete/${userRole}/${id}`, {
+    let {data} = await axios.delete(`${API_BASE_URL}/admin/delete/${userRole}/${id}`, {
       withCredentials: true
     })
     console.log(data)

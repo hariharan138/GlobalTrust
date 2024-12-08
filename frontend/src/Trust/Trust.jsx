@@ -12,6 +12,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the base URL from .env
 
 const UserCard = ({ user }) => {
 
@@ -97,7 +98,7 @@ const Trust = () => {
   const getRegisteredOrders = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get(`http://localhost:4000/api/trust/getfoodorder`, {
+      const { data } = await axios.get(`${API_BASE_URL}/trust/getfoodorder`, {
         withCredentials: true
       });
       if (data?.data.length > 0) {
@@ -121,7 +122,7 @@ const Trust = () => {
       const { data } = await axios.get(
         // http://localhost:4000/api/trust/gettrusttransactions?search=ram&page=1&limit=10
 
-        `http://localhost:4000/api/trust/gettrusttransactions?search=${searchTerm}&page=${pageNo}&limit=10`,
+        `${API_BASE_URL}/trust/gettrusttransactions?search=${searchTerm}&page=${pageNo}&limit=10`,
         { withCredentials: true }
       );
         console.log(data.data)
@@ -140,7 +141,7 @@ const Trust = () => {
 
   const acceptOrder = async (id) => {
     try {
-      const { data } = await axios.post(`http://localhost:4000/api/trust/acceptfoodorder/${id}`, {}, {
+      const { data } = await axios.post(`${API_BASE_URL}/trust/acceptfoodorder/${id}`, {}, {
         withCredentials: true
       });
       if (data?.data) {

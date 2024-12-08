@@ -12,6 +12,7 @@ import {
   Grid,
 } from "@mui/material";
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the base URL from .env
 const ContactUs = () => {
   const navigate = useNavigate();
   
@@ -35,7 +36,7 @@ const ContactUs = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:5000/api/contact", formData); // Adjusted the endpoint
+      const response = await axios.post(`${API_BASE_URL}/contact`, formData); // Adjusted the endpoint
       alert(response.data.message);
 
       // Clear form data after submission
