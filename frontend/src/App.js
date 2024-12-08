@@ -23,6 +23,7 @@ import TrustProfile from './Trust/TrustProfile';
 import './index.css'
 import PageNotFound from './components/PageNotFound';
 import Inbox from './Users/Inbox';
+import WelcomePage from './components/WelcomePage';
 function App() {
   return (
     <Router future={{v7_relativeSplatPath: true, v7_startTransition: true}}>
@@ -30,8 +31,8 @@ function App() {
         <UserProvider>
           {/* <Navbar /> */}
          <Routes>
-      <Route path="/" element={<LoginPage />} />
-        
+      <Route path="/" element={<WelcomePage/>} />
+      <Route path="/LoginPage" element={<LoginPage />} />
         <Route path="/user" element={<UserPage />} />
         <Route path="/userlogin" element={<UserLogin/>} />
 
