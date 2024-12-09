@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
-import { Bell, ChevronDown, Home, LayoutDashboard, HandHeart, LogOut, Menu, Settings, User, Rss, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Bell, Menu, ChevronLeft, ChevronRight } from 'lucide-react'
 import './Dash.css'
-import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { TrustContext } from '../../context/TrustProvider'
 import AdminNavbar from './AdminNavbar'
@@ -10,7 +9,6 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the base URL 
 const Dashboard = () => {
   const { getTotalTrust, getTotalUser, getTotalTransactions } = useContext(TrustContext)
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const navigate = useNavigate()
 
   const [totalTrust, setTotalTrust] = useState(null)
   const [totalUser, setTotalUser] = useState(null)
@@ -20,31 +18,27 @@ const Dashboard = () => {
   const [totalPages, setTotalPages] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleLogout = async () => {
-    try {
-      console.log("logout generate")
-      const { data } = await axios.post(`${API_BASE_URL}/admin/adminlogout`, {}, { withCredentials: true })
-      console.log(data)
-      if (data.success) {
-        navigate('/')
-      } else {
-        alert("admin is not logged in")
-      }
-    } catch (err) {
-      if (err.response) {
-        console.log(err.response.data.message)
-      }
-    }
-  }
+  // const handleLogout = async () => {
+  //   try {
+  //     const { data } = await axios.post(`${API_BASE_URL}/admin/adminlogout`, {}, { withCredentials: true })
+  //     if (data.success) {
+  //       navigate('/')
+  //     } else {
+  //       alert("admin is not logged in")
+  //     }
+  //   } catch (err) {
+  //     if (err.response) {
+  //       console.log(err.response.data.message)
+  //     }
+  //   }
+  // }
 
   const fetchTransactionHistory = async (page) => {
     setIsLoading(true)
     try {
       const response = await axios.get(`${API_BASE_URL}/admin/transactions?page=${page}&limit=10`, { withCredentials: true })
       setTransactionHistory(response.data.data)   
-      console.log(response.data.data)
-       getTotalTransactions().then(res=>{console.log(setTotalPages (Math.ceil(res/10))) })
-      // setTotalPages(response.data.totalPages)
+       getTotalTransactions().then(res=>{setTotalPages (Math.ceil(res/10))})
     } catch (error) {
       console.error('Error fetching transaction history:', error)
     } finally {
@@ -54,7 +48,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     getTotalTrust().then(res => {
-      console.log(res)
       setTotalTrust(res)
     })
 

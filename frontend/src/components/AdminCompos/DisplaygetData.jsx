@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Button } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import dd from './Displaydata.module.css'
@@ -8,19 +7,13 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the base URL 
 
 const DisplaygetData = ({ _id, Name, email, address, phone, image, role, searchedResult, setSearchedResult}) => {
 
-  const [userDeleted, setUserDeleted] = useState(null)
-  const [deleteErrorMsg, setDeleteErrorMsg] = useState(null)
-
  let deleteUser = async (userRole, id)=>{
 
   try{
     let {data} = await axios.delete(`${API_BASE_URL}/admin/delete/${userRole}/${id}`, {
       withCredentials: true
     })
-    console.log(data)
     if(data?.data){
-      setDeleteErrorMsg(null)
-      setUserDeleted(data?.data)
       setSearchedResult(searchedResult.filter(ele=> ele._id != data?.data._id))
     }
   }

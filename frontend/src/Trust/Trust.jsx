@@ -125,7 +125,6 @@ const Trust = () => {
         `${API_BASE_URL}/trust/gettrusttransactions?search=${searchTerm}&page=${pageNo}&limit=10`,
         { withCredentials: true }
       );
-        console.log(data.data)
       setUsers(data?.data);
       setHasNext(data?.data.length < dataLimitPerPage);
     } catch (err) {

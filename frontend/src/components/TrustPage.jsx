@@ -373,7 +373,6 @@ function TrustPage() {
       setImagePreview(null);
       setTimeout(() => navigate('/trustlogin'), 2000);
     } catch (error) {
-      console.log(error)
       console.log(error.message)
       console.log(error.response.data.message)
       setErrorMessage(error.response?.data?.error || 'Something went wrong!');

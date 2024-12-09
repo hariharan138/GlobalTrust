@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
-import { Bell, ChevronDown, Home, LayoutDashboard, HandHeart, LogOut, Menu, Settings, User } from 'lucide-react'
+import { Menu} from 'lucide-react'
 import './Dash.css';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import useGetAdm from './CustomHooks/useGetAdm';
 import DisplaygetData from './DisplaygetData';
@@ -10,7 +9,6 @@ import InputSearch from './InputSearch';
 import AdminNavbar from './AdminNavbar';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { IconButton } from '@mui/material';
-import { Button, outlinedInputClasses } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
@@ -26,7 +24,6 @@ const AllTrust = () => {
     const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState(null)
 
-    let navigate = useNavigate()
 
 
     
@@ -49,8 +46,7 @@ const AllTrust = () => {
 
 
     
-    let [apidata, setApidata] = useGetAdm(`${API_BASE_URL}/admin/gettrusts/1/10`)
-    // console.log(apidata)
+    let [apidata] = useGetAdm(`${API_BASE_URL}/admin/gettrusts/1/10`)
 
 
     let handleSearch = ()=>{
@@ -61,11 +57,9 @@ const AllTrust = () => {
     let getSearchValue = async ()=>{
         try{
             setLoading(true)
-            // console.log("ente")
             let {data} = await axios.get(`${API_BASE_URL}/admin/searchtrust?search=${searchFinal}&page=${PageNo}`,  {
                 withCredentials: true
             })
-            console.log(data)
             setHasNext(true)
             if(data && data?.data && data.data.length>0){
                 setSearchedResult(data?.data)

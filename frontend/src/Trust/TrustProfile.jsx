@@ -145,7 +145,7 @@ const TrustProfile = () => {
   const ProfileContent = ({ profile }) => (
     <div style={styles.profileContent}>
       <img
-        src={profile.profilePhoto || 'https://via.placeholder.com/150'}
+        src={profile.image.url || 'https://via.placeholder.com/150'}
         alt="Profile"
         style={styles.profilePhoto}
       />

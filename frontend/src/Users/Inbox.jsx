@@ -35,7 +35,6 @@ const Inbox = ({setShowInbox}) => {
     useEffect(()=>{
         getNotification()
     }, [])
-    console.log(notifications)
 
     let handleRedirect = ()=>{
         navigate('/userhome')

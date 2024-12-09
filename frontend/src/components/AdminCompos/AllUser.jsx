@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
-import { Bell, ChevronDown, Home, LayoutDashboard, HandHeart, LogOut, Menu, Settings, User } from 'lucide-react'
+import { Bell, Menu } from 'lucide-react'
 import './Dash.css';
-import { useNavigate } from 'react-router-dom';
 import DisplaygetData from './DisplaygetData';
 import useGetAdm from './CustomHooks/useGetAdm';
 import InputSearch from './InputSearch';
@@ -10,14 +9,12 @@ import axios from 'axios';
 import AdminNavbar from './AdminNavbar';
 import { IconButton } from '@mui/material';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import { Button, outlinedInputClasses } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the base URL from .env
 
 const AllUser = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false)
-    let navigate = useNavigate()
 
     const [PageNo, setPageNo] = useState(1);
     const [hasNext, setHasNext] = useState(false);
@@ -44,7 +41,6 @@ const AllUser = () => {
     const [errorMessage, setErrorMessage] = useState(null)
 
     let [apidata, setApidata] = useGetAdm(`${API_BASE_URL}/admin/getusers/1/10`)
-    // console.log(apidata)
 
     let handleSearch = ()=>{
         setSearchFinal(searchValue)
@@ -53,11 +49,9 @@ const AllUser = () => {
     let getSearchValue = async ()=>{
         try{
             setLoading(true)
-            // console.log("ente")
             let {data} = await axios.get(`${API_BASE_URL}/admin/searchuser?search=${searchFinal}&page=${PageNo}`,  {
                 withCredentials: true
             })
-            console.log(data)
             setHasNext(true)
             if(data && data?.data && data.data.length>0){
                 setSearchedResult(data?.data)
@@ -70,7 +64,6 @@ const AllUser = () => {
             }
         }
         catch(err){
-            // console.log(err.message)
         console.log(err.response.data.message)
         }
     }

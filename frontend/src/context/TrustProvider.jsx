@@ -11,7 +11,6 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the base URL 
         let {data} = await axios.get(`${API_BASE_URL}/admin/getnooftrusts`, {
             withCredentials: true
         })
-        console.log(data)
 
         let totalNoOfTrust = data?.data
         if(totalNoOfTrust  || totalNoOfTrust==0){
@@ -29,7 +28,6 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the base URL 
             let {data} = await axios.get(`${API_BASE_URL}/admin/getnooftransactions`, {
                 withCredentials: true
             })
-            console.log(data)
             let totalTransactions = data?.data
             return totalTransactions
         }
@@ -44,7 +42,6 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Access the base URL 
             let {data} = await axios.get(`${API_BASE_URL}/admin/getnoofusers`, {
                 withCredentials: true
             })
-            console.log(data)
             let totalTransactions = data?.data
             return totalTransactions
         }

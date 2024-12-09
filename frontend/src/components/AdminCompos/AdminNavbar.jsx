@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import './Dash.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Bell, ChevronDown, Home, LayoutDashboard,HandHeart , LogOut, Menu, Settings, User, Rss } from 'lucide-react'
+import { ChevronDown, Home, LayoutDashboard,HandHeart , LogOut, Settings} from 'lucide-react'
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Use .env variable
 const AdminNavbar = ({sidebarOpen, setSidebarOpen}) => {
@@ -12,9 +12,7 @@ const AdminNavbar = ({sidebarOpen, setSidebarOpen}) => {
 
   let handleLogout = async ()=>{
     try{
-      console.log("logut generate")
       let {data} = await axios.post( `${API_BASE_URL}/admin/adminlogout`, {}, {withCredentials: true})
-      console.log(data)
       if(data.success){
         navigate('/')
       }
